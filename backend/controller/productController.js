@@ -22,9 +22,16 @@ const getAllProducts = async (req, res) => {
 
         // Build a query object based on filters if they exist
         const queryObject = {};
-        if (name) queryObject.name = { $regex: name, $options: 'i' };
-        if (description) queryObject.description = { $regex: description, $options: 'i' };
-        if (category) queryObject.category = category;
+        if (name) {
+            queryObject.name = { $regex: name, $options: 'i' };
+        }
+        if (description) {
+            queryObject.description = { $regex: description, $options: 'i' };
+        }
+        if (category) {
+            queryObject.category = category;
+        }
+
 
         const products = await Product.find(queryObject);
 
