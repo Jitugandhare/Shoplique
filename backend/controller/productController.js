@@ -2,14 +2,17 @@ const Product = require('../models/productModel.js');
 
 const createProduct = async (req, res) => {
     try {
-        const product = new Product(req.body);
-        const savedProduct = await product.save();
+        const newProduct = new Product(req.body);
+        const savedProduct = await newProduct.save();
         res.status(201).json({
             success: true,
-            data: savedProduct
+            savedProduct,
         });
     } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+        res.status(400).json({
+            success: false,
+            message: error.message,
+        });
     }
 };
 
@@ -18,55 +21,85 @@ const getAllProducts = async (req, res) => {
         const products = await Product.find();
         res.status(200).json({
             success: true,
-            data: products
+            products,
         });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
     }
 };
 
 const getProductById = async (req, res) => {
+    const { id } = req.params;
     try {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(id);
         if (!product) {
-            return res.status(404).json({ success: false, message: 'Product not found' });
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found',
+            });
         }
-        res.status(200).json({ success: true, data: product });
+        res.status(200).json({
+            success: true,
+            product,
+        });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
     }
 };
 
 const updateProduct = async (req, res) => {
+    const { id } = req.params;
     try {
-        let product = await Product.findById(req.params.id);
-        if (!product) {
-            return res.status(404).json({ success: false, message: 'Product not found' });
-        }
-
-        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, {
+        const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
             new: true,
             runValidators: true,
         });
 
+        if (!updatedProduct) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found',
+            });
+        }
+
         res.status(200).json({
             success: true,
-            data: updatedProduct
+            updatedProduct,
         });
     } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+        res.status(400).json({
+            success: false,
+            message: error.message,
+        });
     }
 };
 
 const deleteProduct = async (req, res) => {
+    const { id } = req.params;
     try {
-        const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+        const deletedProduct = await Product.findByIdAndDelete(id);
         if (!deletedProduct) {
-            return res.status(404).json({ success: false, message: 'Product not found' });
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found',
+            });
         }
-        res.status(200).json({ success: true, message: 'Product deleted successfully' });
+
+        res.status(200).json({
+            success: true,
+            message: 'Product deleted successfully',
+        });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
     }
 };
 
@@ -75,5 +108,5 @@ module.exports = {
     getAllProducts,
     getProductById,
     updateProduct,
-    deleteProduct
+    deleteProduct,
 };
