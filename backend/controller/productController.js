@@ -18,30 +18,67 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
     try {
-        const { name, description, category } = req.query;
+        const {
+            name,
+            description,
+            category,
+            minPrice,
+            maxPrice,
+            sortBy,
+            page = 1,
+            limit = 10
+        } = req.query;
 
-        // Build a query object based on filters if they exist
+        // Build MongoDB query object
         const queryObject = {};
+
         if (name) {
             queryObject.name = { $regex: name, $options: 'i' };
         }
+
         if (description) {
             queryObject.description = { $regex: description, $options: 'i' };
         }
+
         if (category) {
             queryObject.category = category;
         }
 
+        if (minPrice || maxPrice) {
+            queryObject.price = {};
+            if (minPrice) queryObject.price.$gte = Number(minPrice);
+            if (maxPrice) queryObject.price.$lte = Number(maxPrice);
+        }
 
-        const products = await Product.find(queryObject);
+        // Convert page & limit to numbers
+        const pageNum = Math.max(1, parseInt(page));
+        const limitNum = Math.max(1, parseInt(limit));
+        const skip = (pageNum - 1) * limitNum;
 
+        // Dynamic sorting
+        let sortOption = {};
+        if (sortBy) {
+            const [field, order] = sortBy.split(':');
+            sortOption[field] = order === 'desc' ? -1 : 1;
+        }
 
-        // console.log(queryObject)
-        // console.log(products)
-        
+        // Execute main query
+        const products = await Product.find(queryObject)
+            .sort(sortOption)
+            .skip(skip)
+            .limit(limitNum);
+
+        // Get total count for pagination metadata
+        const total = await Product.countDocuments(queryObject);
+        const totalPages = Math.ceil(total / limitNum);
+
+        // Return paginated result
         return res.status(200).json({
             success: true,
             count: products.length,
+            page: pageNum,
+            totalPages,
+            totalProducts: total,
             products,
         });
 
@@ -53,6 +90,7 @@ const getAllProducts = async (req, res) => {
         });
     }
 };
+
 
 
 
