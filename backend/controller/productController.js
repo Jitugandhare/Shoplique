@@ -18,18 +18,31 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find();
-        res.status(200).json({
+        const { name, description, category } = req.query;
+
+        // Build a query object based on filters if they exist
+        const queryObject = {};
+        if (name) queryObject.name = { $regex: name, $options: 'i' };
+        if (description) queryObject.description = { $regex: description, $options: 'i' };
+        if (category) queryObject.category = category;
+
+        const products = await Product.find(queryObject);
+
+        return res.status(200).json({
             success: true,
+            count: products.length,
             products,
         });
     } catch (error) {
-        res.status(500).json({
+        console.error("Error fetching products:", error);
+        return res.status(500).json({
             success: false,
-            message: error.message,
+            message: "An error occurred while fetching products.",
         });
     }
 };
+
+
 
 const getProductById = async (req, res) => {
     const { id } = req.params;

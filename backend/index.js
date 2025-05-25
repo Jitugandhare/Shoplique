@@ -6,6 +6,12 @@ const port = process.env.PORT;
 const connection = require('./config/db.js');
 const productRoute=require('./routes/productRoute.js')
 
+process.on('uncaughtException',(err)=>{
+    console.log(`Error : ${err.message}`)
+    console.log(`Server is shutting down, due to unhandled exception error`);
+    process.exit(1);
+})
+
 
 
 app.use(express.json());
