@@ -35,11 +35,16 @@ const getAllProducts = async (req, res) => {
 
         const products = await Product.find(queryObject);
 
+
+        // console.log(queryObject)
+        // console.log(products)
+        
         return res.status(200).json({
             success: true,
             count: products.length,
             products,
         });
+
     } catch (error) {
         console.error("Error fetching products:", error);
         return res.status(500).json({
