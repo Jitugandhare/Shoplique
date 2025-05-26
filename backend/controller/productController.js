@@ -54,7 +54,8 @@ const getAllProducts = async (req, res) => {
         const pageNum = Math.max(1, parseInt(page));
         const limitNum = Math.max(1, parseInt(limit));
         const skip = (pageNum - 1) * limitNum;
-
+        // console.log(pageNum)
+        // console.log(typeof pageNum)
         // Dynamic sorting
         let sortOption = {};
         if (sortBy) {
@@ -71,6 +72,8 @@ const getAllProducts = async (req, res) => {
         // Get total count for pagination metadata
         const total = await Product.countDocuments(queryObject);
         const totalPages = Math.ceil(total / limitNum);
+
+        
 
         // Return paginated result
         return res.status(200).json({
