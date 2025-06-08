@@ -4,9 +4,10 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT;
 const connection = require('./config/db.js');
-const productRoute=require('./routes/productRoute.js')
+const productRoute = require('./routes/productRoute.js')
+const userRoute = require('./routes/userRoute.js')
 
-process.on('uncaughtException',(err)=>{
+process.on('uncaughtException', (err) => {
     console.log(`Error : ${err.message}`)
     console.log(`Server is shutting down, due to unhandled exception error`);
     process.exit(1);
@@ -16,8 +17,8 @@ process.on('uncaughtException',(err)=>{
 
 app.use(express.json());
 
-
-app.use('/product',productRoute)
+app.use('/user', userRoute)
+app.use('/product', productRoute)
 
 
 app.listen(port, async () => {
