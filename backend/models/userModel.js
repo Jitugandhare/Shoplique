@@ -57,10 +57,15 @@ userSchema.pre("save", async function (next) {
 
 
 // JWT custom method i.e. getJwtToken
-userSchema.methods.getJwtToken = async function () {
+userSchema.methods.getJwtToken = function () {
     return jwt.sign({ id: this._id }, process.env.JWT_SECRET, { expiresIn: "3d" })
 }
 
+// Verify password
+
+userSchema.methods.verifyPassword = async function (userEnteredPassword) {
+    return await bcryptjs.compare(userEnteredPassword, this.password)
+}
 
 const User = mongoose.model("User", userSchema);
 

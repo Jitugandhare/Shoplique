@@ -1,7 +1,7 @@
 const User = require('../models/userModel.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-
+const sendToken = require('../utils/jwtToken.js');
 
 
 const register = async (req, res) => {
@@ -25,13 +25,7 @@ const register = async (req, res) => {
             }
         })
 
-        const token = await user.getJwtToken()
-
-        res.status(200).json({
-            success: true,
-            user,
-            token: token
-        })
+        sendToken(user, 200, res)
 
 
     } catch (error) {
@@ -56,14 +50,14 @@ const login = async (req, res) => {
             return res.status(400).json({ msg: "Invalid Email and Password" })
         }
 
-        const token = await user.getJwtToken();
+        const isPassword = await user.verifyPassword(password)
 
-        res.status(200).json({
-            success: true,
-            user,
-            token: token
-        })
+        if (!isPassword) {
+            return res.status(400).json({ msg: "Invalid Password" })
+        }
 
+
+        sendToken(user, 200, res)
 
 
     } catch (error) {
