@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const express = require('express');
 const app = express();
+const cookieParser=require("cookie-parser");
 const port = process.env.PORT;
 const connection = require('./config/db.js');
 const productRoute = require('./routes/productRoute.js')
@@ -16,6 +17,7 @@ process.on('uncaughtException', (err) => {
 
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/user', userRoute)
 app.use('/product', productRoute)
