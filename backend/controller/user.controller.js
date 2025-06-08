@@ -43,11 +43,32 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
 
+    const { email, password } = req.body;
 
     try {
 
-    } catch (error) {
+        if (!email || !password) {
+            return res.status(400).json({ msg: "Email and Password can not be empty" })
+        }
+        const user = await User.findOne({ email }).select("+password")
 
+        if (!user) {
+            return res.status(400).json({ msg: "Invalid Email and Password" })
+        }
+
+        const token = await user.getJwtToken();
+
+        res.status(200).json({
+            success: true,
+            user,
+            token: token
+        })
+
+
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
     }
 }
 
