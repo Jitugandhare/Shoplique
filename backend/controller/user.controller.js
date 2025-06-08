@@ -25,9 +25,12 @@ const register = async (req, res) => {
             }
         })
 
+        const token = await user.getJwtToken()
+
         res.status(200).json({
             success: true,
-            user
+            user,
+            token: token
         })
 
 
