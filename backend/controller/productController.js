@@ -2,6 +2,7 @@ const Product = require('../models/productModel.js');
 
 const createProduct = async (req, res) => {
     try {
+        req.body.user = req.user.id;
         const newProduct = new Product(req.body);
         const savedProduct = await newProduct.save();
         res.status(201).json({
@@ -73,7 +74,7 @@ const getAllProducts = async (req, res) => {
         const total = await Product.countDocuments(queryObject);
         const totalPages = Math.ceil(total / limitNum);
 
-        
+
 
         // Return paginated result
         return res.status(200).json({
