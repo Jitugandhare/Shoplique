@@ -193,11 +193,25 @@ const resetPassword = async (req, res) => {
     }
 }
 
+// get user profile
 
+const getUserDetails=async(req,res)=>{
+    try {
+        const user=await User.findById(req.user.id);
+
+        res.status(200).json({
+            success:true,
+            user
+        })
+    } catch (error) {
+        console.error("User Profile error:", error);
+        return res.status(500).json({ message: "Something went wrong. Please try again later." });
+    }
+}
 
 
 
 
 module.exports = {
-    register, login, logout, requestPasswordReset, resetPassword
+    register, login, logout, requestPasswordReset, resetPassword,getUserDetails
 }
