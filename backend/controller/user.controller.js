@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const sendToken = require('../utils/jwtToken.js');
 const { trusted } = require('mongoose');
 const sendEmail = require('../utils/sentEmail.js');
-
+const crypto = require("crypto")
 
 const register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -160,7 +160,17 @@ const requestPasswordReset = async (req, res) => {
 const resetPassword = async (req, res) => {
 
     try {
-        
+        const resetPasswordToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+
+        const user = await User.findOne({
+            resetPasswordToken,
+            resetPasswordExpire: { $gt: Date.now() }
+        })
+
+
+        console.log("user:",user)
+
+
     } catch (error) {
         console.error("Password reset error:", error);
         return res.status(500).json({ message: "Something went wrong. Please try again later." });
