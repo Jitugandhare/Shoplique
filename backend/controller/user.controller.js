@@ -221,8 +221,8 @@ const updatePassword = async (req, res) => {
             return res.status(400).json({ message: "All fields are required." });
         }
 
-        if(newPassword!==confirmPassword){
-            return res.status(404).json({message:"Password doesn't match."})
+        if (newPassword !== confirmPassword) {
+            return res.status(404).json({ message: "Password doesn't match." })
         }
 
         const checkPasswordIsMatch = await user.verifyPassword(oldPassword);
@@ -238,7 +238,7 @@ const updatePassword = async (req, res) => {
 
 
         // console.log(checkPasswordIsMatch, `check`)
-        res.status(200).json({ message: "Password updated successfully" })
+        sendToken(user, 200, res)
 
     } catch (error) {
         console.error("Password update error:", error);
