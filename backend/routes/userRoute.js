@@ -2,7 +2,7 @@ const express = require('express');
 const userRoute = express.Router();
 const { register, login, logout, requestPasswordReset,
     resetPassword, getUserDetails,
-    updatePassword } = require('../controller/user.controller.js');
+    updatePassword ,updateUserDetails} = require('../controller/user.controller.js');
 
 const { userAuth } = require('../middleware/userAuth.js');
 
@@ -14,7 +14,9 @@ userRoute.post('/reset/:token', resetPassword)
 
 userRoute.get('/profile', userAuth, getUserDetails);
 
-userRoute.post('/password/update',userAuth, updatePassword)
+userRoute.post('/password/update',userAuth, updatePassword);
+
+userRoute.patch('/profile/update',userAuth,updateUserDetails);
 
 
 
