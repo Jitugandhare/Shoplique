@@ -195,12 +195,12 @@ const resetPassword = async (req, res) => {
 
 // get user profile
 
-const getUserDetails=async(req,res)=>{
+const getUserDetails = async (req, res) => {
     try {
-        const user=await User.findById(req.user.id);
+        const user = await User.findById(req.user.id);
 
         res.status(200).json({
-            success:true,
+            success: true,
             user
         })
     } catch (error) {
@@ -210,8 +210,42 @@ const getUserDetails=async(req,res)=>{
 }
 
 
+// update password
+
+const updatePassword = async (req, res) => {
+    try {
+        const { oldPassword, newPassword, confirmPassword } = req.body;
+        const user = await User.findById(req.user.id).select("+password");
+
+        if (!oldPassword || !newPassword || !confirmPassword) {
+            return res.status(400).json({ message: "All fields are required." });
+        }
+        
+        const checkPasswordIsMatch = await user.verifyPassword(oldPassword);
+
+        if (!checkPasswordIsMatch) {
+            return res.status(400).json({ message: "Old password is incorrect." })
+        }
+
+
+        user.password = newPassword;
+
+        await user.save();
+
+
+        console.log(checkPasswordIsMatch, `check`)
+        res.status(200).json({ message: "Password updated successfully" })
+
+    } catch (error) {
+        console.error("Password update error:", error);
+        return res.status(500).json({ message: "Something went wrong. Please try again later." });
+    }
+}
+
 
 
 module.exports = {
-    register, login, logout, requestPasswordReset, resetPassword,getUserDetails
+    register, login, logout, requestPasswordReset,
+    resetPassword, getUserDetails,
+    updatePassword
 }
