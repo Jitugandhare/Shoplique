@@ -48,6 +48,10 @@ const userSchema = new mongoose.Schema({
     resetPasswordExpire: Date
 })
 
+
+
+
+
 // password hashing
 
 userSchema.pre("save", async function (next) {

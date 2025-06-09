@@ -71,14 +71,62 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
     try {
         res.cookie("token", null, {
-            expires: new Date(Date.now()), 
+            expires: new Date(Date.now()),
             httpOnly: true
         });
 
-        res.status(200).json({ message: 'Logged out successfully' }); 
+        res.status(200).json({ message: 'Logged out successfully' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
+    }
+};
+
+
+// reset password reset link
+
+const requestPasswordReset = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(400).json({ message: "User doesn't exist" });
+        }
+
+        // Generate and assign the reset token
+        let resetToken;
+        resetToken = user.generatePasswordResetToken();
+
+        await user.save({ validateBeforeSave: false });
+        const resetPasswordUrl = `http://localhost:8000/reset-password/${resetToken}`;
+
+        const message = `You requested a password reset. Click the link below to reset your password:\n\n${resetPasswordUrl}\n\n
+         This link will expire in 10 minutes.\n\nIf you did not request this, please ignore this email.`;
+         
+
+         
+         console.log(resetPasswordUrl)
+
+        // sent email functionalities
+        try {
+            
+        } catch (error) {
+            user.resetPasswordToken = undefined
+            user.resetPasswordExpire = undefined
+            await user.save({ validateBeforeSave: false })
+            return res.status(500).json({message:"Email could not be sent.Please try again later"})
+        }
+
+
+        // console.log(resetToken)
+
+        return res.status(200).json({ message: "Password reset link has been sent to your email." });
+
+    } catch (error) {
+        console.error("Password reset error:", error);
+        return res.status(500).json({ message: "Something went wrong. Please try again later." });
     }
 };
 
@@ -88,8 +136,6 @@ const logout = async (req, res) => {
 
 
 
-
-
 module.exports = {
-    register, login, logout
+    register, login, logout, requestPasswordReset
 }
