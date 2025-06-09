@@ -168,8 +168,24 @@ const resetPassword = async (req, res) => {
         })
 
 
-        console.log("user:",user)
+        // console.log("user:",user)
 
+        if (!user) {
+            return res.status(404).json({ message: "Reset password token is invalid or has been expired" })
+        };
+
+        const { password, confirmPassword } = req.body;
+
+        if (password !== confirmPassword) {
+            return res.status(404).json({ message: "Password doesn't match" })
+        }
+        user.password = password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+
+        await user.save();
+
+        sendToken(user, 200, res)
 
     } catch (error) {
         console.error("Password reset error:", error);
