@@ -36,7 +36,7 @@ const roleBasedAccess = (...roles) => {
 
             console.log(`Unauthorized access attempt by role ${req.user.role} on ${req.originalUrl}`);
 
-            return res.status(403).json({ message: `Role ${req.user.role} is not allowed to access this resource` });
+            return res.status(403).json({ message: `Role ${req.user.role} is not allowed to access the resource` });
         }
         next();
     }

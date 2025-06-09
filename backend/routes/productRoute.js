@@ -12,7 +12,7 @@ const {
 
 productRoute.get('/', userAuth, getAllProducts)
 productRoute.get('/product-details/:id', userAuth, roleBasedAccess("admin"), getProductById)
-productRoute.post('/create-product', roleBasedAccess("admin"), userAuth, createProduct);
+productRoute.post('/create-product', userAuth, roleBasedAccess("admin"), createProduct);
 productRoute.put('/:id', userAuth, roleBasedAccess("admin"), updateProduct);
 productRoute.delete('/:id', userAuth, roleBasedAccess("admin"), deleteProduct);
 
