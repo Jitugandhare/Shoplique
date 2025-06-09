@@ -2,6 +2,7 @@ const User = require('../models/userModel.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const sendToken = require('../utils/jwtToken.js');
+const { trusted } = require('mongoose');
 
 
 const register = async (req, res) => {
@@ -11,7 +12,7 @@ const register = async (req, res) => {
         const existingUser = await User.findOne({ email });
 
         if (existingUser) {
-            return res.status(400).json({ msg: "User is already exists" })
+            return res.status(400).json({ message: "User is already exists" })
         }
 
 
@@ -42,18 +43,18 @@ const login = async (req, res) => {
     try {
 
         if (!email || !password) {
-            return res.status(400).json({ msg: "Email and Password can not be empty" })
+            return res.status(400).json({ message: "Email and Password can not be empty" })
         }
         const user = await User.findOne({ email }).select("+password")
 
         if (!user) {
-            return res.status(400).json({ msg: "Invalid Email and Password" })
+            return res.status(400).json({ message: "Invalid Email and Password" })
         }
 
         const isPassword = await user.verifyPassword(password)
 
         if (!isPassword) {
-            return res.status(400).json({ msg: "Invalid Password" })
+            return res.status(400).json({ message: "Invalid Password" })
         }
 
 
@@ -68,14 +69,19 @@ const login = async (req, res) => {
 
 
 const logout = async (req, res) => {
-
-
     try {
+        res.cookie("token", null, {
+            expires: new Date(Date.now()), 
+            httpOnly: true
+        });
 
+        res.status(200).json({ message: 'Logged out successfully' }); 
     } catch (error) {
-
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
     }
-}
+};
+
 
 
 

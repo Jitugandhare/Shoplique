@@ -6,6 +6,7 @@ const { register, login, logout } = require('../controller/user.controller.js');
 
 userRoute.post('/register', register);
 userRoute.post('/login', login);
+userRoute.post('/logout', logout)
 
 
 
