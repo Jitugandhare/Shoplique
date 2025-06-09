@@ -154,11 +154,24 @@ const requestPasswordReset = async (req, res) => {
 };
 
 
+// Reset Password
+
+
+const resetPassword = async (req, res) => {
+
+    try {
+        
+    } catch (error) {
+        console.error("Password reset error:", error);
+        return res.status(500).json({ message: "Something went wrong. Please try again later." });
+    }
+}
+
 
 
 
 
 
 module.exports = {
-    register, login, logout, requestPasswordReset
+    register, login, logout, requestPasswordReset, resetPassword
 }
