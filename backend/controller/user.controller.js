@@ -120,7 +120,7 @@ const requestPasswordReset = async (req, res) => {
 
 
 
-        console.log(resetPasswordUrl)
+        // console.log(resetPasswordUrl)
 
         // sent email functionalities
         try {
@@ -145,7 +145,7 @@ const requestPasswordReset = async (req, res) => {
 
         // console.log(resetToken)
 
-        return res.status(200).json({ message: "Password reset link has been sent to your email." });
+        // return res.status(200).json({ message: "Password reset link has been sent to your email." });
 
     } catch (error) {
         console.error("Password reset error:", error);
