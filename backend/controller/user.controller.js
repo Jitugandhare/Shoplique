@@ -220,7 +220,7 @@ const updatePassword = async (req, res) => {
         if (!oldPassword || !newPassword || !confirmPassword) {
             return res.status(400).json({ message: "All fields are required." });
         }
-        
+
         const checkPasswordIsMatch = await user.verifyPassword(oldPassword);
 
         if (!checkPasswordIsMatch) {
@@ -233,7 +233,7 @@ const updatePassword = async (req, res) => {
         await user.save();
 
 
-        console.log(checkPasswordIsMatch, `check`)
+        // console.log(checkPasswordIsMatch, `check`)
         res.status(200).json({ message: "Password updated successfully" })
 
     } catch (error) {
