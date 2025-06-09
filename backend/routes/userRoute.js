@@ -16,7 +16,7 @@ userRoute.get('/profile', userAuth, getUserDetails);
 
 userRoute.post('/password/update',userAuth, updatePassword);
 
-userRoute.patch('/profile/update',userAuth,updateUserDetails);
+userRoute.put('/profile/update',userAuth,updateUserDetails);
 
 
 
