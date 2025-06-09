@@ -75,6 +75,10 @@ const productSchema = new mongoose.Schema({
             },
         },
     ],
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+    },
     createdAt: {
         type: Date,
         default: Date.now,
@@ -85,6 +89,6 @@ const productSchema = new mongoose.Schema({
     },
 });
 
-const Product=mongoose.model('Product', productSchema);
+const Product = mongoose.model('Product', productSchema);
 
 module.exports = Product;
