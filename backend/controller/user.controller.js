@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const sendToken = require('../utils/jwtToken.js');
 const { trusted } = require('mongoose');
+const sendEmail = require('../utils/sentEmail.js');
 
 
 const register = async (req, res) => {
@@ -83,7 +84,7 @@ const logout = async (req, res) => {
 };
 
 
-// reset password reset link
+// Forgot password reset link
 
 const requestPasswordReset = async (req, res) => {
     const { email } = req.body;
@@ -102,21 +103,43 @@ const requestPasswordReset = async (req, res) => {
         await user.save({ validateBeforeSave: false });
         const resetPasswordUrl = `http://localhost:8000/reset-password/${resetToken}`;
 
-        const message = `You requested a password reset. Click the link below to reset your password:\n\n${resetPasswordUrl}\n\n
-         This link will expire in 10 minutes.\n\nIf you did not request this, please ignore this email.`;
-         
+        const message = `
+        You requested a password reset.
+        
+        Click the link below to reset your password:${resetPasswordUrl}
+        
+        
+        This link will expire in 10 minutes.
+        
+        
+        If you did not request this, please ignore this email.
+        
+        
+`;
 
-         
-         console.log(resetPasswordUrl)
+
+
+
+        console.log(resetPasswordUrl)
 
         // sent email functionalities
         try {
-            
+            await sendEmail({
+                email: user.email,
+                subject: "Password Reset Request",
+                message
+            })
+
+            res.status(200).json({
+                success: true,
+                message: `Email sent to ${user.email} successfully`
+            })
+
         } catch (error) {
             user.resetPasswordToken = undefined
             user.resetPasswordExpire = undefined
             await user.save({ validateBeforeSave: false })
-            return res.status(500).json({message:"Email could not be sent.Please try again later"})
+            return res.status(500).json({ message: "Email could not be sent.Please try again later" })
         }
 
 
