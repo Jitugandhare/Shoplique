@@ -10,11 +10,13 @@ const {
 
 
 
-productRoute.get('/', userAuth, getAllProducts)
-productRoute.get('/product-details/:id', userAuth, roleBasedAccess("admin"), getProductById)
-productRoute.post('/create-product', userAuth, roleBasedAccess("admin"), createProduct);
-productRoute.put('/:id', userAuth, roleBasedAccess("admin"), updateProduct);
-productRoute.delete('/:id', userAuth, roleBasedAccess("admin"), deleteProduct);
+productRoute.get('/', getAllProducts);
+productRoute.post('/admin/create-product', userAuth, roleBasedAccess("admin"), createProduct);
+
+productRoute.get('/product-details/:id', getProductById)
+
+productRoute.put('/admin/product/:id', userAuth, roleBasedAccess("admin"), updateProduct);
+productRoute.delete('/admin/product/:id', userAuth, roleBasedAccess("admin"), deleteProduct);
 
 
 module.exports = productRoute;
