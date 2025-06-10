@@ -277,9 +277,28 @@ const updateUserDetails = async (req, res) => {
 }
 
 
+// admin get all users
+
+const getAllUser = async (req, res) => {
+    try {
+        const user = await User.find();
+        res.status(200).json({
+            success: true,
+            user
+        })
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        return res.status(500).json({
+            success: false,
+            message: "An error occurred while fetching users.",
+        });
+    }
+}
+
 
 module.exports = {
     register, login, logout, requestPasswordReset,
     resetPassword, getUserDetails,
-    updatePassword, updateUserDetails
+    updatePassword, updateUserDetails,
+    getAllUser
 }
