@@ -171,10 +171,36 @@ const deleteProduct = async (req, res) => {
     }
 };
 
+
+
+// Admin get all products
+
+const getAdminAllProducts = async (req, res) => {
+
+    try {
+        const product = await Product.find();
+
+        res.status(200).json({
+            success: true,
+            product
+        })
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        return res.status(500).json({
+            success: false,
+            message: "An error occurred while fetching products.",
+        });
+    }
+}
+
+
+
+
 module.exports = {
     createProduct,
     getAllProducts,
     getProductById,
     updateProduct,
     deleteProduct,
+    getAdminAllProducts
 };
