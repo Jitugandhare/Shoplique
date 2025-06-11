@@ -4,7 +4,8 @@ const { register, login, logout, requestPasswordReset,
     resetPassword, getUserDetails,
     updatePassword, updateUserDetails,
     getAllUser,
-    getSingleUser, updateUserRole
+    getSingleUser, updateUserRole,
+    deleteUsersProfile
     ,
 } = require('../controller/user.controller.js');
 
@@ -33,7 +34,7 @@ userRoute.get('/admin/user/:id', userAuth, roleBasedAccess("admin"), getSingleUs
 // admin update user's role
 userRoute.put('/admin/user-profile-update/:id', userAuth, roleBasedAccess("admin"), updateUserRole)
 
-
+userRoute.delete('/admin/delete-user-profile/:id',userAuth,roleBasedAccess("admin"),deleteUsersProfile)
 
 
 
