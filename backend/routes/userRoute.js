@@ -3,7 +3,9 @@ const userRoute = express.Router();
 const { register, login, logout, requestPasswordReset,
     resetPassword, getUserDetails,
     updatePassword, updateUserDetails,
-    getAllUser
+    getAllUser,
+    getSingleUser, updateUserRole
+    ,
 } = require('../controller/user.controller.js');
 
 const { userAuth, roleBasedAccess } = require('../middleware/userAuth.js');
@@ -22,7 +24,20 @@ userRoute.put('/profile/update', userAuth, updateUserDetails);
 
 // admin route
 
-userRoute.get('/admin/users',userAuth,roleBasedAccess("admin"),getAllUser)
+userRoute.get('/admin/users', userAuth, roleBasedAccess("admin"), getAllUser)
+
+// admin get single user
+
+userRoute.get('/admin/user/:id', userAuth, roleBasedAccess("admin"), getSingleUser)
+
+// admin update user's role
+userRoute.put('/admin/user-profile-update/:id', userAuth, roleBasedAccess("admin"), updateUserRole)
+
+
+
+
+
+
 
 
 

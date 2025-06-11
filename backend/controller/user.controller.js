@@ -296,9 +296,65 @@ const getAllUser = async (req, res) => {
 }
 
 
+// admin get single user
+const getSingleUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: "User doesn't exists" })
+        }
+        res.status(200).json({
+            success: true,
+            user
+        })
+
+        // console.log(user)
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        return res.status(500).json({
+            success: false,
+            message: "An error occurred while fetching users.",
+        });
+    }
+}
+
+// admin update user's role
+
+const updateUserRole = async (req, res) => {
+    try {
+        const { role } = req.body;
+        const user = await User.findByIdAndUpdate(req.params.id, { role }, {
+            new: true,
+            runValidators: true
+        });
+        if (!user) {
+            return res.status(400).json({ message: "User doesn't exists." })
+        }
+        // console.log(user)
+        
+        res.status(200).json({
+            message: 'User profile updates successfully'
+        })
+
+    } catch (error) {
+
+        console.error("Error updating user's role:", error);
+        return res.status(500).json({
+            success: false,
+            message: "An error occurred while updating user's role.",
+        });
+
+    }
+}
+
+
+
+
 module.exports = {
     register, login, logout, requestPasswordReset,
     resetPassword, getUserDetails,
     updatePassword, updateUserDetails,
-    getAllUser
+    getAllUser,
+    getSingleUser,
+    updateUserRole
 }
