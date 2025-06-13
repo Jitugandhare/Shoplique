@@ -172,6 +172,66 @@ const deleteProduct = async (req, res) => {
 };
 
 
+// product review
+
+const createReviewForProduct = async (req, res) => {
+    try {
+        const { rating, comment, productId } = req.body;
+        const review = {
+            user: req.user._id,
+            name: req.user.name,
+            rating: Number(rating),
+            comment,
+            productId
+        }
+
+        const product = await Product.findById(productId)
+        if (!product) {
+            return res.status(400).json({ message: "Product Not Found" })
+        }
+
+        const reviewExist = product.reviews.find(review => review.user.toString() === req.user.id.toString());
+
+        if (reviewExist) {
+            product.reviews.forEach(review => {
+                if (review.user.toString() === req.user.id.toString()) {
+                    review.rating = rating;
+                    review.comment = comment;
+                }
+            })
+        } else {
+            product.reviews.push(review)
+        }
+
+        product.numOfReviews = product.reviews.length;
+        
+        let sum = 0;
+
+        product.reviews.forEach(review => {
+            sum += review.rating;
+        });
+
+        product.ratings = product.reviews.length ? sum / product.reviews.length : 0;
+
+        await product.save({ validateBeforeSave: false });
+
+
+
+
+        res.status(200).json({
+            success: true,
+            product
+        })
+
+
+
+
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+}
 
 // Admin get all products
 
@@ -202,5 +262,6 @@ module.exports = {
     getProductById,
     updateProduct,
     deleteProduct,
-    getAdminAllProducts
+    getAdminAllProducts,
+    createReviewForProduct
 };
