@@ -2,7 +2,7 @@ const express = require('express');
 const orderRoute = express.Router();
 const { userAuth, roleBasedAccess } = require('../middleware/userAuth.js');
 const { createOrder, getSingleOrder ,getAllMyOrders,getAllOrders,
-    updatingOrderStatus,
+    updatingOrderStatus,deleteOrder
 } = require('../controller/orderController.js');
 
 
@@ -16,6 +16,9 @@ orderRoute.get("/my-orders",userAuth,getAllMyOrders)
 orderRoute.get('/admin/orders',userAuth,roleBasedAccess("admin"),getAllOrders)
 // updating order status
 orderRoute.put('/admin/order-status/:id', userAuth, roleBasedAccess("admin"), updatingOrderStatus);
+
+// delete order by admin
+orderRoute.delete('/admin/delete/:id', userAuth, roleBasedAccess("admin"), deleteOrder);
 
 
 

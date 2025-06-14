@@ -183,6 +183,36 @@ const updateQuantity = async (id, quantity) => {
 }
 
 
+// Delete order by admin
+
+const deleteOrder = async (req, res) => {
+
+    try {
+        const order = await Order.findById(req.params.id);
+
+        if (!order) {
+            return res.status(400).json({ message: "Order is not found" })
+        }
+
+        await Order.deleteOne({ _id: req.params.id });
+
+        res.status(200).json({
+            success: true,
+            message: "Order deleted successfully"
+
+        })
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Something went wrong while deleting the order",
+            error: error.message
+        });
+    }
+}
+
+
+
 
 
 module.exports = {
@@ -191,5 +221,6 @@ module.exports = {
     getAllMyOrders,
     getAllOrders,
     updatingOrderStatus,
-   
+    deleteOrder
+
 };
