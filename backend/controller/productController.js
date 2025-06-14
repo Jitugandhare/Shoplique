@@ -253,7 +253,7 @@ const deleteProductReview = async (req, res) => {
         const numOfReviews = reviews.length;
 
         let sum = 0;
-        product.reviews.forEach(review => {
+        reviews.forEach(review => {
             sum += review.rating;
         });
 
