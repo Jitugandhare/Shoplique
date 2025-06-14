@@ -238,7 +238,7 @@ const createReviewForProduct = async (req, res) => {
 
 const deleteProductReview = async (req, res) => {
     try {
-      
+
 
 
         const product = await Product.findById(req.query.productId);
@@ -252,17 +252,20 @@ const deleteProductReview = async (req, res) => {
 
         const numOfReviews = reviews.length;
 
-        let sum = reviews.reduce((acc, review) => acc + review.rating, 0);;
+        let sum = 0;
+        product.reviews.forEach(review => {
+            sum += review.rating;
+        });
 
-        const ratings = reviews.length > 0 ? (sum/reviews.length) : 0;
+        const ratings = reviews.length > 0 ? sum / reviews.length : 0;
 
         await Product.findByIdAndUpdate(req.query.productId, {
             reviews,
             numOfReviews,
             ratings
-        },{
-            new:true,
-            runValidators:true
+        }, {
+            new: true,
+            runValidators: true
         });
 
         // await product.save();
