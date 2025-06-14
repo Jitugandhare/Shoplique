@@ -6,7 +6,8 @@ const cookieParser=require("cookie-parser");
 const port = process.env.PORT;
 const connection = require('./config/db.js');
 const productRoute = require('./routes/productRoute.js')
-const userRoute = require('./routes/userRoute.js')
+const userRoute = require('./routes/userRoute.js');
+const orderRoute = require('./routes/orderRoute.js');
 
 process.on('uncaughtException', (err) => {
     console.log(`Error : ${err.message}`)
@@ -21,6 +22,7 @@ app.use(cookieParser());
 
 app.use('/user', userRoute)
 app.use('/products', productRoute)
+app.use('/order',orderRoute)
 
 
 app.listen(port, async () => {
