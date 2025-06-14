@@ -1,7 +1,9 @@
-const express=require('express');
-const orderRoute=express.Router();
+const express = require('express');
+const orderRoute = express.Router();
+const { userAuth, roleBasedAccess } = require('../middleware/userAuth.js');
+const { createOrder } = require('../controller/orderController.js');
 
 
+orderRoute.post('/create-order', userAuth, createOrder)
 
-
-module.exports=orderRoute;
+module.exports = orderRoute;

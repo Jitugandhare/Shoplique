@@ -69,7 +69,7 @@ const orderSchema = new mongoose.Schema({
         }
     },
     paidAt: {
-        type: Data,
+        type: Date,
         required: true
     },
     itemPrice: {
