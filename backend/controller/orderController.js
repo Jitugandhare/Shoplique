@@ -24,7 +24,7 @@ const createOrder = async (req, res) => {
             shippingPrice,
             totalPrice,
             paidAt: Date.now(),
-            user: req.user._id
+            user: req.user.id
         });
 
         res.status(201).json({
@@ -73,8 +73,32 @@ const getSingleOrder = async (req, res) => {
 }
 
 // get orders by logged-in users
+const getAllMyOrders = async (req, res) => {
+
+    try {
+        const order = await Order.find({ user: req.user.id })
+        // console.log(order)
+        if (!order) {
+            return res.status(400).json({ message: "Order not found" })
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Order fetched successfully",
+            order,
+        })
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Something went wrong while fetching the orders",
+            error: error.message
+        });
+    }
+}
 
 module.exports = {
     createOrder,
-    getSingleOrder
+    getSingleOrder,
+    getAllMyOrders
 };
