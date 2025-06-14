@@ -2,7 +2,7 @@ const express = require('express');
 const orderRoute = express.Router();
 const { userAuth, roleBasedAccess } = require('../middleware/userAuth.js');
 const { createOrder, getSingleOrder ,getAllMyOrders,getAllOrders,
-    updatingOrderStatus,
+    updatingOrderStatus,updateProductStock
 } = require('../controller/orderController.js');
 
 
@@ -16,5 +16,10 @@ orderRoute.get("/my-orders",userAuth,getAllMyOrders)
 orderRoute.get('/admin/orders',userAuth,roleBasedAccess("admin"),getAllOrders)
 // updating order status
 orderRoute.put('/admin/order-status/:id', userAuth, roleBasedAccess("admin"), updatingOrderStatus);
+
+// update product stock
+
+orderRoute.put('/admin/product-stock/', userAuth, roleBasedAccess("admin"), updateProductStock);
+
 
 module.exports = orderRoute;

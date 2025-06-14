@@ -143,6 +143,7 @@ const updatingOrderStatus = async (req, res) => {
             return res.status(400).json({ message: "This Order Already been delivered." })
         }
 
+        await Promise.all(orders.orderItems.map(item => updateQuantity(item.product, item.quantity)))
         orders.orderStatus = req.body.status;
         if (orders.orderStatus === "Delivered") {
             orders.deliveredAt = Date.now();
@@ -150,8 +151,8 @@ const updatingOrderStatus = async (req, res) => {
 
 
         await orders.save({ validateBeforeSave: false })
-        
-        
+
+
         res.status(200).json({
             success: true,
             message: "Order's status updated successfully",
@@ -169,6 +170,19 @@ const updatingOrderStatus = async (req, res) => {
 }
 
 
+// update quanity function
+const updateQuantity = async (id, quantity) => {
+    const product = await Product.findById(id);
+    if (!product) {
+        return res.status(400).json({ message: "Product not found" })
+    }
+
+    product.stock = product.stock - quantity;
+
+    await product.save({ validateBeforeSave: false })
+}
+
+
 
 
 module.exports = {
@@ -176,5 +190,6 @@ module.exports = {
     getSingleOrder,
     getAllMyOrders,
     getAllOrders,
-    updatingOrderStatus
+    updatingOrderStatus,
+    updateProductStock
 };
