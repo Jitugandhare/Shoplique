@@ -191,5 +191,5 @@ module.exports = {
     getAllMyOrders,
     getAllOrders,
     updatingOrderStatus,
-    updateProductStock
+   
 };
