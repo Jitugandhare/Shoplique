@@ -43,6 +43,34 @@ const createOrder = async (req, res) => {
     }
 };
 
+
+
+// get single order
+
+const getSingleOrder = async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.id);
+        if (!order) {
+            return res.status(400).json({ message: "Order Is Not Found" })
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Order fetch successfully",
+            order,
+        })
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Something went wrong while fetching the order",
+            error: error.message
+        });
+    }
+
+}
+
 module.exports = {
-    createOrder
+    createOrder,
+    getSingleOrder
 };
