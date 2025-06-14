@@ -252,9 +252,9 @@ const deleteProductReview = async (req, res) => {
 
         const numOfReviews = reviews.length;
 
-        let sum = 0;
+        let sum = reviews.reduce((acc, review) => acc + review.rating, 0);;
 
-        const rating = reviews.length > 0 ? review.length : 0;
+        const rating = reviews.length > 0 ? reviews.length : 0;
 
         await Product.findByIdAndUpdate(req.query.productId, {
             reviews,
