@@ -1,7 +1,9 @@
 const express = require('express');
 const orderRoute = express.Router();
 const { userAuth, roleBasedAccess } = require('../middleware/userAuth.js');
-const { createOrder, getSingleOrder ,getAllMyOrders,getAllOrders} = require('../controller/orderController.js');
+const { createOrder, getSingleOrder ,getAllMyOrders,getAllOrders,
+    updatingOrderStatus,
+} = require('../controller/orderController.js');
 
 
 // get single order by
@@ -12,5 +14,7 @@ orderRoute.post('/new/order', userAuth, createOrder)
 orderRoute.get("/my-orders",userAuth,getAllMyOrders)
 // get all orders by admin
 orderRoute.get('/admin/orders',userAuth,roleBasedAccess("admin"),getAllOrders)
+// updating order status
+orderRoute.put('/admin/order-status/:id', userAuth, roleBasedAccess("admin"), updatingOrderStatus);
 
 module.exports = orderRoute;

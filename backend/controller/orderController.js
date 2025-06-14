@@ -107,10 +107,10 @@ const getAllOrders = async (req, res) => {
         if (!orders) {
             return res.status(400).json({ message: "Order not found" })
         }
-        let totalAmount=0;
+        let totalAmount = 0;
 
-        orders.forEach(order=>{
-            totalAmount=totalAmount+order.totalPrice;
+        orders.forEach(order => {
+            totalAmount = totalAmount + order.totalPrice;
         })
 
         res.status(200).json({
@@ -129,6 +129,45 @@ const getAllOrders = async (req, res) => {
     }
 }
 
+// updated order status by admin
+
+const updatingOrderStatus = async (req, res) => {
+
+    try {
+        const orders = await Order.findById(req.params.id)
+        // console.log(orders)
+        if (!orders) {
+            return res.status(400).json({ message: "Order not found" })
+        }
+        if (orders.orderStatus === "Delivered") {
+            return res.status(400).json({ message: "This Order Already been delivered." })
+        }
+
+        orders.orderStatus = req.body.status;
+        if (orders.orderStatus === "Delivered") {
+            orders.deliveredAt = Date.now();
+        }
+
+
+        await orders.save({ validateBeforeSave: false })
+        
+        
+        res.status(200).json({
+            success: true,
+            message: "Order's status updated successfully",
+            orders,
+
+        })
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Something went wrong while updating orders status",
+            error: error.message
+        });
+    }
+}
+
 
 
 
@@ -136,5 +175,6 @@ module.exports = {
     createOrder,
     getSingleOrder,
     getAllMyOrders,
-    getAllOrders
+    getAllOrders,
+    updatingOrderStatus
 };
