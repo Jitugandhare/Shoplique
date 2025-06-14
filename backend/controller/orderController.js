@@ -76,16 +76,16 @@ const getSingleOrder = async (req, res) => {
 const getAllMyOrders = async (req, res) => {
 
     try {
-        const order = await Order.find({ user: req.user.id })
+        const orders = await Order.find({ user: req.user.id })
         // console.log(order)
-        if (!order) {
+        if (!orders) {
             return res.status(400).json({ message: "Order not found" })
         }
 
         res.status(200).json({
             success: true,
             message: "Order fetched successfully",
-            order,
+            orders,
         })
 
     } catch (error) {
@@ -96,6 +96,8 @@ const getAllMyOrders = async (req, res) => {
         });
     }
 }
+
+
 
 module.exports = {
     createOrder,
