@@ -48,8 +48,10 @@ const createOrder = async (req, res) => {
 // get single order
 
 const getSingleOrder = async (req, res) => {
+
     try {
         const order = await Order.findById(req.params.id);
+        // console.log(order)
         if (!order) {
             return res.status(400).json({ message: "Order Is Not Found" })
         }
