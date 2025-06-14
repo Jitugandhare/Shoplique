@@ -77,7 +77,7 @@ const getAllMyOrders = async (req, res) => {
 
     try {
         const orders = await Order.find({ user: req.user.id })
-        // console.log(order)
+        // console.log(orders)
         if (!orders) {
             return res.status(400).json({ message: "Order not found" })
         }
@@ -97,10 +97,44 @@ const getAllMyOrders = async (req, res) => {
     }
 }
 
+// get all orders by admin
+
+const getAllOrders = async (req, res) => {
+
+    try {
+        const orders = await Order.find()
+        // console.log(orders)
+        if (!orders) {
+            return res.status(400).json({ message: "Order not found" })
+        }
+        let totalAmount=0;
+
+        orders.forEach(order=>{
+            totalAmount=totalAmount+order.totalPrice;
+        })
+
+        res.status(200).json({
+            success: true,
+            message: "Order fetched successfully",
+            orders,
+            totalAmount
+        })
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Something went wrong while fetching the orders",
+            error: error.message
+        });
+    }
+}
+
+
 
 
 module.exports = {
     createOrder,
     getSingleOrder,
-    getAllMyOrders
+    getAllMyOrders,
+    getAllOrders
 };
