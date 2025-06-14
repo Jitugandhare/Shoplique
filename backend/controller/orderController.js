@@ -24,7 +24,7 @@ const createOrder = async (req, res) => {
             shippingPrice,
             totalPrice,
             paidAt: Date.now(),
-            name: req.user._id
+            user: req.user._id
         });
 
         res.status(201).json({
@@ -71,6 +71,8 @@ const getSingleOrder = async (req, res) => {
     }
 
 }
+
+// get orders by logged-in users
 
 module.exports = {
     createOrder,
