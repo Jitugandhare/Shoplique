@@ -24,7 +24,7 @@ const createOrder = async (req, res) => {
             shippingPrice,
             totalPrice,
             paidAt: Date.now(),
-            user: req.user.id
+            user: req.user._id
         });
 
         res.status(201).json({

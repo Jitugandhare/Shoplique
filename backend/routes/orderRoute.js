@@ -4,6 +4,6 @@ const { userAuth, roleBasedAccess } = require('../middleware/userAuth.js');
 const { createOrder } = require('../controller/orderController.js');
 
 
-orderRoute.post('/create-order', userAuth, createOrder)
+orderRoute.post('/new/order', userAuth, createOrder)
 
 module.exports = orderRoute;
