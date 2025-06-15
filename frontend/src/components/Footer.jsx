@@ -1,5 +1,6 @@
 import React from 'react'
 import { Phone, Mail, GitHub, LinkedIn, YouTube, Instagram, Facebook } from '@mui/icons-material';
+import '../componentsStyles/Footer.css'
 
 
 const Footer = () => {
