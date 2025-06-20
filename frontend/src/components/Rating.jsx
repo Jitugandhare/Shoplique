@@ -13,6 +13,7 @@ const Rating = ({ value, onRatingChange, disabled }) => {
         }
     }
 
+    // handle mouse leave
     const handleMouseLeave = (rating) => {
         if (!disabled) {
             setHoveredRating(0)
