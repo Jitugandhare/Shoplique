@@ -7,6 +7,7 @@ const images = [
     './Images/Image-3.avif',
     './Images/Image-4.avif',
     './Images/Image-5.avif',
+    './Images/Image1.png',
 
 
 ];
