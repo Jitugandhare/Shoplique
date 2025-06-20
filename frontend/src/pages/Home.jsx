@@ -5,6 +5,7 @@ import "../pageStyles/Home.css"
 import Footer from '../components/Footer'
 import ImageSlider from '../components/ImageSlider'
 import Product from '../components/Product'
+import PageTitle from '../components/PageTitle'
 
 const products = [
     {
@@ -98,14 +99,15 @@ const Home = () => {
 
         <>
             <NavBar />
+            <PageTitle title="my-website" />
             <ImageSlider />
             <div className="home-container">
                 <h2 className="home-heading">Trending Now</h2>
                 <div className="home-product-container">
                     {
-                        products.map((product)=>(
+                        products.map((product) => (
                             <Product key={product._id}
-                            product={product}
+                                product={product}
                             />
                         ))
                     }
