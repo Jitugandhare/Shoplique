@@ -12,7 +12,7 @@ const Product = ({ product }) => {
     }
 
     return (
-        <Link to={product._id} className='product_id'>
+        <Link to={`/product-details/${product._id}`} className='product_id'>
             <div className="product-card">
                 <img src={product.image[0].url} alt={product.name} />\
                 <div className="product-details">
