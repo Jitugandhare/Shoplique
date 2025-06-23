@@ -21,7 +21,7 @@ productRoute.get('/product-details/:id', getProductById)
 productRoute.put('/admin/product/:id', userAuth, roleBasedAccess("admin"), updateProduct);
 productRoute.delete('/admin/product/:id', userAuth, roleBasedAccess("admin"), deleteProduct);
 
-
+``
 productRoute.put('/review', userAuth, createReviewForProduct)
 productRoute.delete('/review-delete',userAuth,deleteProductReview)
 module.exports = productRoute;

@@ -12,6 +12,17 @@ export const getProduct = createAsyncThunk('product/getProduct', async (_, { rej
     }
 })
 
+export const getProductDetails = createAsyncThunk('product/getProductDetails', async (id, { rejectWithValue }) => {
+    try {
+        const link = `/api/v1/products/product-details/${id}`;
+        const { data } = await axios.get(link)
+
+        return data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data || 'An error occur')
+    }
+})
+
 
 const productSlice = createSlice({
     name: "product",
@@ -19,7 +30,8 @@ const productSlice = createSlice({
         products: [],
         productCount: 0,
         loading: false,
-        error: null
+        error: null,
+        product: null,
     },
     reducers: {
         removeError: (state) => {
@@ -42,6 +54,24 @@ const productSlice = createSlice({
 
             }).
             addCase(getProduct.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || 'Something went wrong';
+            })
+
+        builder.addCase(getProductDetails.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+            .addCase(getProductDetails.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+                state.product = action.payload.product;
+                
+                console.log("Product Details", action.payload)
+
+
+            }).
+            addCase(getProductDetails.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || 'Something went wrong';
             })
