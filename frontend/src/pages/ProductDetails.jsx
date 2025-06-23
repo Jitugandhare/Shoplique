@@ -66,9 +66,8 @@ const ProductDetails = () => {
             <div className="product-details-container">
                 <div className="product-detail-container">
                     <div className="product-image-container">
-                        <img src={product.image[0].url.replace('./', '/')} alt={product.name}
-                            className='product-detail-image'
-                        />
+                      <img src={product.image[0].url.replace('./', '/')} alt={product.name} className='product-detail-image' />
+
 
                     </div>
                     <div className="product-info">
