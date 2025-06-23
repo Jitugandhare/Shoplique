@@ -14,12 +14,12 @@ const Product = ({ product }) => {
     return (
         <Link to={`/product-details/${product._id}`} className='product_id'>
             <div className="product-card">
-                <img src={product.image[0].url} alt={product.name} />\
+                <img src={product.image[0].url} alt={product.name} className='product-image-card'/>\
                 <div className="product-details">
                     <h3 className="product-title">
                         {product.name}
                     </h3>
-                    <p className="product-price">
+                    <p className="home-price">
                         <strong>Price</strong>:{product.price} /-
                     </p>
                     <div className="rating-container">
@@ -41,4 +41,4 @@ const Product = ({ product }) => {
     )
 }
 
-export default Product
+export default Product;
