@@ -66,8 +66,8 @@ const ProductDetails = () => {
             <div className="product-details-container">
                 <div className="product-detail-container">
                     <div className="product-image-container">
-                      <img src={product.image[0].url.replace('./', '/')} alt={product.name} className='product-detail-image' />
-                      {/* image rendered dynaically */}
+                        <img src={product.image[0].url.replace('./', '/')} alt={product.name} className='product-detail-image' />
+                        {/* image rendered dynaically */}
 
                     </div>
                     <div className="product-info">
@@ -85,19 +85,28 @@ const ProductDetails = () => {
                             <span className="productCardSpan">({product.numOfReviews}  {product.numOfReviews === 1 ? "Review" : "Reviews"})</span>
                         </div>
                         <div className="stock-status">
-                            <span className="in-stock">
-                                In stock (2 available)
+                            <span className={`${product.stock > 0 ? "in-stock" : "out-of-stock"}`}>
+
+                                {product.stock > 0 ? `In Stock (${product.stock} Available)` : "Out Of Stock"}
+
                             </span>
                         </div>
 
-                        <div className="quantity-control">
-                            <span className="quantity-label">Quantity</span>
-                            <button className="quantity-button">-</button>
-                            <input type="text" className="quantity-value" value={1} readOnly />
-                            <button className="quantity-button">+</button>
+                        {
+                            product.stock > 0 && (
+                                <>
+                                    <div className="quantity-control">
+                                        <span className="quantity-label">Quantity</span>
+                                        <button className="quantity-button">-</button>
+                                        <input type="text" className="quantity-value" value={1} readOnly />
+                                        <button className="quantity-button">+</button>
 
-                        </div>
-                        <button className="add-to-cart-btn">Add To Cart</button>
+                                    </div>
+                                    <button className="add-to-cart-btn">Add To Cart</button>
+                                </>
+                            )
+                        }
+
                         <form className="review-form">
                             <h3>Write a Review</h3>
                             <Rating Rating
@@ -116,20 +125,30 @@ const ProductDetails = () => {
 
                 <div className="reviews-container">
                     <h3>Customer Reviews</h3>
-                    <div className="reviews-section">
-                        <div className="review-item">
-                            <div className="review-header">
-                                <Rating
-                                    value={2}
-                                    disabled={true}
+                    {product.reviews && product.reviews.length > 0 ? (<div className="reviews-section">
+                        {
+                            product.reviews.map((review) => (
+                                <div className="review-item">
+                                    <div className="review-header">
+                                        <Rating
+                                            value={review.rating}
+                                            disabled={true}
 
-                                />
-                                <p className="review-comment">Review Comment</p>
-                                <p className="review-name">By:jitu</p>
+                                        />
+                                        <p className="review-comment">{review.comment}</p>
+                                        <p className="review-name">By: {review.name} </p>
 
-                            </div>
-                        </div>
-                    </div>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>)
+                        :
+                        (
+                            <p className="no-reviews">No reviews available yet, be the first review for this product</p>
+                        )
+
+                    }
                 </div>
 
             </div>
