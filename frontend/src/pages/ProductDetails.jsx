@@ -67,7 +67,7 @@ const ProductDetails = () => {
                 <div className="product-detail-container">
                     <div className="product-image-container">
                       <img src={product.image[0].url.replace('./', '/')} alt={product.name} className='product-detail-image' />
-
+                      {/* image rendered dynaically */}
 
                     </div>
                     <div className="product-info">
