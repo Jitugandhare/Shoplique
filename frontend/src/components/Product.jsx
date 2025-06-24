@@ -1,11 +1,17 @@
 import React, { useState } from 'react'
 import '../componentsStyles/Product.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import Rating from './Rating';
 
 
 const Product = ({ product }) => {
     const [rating, setRating] = useState(0);
+    const location = useLocation();
+    const searchParams =new URLSearchParams(location.search);
+    const keyword=searchParams.get('keyword')
+    // console.log(keyword)
+
+
     const handleRatingChange = (newRating) => {
         setRating(newRating)
         console.log(`Rating changed to ${newRating}`)
@@ -14,7 +20,7 @@ const Product = ({ product }) => {
     return (
         <Link to={`/product-details/${product._id}`} className='product_id'>
             <div className="product-card">
-                <img src={product.image[0].url} alt={product.name} className='product-image-card'/>\
+                <img src={product.image[0].url} alt={product.name} className='product-image-card' />\
                 <div className="product-details">
                     <h3 className="product-title">
                         {product.name}

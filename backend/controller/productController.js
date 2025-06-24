@@ -27,22 +27,30 @@ const getAllProducts = async (req, res) => {
             maxPrice,
             sortBy,
             page = 1,
-            limit = 10
+            limit = 10,
+            search
         } = req.query;
 
         // Build MongoDB query object
         const queryObject = {};
 
-        if (name) {
-            queryObject.name = { $regex: name, $options: 'i' };
-        }
+        if (search) {
+            queryObject.$or = [
+                { name: { $regex: search, $options: 'i' } },
 
-        if (description) {
-            queryObject.description = { $regex: description, $options: 'i' };
-        }
+            ];
+        } else {
+            if (name) {
+                queryObject.name = { $regex: name, $options: 'i' };
+            }
 
-        if (category) {
-            queryObject.category = category;
+            if (description) {
+                queryObject.description = { $regex: description, $options: 'i' };
+            }
+
+            if (category) {
+                queryObject.category = category;
+            }
         }
 
         if (minPrice || maxPrice) {
