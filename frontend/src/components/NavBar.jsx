@@ -1,15 +1,22 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import '../componentsStyles/NavBar.css'
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import CloseIcon from '@mui/icons-material/Close';
+import '../pageStyles/Search.css'
 
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchquery] = useState("");
+  const navigate = useNavigate()
+
+
+  const toggleSearch = () => setIsSearchOpen(!isSearchOpen)
 
   const isAuthenticated = true;
 
@@ -17,7 +24,15 @@ const NavBar = () => {
     setIsMenuOpen(!isMenuOpen)
   }
 
-
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?keyword=${searchQuery}`)
+    } else {
+      navigate(`/products`)
+    }
+    setSearchquery("")
+  }
 
   return (
     <nav className="navbar">
@@ -36,11 +51,15 @@ const NavBar = () => {
 
         <div className="navbar-icons">
           <div className="search-container">
-            <form className="search-form">
+            <form onSubmit={handleSearchSubmit} className={`search-form ${isSearchOpen ? "active" : ""}`}>
               <input type="text" className="search-input"
                 placeholder='Search products...'
+                value={searchQuery}
+                onChange={(e) => setSearchquery(e.target.value)}
               />
-              <button>
+              <button onClick={toggleSearch} className='search-icon'
+                type='button'
+              >
                 <SearchIcon />
               </button>
             </form>

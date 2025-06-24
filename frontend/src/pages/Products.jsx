@@ -46,9 +46,18 @@ const Products = () => {
             <NavBar />
             <div className="products-layout">
                 <div className="filter-section">
-                    <h3 className="filter-heading">Category</h3>
+                    <h3 className="filter-heading">Categories</h3>
                     {/* Render all categories */}
-                    
+                    <ul>
+                        <li>Shirt</li>
+                        <li>Jeans</li>
+                        <li>Jackets</li>
+                        <li>Laptop</li>
+                        <li>Mobile</li>
+                        <li>Glasses</li>
+
+                    </ul>
+
                 </div>
 
                 <div className="products-section">
