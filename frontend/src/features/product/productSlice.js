@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const getProduct = createAsyncThunk('product/getProduct', async (_, { rejectWithValue }) => {
+export const getProduct = createAsyncThunk('product/getProduct', async ({ keyword }, { rejectWithValue }) => {
     try {
-        const link = '/api/v1/products';
+        const link = keyword ? `/api/v1/products?keyword=${encodeURIComponent(keyword)}` : `/api/v1/products`
+        // const link = '/api/v1/products';
         const { data } = await axios.get(link)
         console.log("Response data", data);
         return data;
@@ -66,7 +67,7 @@ const productSlice = createSlice({
                 state.loading = false;
                 state.error = null;
                 state.product = action.payload.product;
-                
+
                 console.log("Product Details", action.payload)
 
 

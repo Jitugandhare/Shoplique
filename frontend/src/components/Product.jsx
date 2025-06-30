@@ -6,10 +6,7 @@ import Rating from './Rating';
 
 const Product = ({ product }) => {
     const [rating, setRating] = useState(0);
-    const location = useLocation();
-    const searchParams =new URLSearchParams(location.search);
-    const keyword=searchParams.get('keyword')
-    // console.log(keyword)
+
 
 
     const handleRatingChange = (newRating) => {

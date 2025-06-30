@@ -8,17 +8,20 @@ import { useSelector, useDispatch } from 'react-redux'
 import Product from '../components/Product'
 import Loader from '../components/Loader'
 import { toast } from 'react-toastify'
+import { useLocation } from 'react-router-dom';
 
 
 const Products = () => {
     const { loading, error, products } = useSelector((state) => state.product);
     const dispatch = useDispatch();
-
-
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const keyword = searchParams.get('keyword')
+    console.log(keyword)
 
     useEffect(() => {
-        dispatch(getProduct())
-    }, [dispatch]);
+        dispatch(getProduct({keyword}))
+    }, [dispatch, keyword]);
 
 
     useEffect(() => {

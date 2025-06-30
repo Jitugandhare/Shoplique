@@ -27,7 +27,7 @@ const NavBar = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/products?keyword=${searchQuery}`)
+      navigate(`/products?keyword=${encodeURIComponent(searchQuery)}`)
     } else {
       navigate(`/products`)
     }
@@ -50,6 +50,7 @@ const NavBar = () => {
         </div>
 
         <div className="navbar-icons">
+          {/* search */}
           <div className="search-container">
             <form onSubmit={handleSearchSubmit} className={`search-form ${isSearchOpen ? "active" : ""}`}>
               <input type="text" className="search-input"

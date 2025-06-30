@@ -37,6 +37,8 @@ const getAllProducts = async (req, res) => {
         if (search) {
             queryObject.$or = [
                 { name: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } },
+                { category: { $regex: search, $options: 'i' } },
 
             ];
         } else {
