@@ -9,6 +9,7 @@ import Product from '../components/Product'
 import Loader from '../components/Loader'
 import { toast } from 'react-toastify'
 import { useLocation } from 'react-router-dom';
+import NoProducts from '../components/NoProducts'
 
 
 const Products = () => {
@@ -20,7 +21,7 @@ const Products = () => {
     console.log(keyword)
 
     useEffect(() => {
-        dispatch(getProduct({keyword}))
+        dispatch(getProduct({ keyword }))
     }, [dispatch, keyword]);
 
 
@@ -64,13 +65,19 @@ const Products = () => {
                 </div>
 
                 <div className="products-section">
-                    <div className="products-product-container">
+                    {
+                        products.length > 0 ? (
+                            <div className="products-product-container">
 
-                        {products.map((product) => (
-                            <Product product={product} key={product._id} />
-                        ))}
+                                {products.map((product) => (
+                                    <Product product={product} key={product._id} />
+                                ))}
 
-                    </div>
+                            </div>
+                        ) : (
+                            <NoProducts keyword={keyword} />
+                        )
+                    }
 
                 </div>
 
