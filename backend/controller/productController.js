@@ -28,17 +28,17 @@ const getAllProducts = async (req, res) => {
             sortBy,
             page = 1,
             limit = 10,
-            search
+            keyword
         } = req.query;
 
         // Build MongoDB query object
         const queryObject = {};
 
-        if (search) {
+        if (keyword) {
             queryObject.$or = [
-                { name: { $regex: search, $options: 'i' } },
-                { description: { $regex: search, $options: 'i' } },
-                { category: { $regex: search, $options: 'i' } },
+                { name: { $regex: keyword, $options: 'i' } },
+                { description: { $regex: keyword, $options: 'i' } },
+                { category: { $regex: keyword, $options: 'i' } },
 
             ];
         } else {
@@ -92,7 +92,7 @@ const getAllProducts = async (req, res) => {
             count: products.length,
             page: pageNum,
             totalPages,
-            totalProducts: total,
+            productCount: total,
             products,
         });
 

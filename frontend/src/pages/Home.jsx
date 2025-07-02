@@ -10,6 +10,7 @@ import { getProduct, removeError } from '../features/product/productSlice'
 import Loader from '../components/Loader'
 import { toast } from "react-toastify"
 
+
 const Home = () => {
     const { products, loading, error, productCount } = useSelector((state) => state.product) || {};
     const dispatch = useDispatch();
@@ -44,6 +45,7 @@ const Home = () => {
                             ))}
                         </div>
                     </div>
+
                     <Footer />
                 </>
             )}

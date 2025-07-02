@@ -12,13 +12,13 @@ import '../pageStyles/Search.css'
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchquery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate()
 
 
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen)
 
-  const isAuthenticated = true;
+  const isAuthenticated = false;
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -31,7 +31,7 @@ const NavBar = () => {
     } else {
       navigate(`/products`)
     }
-    setSearchquery("")
+    setSearchQuery("")
   }
 
   return (
@@ -56,7 +56,7 @@ const NavBar = () => {
               <input type="text" className="search-input"
                 placeholder='Search products...'
                 value={searchQuery}
-                onChange={(e) => setSearchquery(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
               <button onClick={toggleSearch} className='search-icon'
                 type='button'
