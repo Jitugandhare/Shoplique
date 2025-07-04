@@ -1,9 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const getProduct = createAsyncThunk('product/getProduct', async ({ keyword }, { rejectWithValue }) => {
+export const getProduct = createAsyncThunk('product/getProduct', async ({ keyword,page=1,limit=10}, { rejectWithValue }) => {
     try {
-        const link = keyword ? `/api/v1/products?keyword=${encodeURIComponent(keyword)}` : `/api/v1/products`
+        let link = `/api/v1/products?page=${page}&limit=${limit}`;
+        if (keyword) {
+            link += `&keyword=${encodeURIComponent(keyword)}`;
+        }
+
+        // const link = keyword ? `/api/v1/products?keyword=${encodeURIComponent(keyword)}` : `/api/v1/products`
         // const link = '/api/v1/products';
         const { data } = await axios.get(link)
         console.log("Response data", data);
@@ -33,6 +38,10 @@ const productSlice = createSlice({
         loading: false,
         error: null,
         product: null,
+        page: 1,
+        totalPages: 0,
+        limit: Number(10)
+
     },
     reducers: {
         removeError: (state) => {
@@ -50,6 +59,11 @@ const productSlice = createSlice({
                 state.error = null;
                 state.products = action.payload.products;
                 state.productCount = action.payload.productCount;
+                state.totalPages = action.payload.totalPages;
+                state.page = action.payload.page;
+                state.limit = action.payload.limit;
+                
+
                 console.log("Fullfilled case", action.payload)
 
 

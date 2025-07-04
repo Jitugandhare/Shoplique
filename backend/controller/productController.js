@@ -62,8 +62,8 @@ const getAllProducts = async (req, res) => {
         }
 
         // Convert page & limit to numbers
-        const pageNum = Math.max(1, parseInt(page));
-        const limitNum = Math.max(1, parseInt(limit));
+        const pageNum = Math.max(1, Number(page));
+        const limitNum = Math.max(1, Number(limit));
         const skip = (pageNum - 1) * limitNum;
         // console.log(pageNum)
         // console.log(typeof pageNum)
@@ -93,6 +93,7 @@ const getAllProducts = async (req, res) => {
             page: pageNum,
             totalPages,
             productCount: total,
+            limit:limitNum,
             products,
         });
 

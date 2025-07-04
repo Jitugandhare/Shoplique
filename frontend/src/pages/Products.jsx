@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import "../pageStyles/Products.css"
 import PageTitle from "../components/PageTitle"
 import NavBar from "../components/NavBar"
@@ -10,19 +10,22 @@ import Loader from '../components/Loader'
 import { toast } from 'react-toastify'
 import { useLocation } from 'react-router-dom';
 import NoProducts from '../components/NoProducts'
-
+import Pagination from '../components/Pagination'
 
 const Products = () => {
-    const { loading, error, products } = useSelector((state) => state.product);
+    const { loading, error, products, totalPages } = useSelector((state) => state.product);
     const dispatch = useDispatch();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const keyword = searchParams.get('keyword')
     console.log(keyword)
 
+    const [currentPage, setCurrentPage] = useState(1);
+
+
     useEffect(() => {
-        dispatch(getProduct({ keyword }))
-    }, [dispatch, keyword]);
+        dispatch(getProduct({ keyword, page: currentPage }))
+    }, [dispatch, keyword, currentPage]);
 
 
     useEffect(() => {
@@ -32,7 +35,9 @@ const Products = () => {
         dispatch(removeError())
     }, [dispatch, error])
 
-
+    const handlePageChange = (page) => {
+        setCurrentPage(page)
+    }
     if (loading) {
         return (
             <>
@@ -67,13 +72,24 @@ const Products = () => {
                 <div className="products-section">
                     {
                         products.length > 0 ? (
-                            <div className="products-product-container">
+                            <>
+                                <div className="products-product-container">
 
-                                {products.map((product) => (
-                                    <Product product={product} key={product._id} />
-                                ))}
+                                    {products.map((product) => (
+                                        <Product product={product} key={product._id} />
+                                    ))}
 
-                            </div>
+                                </div>
+                                <Pagination
+                                    currentPage={currentPage}
+                                    totalPages={totalPages}
+                                    onPageChange={handlePageChange}
+
+                                />
+
+                            </>
+
+
                         ) : (
                             <NoProducts keyword={keyword} />
                         )
