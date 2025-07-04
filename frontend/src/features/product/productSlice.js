@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const getProduct = createAsyncThunk('product/getProduct', async ({ keyword,page=1,limit=10}, { rejectWithValue }) => {
     try {
-        // pagination 
+        
         let link = `/api/v1/products?page=${page}&limit=${limit}`;
         if (keyword) {
             link += `&keyword=${encodeURIComponent(keyword)}`;
