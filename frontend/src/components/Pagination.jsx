@@ -1,7 +1,12 @@
 import React from 'react';
-import '../componentsStyles/Pagination.css'; 
+import '../componentsStyles/Pagination.css';
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+const Pagination = ({ currentPage, totalPages, onPageChange,
+
+
+
+}) => {
+
     const pageNumbers = [];
 
     for (let i = 1; i <= totalPages; i++) {

@@ -70,6 +70,13 @@
 }
 
 
+.active-category {
+    font-weight: bold;
+    color: #000000;
+    cursor: default;
+}
+
+
 @media (max-width: 768px) {
   .products-layout {
     flex-direction: column;
