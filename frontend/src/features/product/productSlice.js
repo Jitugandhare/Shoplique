@@ -3,6 +3,7 @@ import axios from 'axios';
 
 export const getProduct = createAsyncThunk('product/getProduct', async ({ keyword,page=1,limit=10}, { rejectWithValue }) => {
     try {
+        // pagination 
         let link = `/api/v1/products?page=${page}&limit=${limit}`;
         if (keyword) {
             link += `&keyword=${encodeURIComponent(keyword)}`;
@@ -10,6 +11,7 @@ export const getProduct = createAsyncThunk('product/getProduct', async ({ keywor
 
         // const link = keyword ? `/api/v1/products?keyword=${encodeURIComponent(keyword)}` : `/api/v1/products`
         // const link = '/api/v1/products';
+        
         const { data } = await axios.get(link)
         console.log("Response data", data);
         return data;
