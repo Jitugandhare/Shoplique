@@ -20,7 +20,7 @@ const Products = () => {
     const searchParams = new URLSearchParams(location.search);
     const keyword = searchParams.get('keyword') || '';
     const category = searchParams.get('category') || '';
-    const pageFormURL = parseInt(searchParams.get('page')) || 1;
+    const pageFormURL = parseInt(searchParams.get('page'), 10) || 1;
     console.log(keyword)
 
     const [currentPage, setCurrentPage] = useState(pageFormURL);
@@ -44,6 +44,8 @@ const Products = () => {
         setCurrentPage(pageFormURL)
     }, [pageFormURL])
 
+
+
     useEffect(() => {
         if (error) {
             toast.error(error.message, { position: "top-center", autoClose: 3000 })
@@ -52,17 +54,29 @@ const Products = () => {
     }, [dispatch, error])
 
     const handlePageChange = (page) => {
-        const newSearchParams = new URLSearchParams(location.search);
-        newSearchParams.set('page', page);
 
-        setCurrentPage(page)
-        navigate(`?${newSearchParams.toString()}`)
+        if (page !== currentPage) {
+            setCurrentPage(page);
+            const newSearchParams = new URLSearchParams(location.search);
+            if (page === 1) {
+                newSearchParams.delete('page')
+            } else {
+                newSearchParams.set('page', page);
+
+            }
+            navigate(`?${newSearchParams.toString()}`)
+        }
+
     }
+
+
     const handleCategory = (category) => {
         const newSearchParams = new URLSearchParams(location.search);
         newSearchParams.set('category', category);
-        newSearchParams.set('page', 1);
-        setCurrentPage(1);
+        newSearchParams.delete('page');
+
+        // newSearchParams.set('page', 1);
+        // setCurrentPage(1);
         navigate(`?${newSearchParams.toString()}`)
     }
 

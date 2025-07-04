@@ -84,7 +84,12 @@ const getAllProducts = async (req, res) => {
         const total = await Product.countDocuments(queryObject);
         const totalPages = Math.ceil(total / limitNum);
 
-
+        if (products.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No products found.",
+            });
+        }
 
         // Return paginated result
         return res.status(200).json({
@@ -93,7 +98,7 @@ const getAllProducts = async (req, res) => {
             page: pageNum,
             totalPages,
             productCount: total,
-            limit:limitNum,
+            limit: limitNum,
             products,
         });
 
