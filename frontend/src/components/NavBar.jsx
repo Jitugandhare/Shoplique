@@ -18,7 +18,7 @@ const NavBar = () => {
 
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen)
 
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
