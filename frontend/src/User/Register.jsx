@@ -33,17 +33,17 @@ const Register = () => {
     }
   }
 
-  const handleSubmit=(e)=>{
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if(!name || !email || !password){
-      toast.error("Please fill all the required fields",{position:"top-center",autoClose:2000})
+    if (!name || !email || !password) {
+      toast.error("Please fill all the required fields", { position: "top-center", autoClose: 2000 })
     }
-  const myForm=new FormData();
-  myForm.set('name',name)
-  myForm.set('email',email)
-  myForm.set('password',password)
-  myForm.set('avatar',avatar);
- 
+    const myForm = new FormData();
+    myForm.set('name', name)
+    myForm.set('email', email)
+    myForm.set('password', password)
+    myForm.set('avatar', avatar);
+
 
 
   }
