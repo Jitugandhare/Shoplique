@@ -19,6 +19,22 @@ export const register = createAsyncThunk('user/register', async (userData, { rej
     }
 })
 
+export const login = createAsyncThunk('user/login', async ({ email, password }, { rejectWithValue }) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        const { data } = await axios.post('/api/v1/user/login', { email, password }, config)
+        console.log('LoggedIn-user', { email, password });
+
+        return data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data || 'Login failed,Please try again later.')
+    }
+})
+
 
 const userSlice = createSlice({
     name: "user",
@@ -39,6 +55,8 @@ const userSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
+        // register
+        
         builder
             .addCase(register.pending, (state) => {
                 state.loading = true;
@@ -51,22 +69,42 @@ const userSlice = createSlice({
                 state.success = action.payload.success;
                 state.isAuthenticated = Boolean(action.payload?.user)
 
-                console.log("Fullfilled case", action.payload)
+                console.log("Fulfilled-case", action.payload)
 
 
 
             })
             .addCase(register.rejected, (state, action) => {
                 state.loading = false;
-                state.loading = false;
                 state.error = action.payload?.message || 'Registration failed,Please try again later.';
                 state.user = null;
                 state.success = false;
                 state.isAuthenticated = false;
 
-                console.log("Fullfilled case", action.payload)
+                console.log("Rejected-case", action.payload)
 
             })
+
+            // Login
+            .addCase(login.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(login.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = action.payload?.user || null;
+                state.success = action.payload.success;
+                state.isAuthenticated = Boolean(action.payload?.user);
+                state.error = null;
+            })
+            .addCase(login.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload?.message || 'Login failed,Please try again later.';
+                state.user = null;
+                state.success = false;
+                state.isAuthenticated = false;
+            })
+
     }
 })
 

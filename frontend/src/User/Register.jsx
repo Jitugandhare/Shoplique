@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../UserStyles/Register.css';
-import { Link, redirect } from 'react-router-dom';
+import { Link, redirect, useNavigate } from 'react-router-dom';
 import PageTitle from '../components/PageTitle';
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from 'react-redux';
+import { register, removeError, removeSuccess } from '../features/user/userSlice';
 
 
 const Register = () => {
+  const { loading, error, success } = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -37,16 +42,31 @@ const Register = () => {
     e.preventDefault();
     if (!name || !email || !password) {
       toast.error("Please fill all the required fields", { position: "top-center", autoClose: 2000 })
-    }
+    };
+
     const myForm = new FormData();
     myForm.set('name', name)
     myForm.set('email', email)
     myForm.set('password', password)
     myForm.set('avatar', avatar);
 
-
+    dispatch(register(myForm))
 
   }
+  useEffect(() => {
+    if (error) {
+      toast.error(error, { position: "top-center", autoClose: 3000 })
+    }
+    dispatch(removeError())
+  }, [dispatch, error]);
+
+  useEffect(() => {
+    if (success) {
+      toast.success("Registration Successful", { position: "top-center", autoClose: 3000 })
+    }
+    dispatch(removeSuccess());
+    // navigate('/')
+  }, [dispatch, success])
 
   return (
     <div className="form-container ">
@@ -60,7 +80,7 @@ const Register = () => {
             <input type="text" placeholder="Username" name="name" value={name} onChange={handleRegisterChange} />
           </div>
           <div className="input-group">
-            <input type="text" placeholder="Email" name="email" value={email} onChange={handleRegisterChange} />
+            <input type="email" placeholder="Email" name="email" value={email} onChange={handleRegisterChange} />
           </div>
           <div className="input-group">
             <input type="password" placeholder="Password" name="password" value={password} onChange={handleRegisterChange} />
@@ -72,7 +92,7 @@ const Register = () => {
 
           </div>
 
-          <button className="authBtn" type='submit'>SingUp</button>
+          <button className="authBtn" type='submit'>Sing Up</button>
           <p className="form-link">
             Already have an account?<Link to='/login'> Sign in here</Link>
           </p>
