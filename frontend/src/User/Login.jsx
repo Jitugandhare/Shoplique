@@ -1,16 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../UserStyles/Register.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, removeError, removeSuccess } from '../features/user/userSlice';
+import PageTitle from '../components/PageTitle';
+import { toast } from "react-toastify";
+
+
 
 const Login = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
+  const { loading, error, success, isAuthenticated } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+    dispatch(login({ email: loginEmail, password: loginPassword }))
+
   }
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error, { position: "top-center", autoClose: 3000 })
+    }
+    dispatch(removeError())
+  }, [dispatch, error]);
+
+  useEffect(() => {
+    if (success) {
+      toast.success("Login Successful", { position: "top-center", autoClose: 3000 })
+    }
+    dispatch(removeSuccess());
+    // navigate('/')
+  }, [dispatch, success])
+
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/")
+    }
+  })
 
 
   return (

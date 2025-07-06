@@ -56,7 +56,7 @@ const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         // register
-        
+
         builder
             .addCase(register.pending, (state) => {
                 state.loading = true;
@@ -96,6 +96,7 @@ const userSlice = createSlice({
                 state.success = action.payload.success;
                 state.isAuthenticated = Boolean(action.payload?.user);
                 state.error = null;
+                console.log("state-dot-user", state.user)
             })
             .addCase(login.rejected, (state, action) => {
                 state.loading = false;
