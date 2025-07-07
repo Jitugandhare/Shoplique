@@ -36,6 +36,17 @@ export const login = createAsyncThunk('user/login', async ({ email, password }, 
 })
 
 
+export const loadUser = createAsyncThunk('user/loadUser', async (_, { rejectWithValue }) => {
+    try {
+
+        const { data } = await axios.get('/api/v1/user/profile')
+        return data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data || 'Failed to load user.')
+    }
+})
+
+
 const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -85,11 +96,11 @@ const userSlice = createSlice({
 
             })
 
-            // Login
-            .addCase(login.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
+        // Login
+        builder.addCase(login.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
             .addCase(login.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload?.user || null;
@@ -103,6 +114,27 @@ const userSlice = createSlice({
                 state.error = action.payload?.message || 'Login failed,Please try again later.';
                 state.user = null;
                 state.success = false;
+                state.isAuthenticated = false;
+            })
+
+
+        //Load user
+
+        builder.addCase(loadUser.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+            .addCase(loadUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = action.payload?.user || null;
+                state.isAuthenticated = Boolean(action.payload?.user);
+                state.error = null;
+
+            })
+            .addCase(loadUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload?.message || 'Failed to load user.';
+                state.user = null;
                 state.isAuthenticated = false;
             })
 
