@@ -11,23 +11,23 @@ const register = async (req, res) => {
     const { name, email, password, avatar } = req.body;
 
     try {
+
+        if (!name || !email || !password) {
+            return res.status(400).json({ message: "Please provide name, email, and password" });
+        }
+
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            return res.status(400).json({ message: "User is already exists" })
+        }
+
+
         const myCloud = await cloudinary.uploader.upload(avatar, {
             folder: 'avatars',
             width: 150,
             crop: 'scale'
         });
-
-
-
-        const existingUser = await User.findOne({ email });
-
-        if (!name || !email || !password) {
-            return res.status(400).json({ message: "Please provide name, email, and password" });
-        }
-        if (existingUser) {
-            return res.status(400).json({ message: "User is already exists" })
-        }
-
 
         const user = await User.create({
             name,
