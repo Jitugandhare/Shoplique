@@ -8,7 +8,7 @@ import { register, removeError, removeSuccess } from '../features/user/userSlice
 
 
 const Register = () => {
-  const { loading, error, success ,isAuthenticated} = useSelector(state => state.user);
+  const { loading, error, success, isAuthenticated } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [user, setUser] = useState({
@@ -92,7 +92,7 @@ const Register = () => {
 
           </div>
 
-          <button className="authBtn" type='submit'>Sign Up</button>
+          <button className="authBtn" type='submit'>{loading ? "Signing Up" : "Sign Up"}</button>
           <p className="form-link">
             Already have an account?<Link to='/login'> Sign in here</Link>
           </p>

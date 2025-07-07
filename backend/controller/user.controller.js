@@ -4,14 +4,23 @@ const bcrypt = require('bcryptjs');
 const sendToken = require('../utils/jwtToken.js');
 const { trusted } = require('mongoose');
 const sendEmail = require('../utils/sentEmail.js');
-const crypto = require("crypto")
+const crypto = require("crypto");
+const cloudinary = require('cloudinary').v2;
 
 const register = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, avatar } = req.body;
 
     try {
+        const myCloud = await cloudinary.uploader.upload(avatar, {
+            folder: 'avatars',
+            width: 150,
+            crop: 'scale'
+        });
+
+
+
         const existingUser = await User.findOne({ email });
-        
+
         if (!name || !email || !password) {
             return res.status(400).json({ message: "Please provide name, email, and password" });
         }
@@ -25,8 +34,8 @@ const register = async (req, res) => {
             email,
             password,
             avatar: {
-                public_id: "This is temp Id",
-                url: "This is temp URL"
+                public_id: myCloud.public_id,
+                url: myCloud.secure_url,
             }
         })
 
