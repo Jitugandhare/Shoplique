@@ -5,6 +5,7 @@ import ProductDetails from '../pages/ProductDetails'
 import Products from '../pages/Products'
 import Register from '../User/Register'
 import Login from '../User/Login';
+import Profile from '../User/Profile';
 
 
 
@@ -23,6 +24,8 @@ const AllRoutes = () => {
                 <Route path='/products/:keyword' element={<Products />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/login' element={<Login />} />
+                <Route path='/user/profile' element={<Profile />} />
+
 
 
             </Routes>
