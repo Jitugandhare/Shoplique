@@ -7,6 +7,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import CloseIcon from '@mui/icons-material/Close';
 import '../pageStyles/Search.css'
+import { useSelector } from 'react-redux';
 
 
 const NavBar = () => {
@@ -18,7 +19,7 @@ const NavBar = () => {
 
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen)
 
-  const isAuthenticated = true;
+  const { isAuthenticated } = useSelector(state => state.user)
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -75,9 +76,9 @@ const NavBar = () => {
           </Link>
 
         </div>
-        {isAuthenticated && <Link to="register" className="register-link">
+        {isAuthenticated && (<Link to="register" className="register-link">
           <PersonAddIcon className='icon' />
-        </Link>}
+        </Link>)}
         <div className="navbar-hamburger" onClick={toggleMenu}>
           {isMenuOpen ? <CloseIcon className='icon' />
             : <MenuOpenIcon className='icon' />}
