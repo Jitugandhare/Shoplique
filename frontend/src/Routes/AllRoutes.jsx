@@ -7,6 +7,7 @@ import Register from '../User/Register'
 import Login from '../User/Login';
 import Profile from '../User/Profile';
 import ProtectedRoutes from '../components/ProtectedRoutes';
+import UpdateProfile from '../User/UpdateProfile';
 
 
 
@@ -27,6 +28,7 @@ const AllRoutes = () => {
                 <Route path='/login' element={<Login />} />
 
                 <Route path='/user/profile' element={<ProtectedRoutes element={<Profile />} />} />
+                <Route path='/user/profile/update' element={<ProtectedRoutes element={<UpdateProfile />} />} />
 
 
 
