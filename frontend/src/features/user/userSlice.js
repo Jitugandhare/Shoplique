@@ -161,7 +161,7 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload?.message || 'Failed to load user.';
                 state.user = null;
-                state.isAuthenticated = false;
+                // state.isAuthenticated = false;
             })
 
         //Logout user

@@ -260,7 +260,7 @@ const updatePassword = async (req, res) => {
 
 // Update user profile
 const updateUserDetails = async (req, res) => {
-    const { name, email } = req.body;
+    const { name, email, avatar } = req.body;
     try {
 
         if (email) {
@@ -275,6 +275,21 @@ const updateUserDetails = async (req, res) => {
         const updatedData = {
             name,
             email,
+        }
+
+        if (avatar !== "") {
+            const user = await User.findById(req.user.id);
+            const imageId = user.avatar.public_id;
+            await cloudinary.uploader.destroy(imageId);
+            const myCloud = await cloudinary.uploader.upload(avatar, {
+                folder: 'avatars',
+                width: 150,
+                crop: 'scale'
+            });
+            updatedData.avatar = {
+                public_id: myCloud.public_id,
+                url: myCloud.secure_url,
+            }
         }
 
         const user = await User.findByIdAndUpdate(req.user.id, updatedData, {

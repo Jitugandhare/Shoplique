@@ -16,7 +16,7 @@ const UpdateProfile = () => {
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [avatar, setAvatar] = useState(null); 
+    const [avatar, setAvatar] = useState(""); 
     const [avatarPreview, setAvatarPreview] = useState("./Profile/Profile.png");
 
     useEffect(() => {
