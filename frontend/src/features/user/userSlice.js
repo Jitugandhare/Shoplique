@@ -11,8 +11,7 @@ export const register = createAsyncThunk('user/register', async (userData, { rej
             }
         }
         const { data } = await axios.post('/api/v1/user/register', userData, config)
-        console.log('register-user', userData);
-
+        
         return data;
     } catch (error) {
         return rejectWithValue(error.response?.data || 'Registration failed,Please try again later.')
@@ -27,7 +26,6 @@ export const login = createAsyncThunk('user/login', async ({ email, password }, 
             }
         }
         const { data } = await axios.post('/api/v1/user/login', { email, password }, config)
-        console.log('LoggedIn-user', { email, password });
 
         return data;
     } catch (error) {
@@ -57,6 +55,20 @@ export const logout = createAsyncThunk('user/logout', async (_, { rejectWithValu
     }
 })
 
+export const updateProfile = createAsyncThunk('user/updateProfile', async (userData, { rejectWithValue }) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+        const { data } = await axios.put('/api/v1/user/profile/update', userData, config)
+        return data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data || 'Failed to update profile.')
+    }
+})
+
 
 const userSlice = createSlice({
     name: "user",
@@ -66,6 +78,7 @@ const userSlice = createSlice({
         success: false,
         user: null,
         isAuthenticated: false,
+        message: null,
 
     },
     reducers: {
@@ -168,6 +181,27 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             });
+
+        // profile update
+        builder
+            .addCase(updateProfile.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateProfile.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = action.payload?.user || null;
+                state.error = null;
+                state.success = action.payload?.success;
+                state.message = action.payload?.message;
+
+            })
+            .addCase(updateProfile.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload?.message || 'Failed to update profile.';
+                state.user = null;
+                state.isAuthenticated = false;
+            })
 
     }
 })

@@ -262,6 +262,16 @@ const updatePassword = async (req, res) => {
 const updateUserDetails = async (req, res) => {
     const { name, email } = req.body;
     try {
+
+        if (email) {
+            const existingUser = await User.findOne({ email });
+
+            if (existingUser && existingUser._id.toString() !== req.user.id) {
+                return res.status(400).json({ message: "Email is already registered by another user." });
+            }
+        }
+
+
         const updatedData = {
             name,
             email,
