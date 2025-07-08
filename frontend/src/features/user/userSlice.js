@@ -200,7 +200,7 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload?.message || 'Failed to update profile.';
                 state.user = null;
-                state.isAuthenticated = false;
+               
             })
 
     }

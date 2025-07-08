@@ -13,7 +13,7 @@ const Profile = () => {
 
 
     useEffect(() => {
-        if (isAuthenticated===false) {
+        if (isAuthenticated === false) {
             navigate('/login')
         }
     }, [isAuthenticated])
@@ -61,6 +61,10 @@ const Profile = () => {
                         <h2>Joined On:</h2>
                         <p>{user.createdAt ? new Date(user.createdAt).toISOString().substring(0, 10) : 'N/A'}</p>
                     </div>
+                </div>
+                <div className="profile-buttons">
+                    <Link to="/order/my-orders">My Orders</Link>
+                    <Link to="/user/password/update">Change Password</Link>
                 </div>
             </div>
             <Footer />
