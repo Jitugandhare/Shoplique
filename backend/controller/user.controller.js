@@ -263,16 +263,10 @@ const updateUserDetails = async (req, res) => {
     const { name, email, avatar } = req.body;
     try {
 
-        if (email) {
-            const existingUser = await User.findOne({ email });
-
-            if (existingUser && existingUser._id.toString() !== req.user.id) {
-                return res.status(400).json({ message: "Email is already registered by another user." });
-            }
-        }
 
 
-        const updatedData = {
+
+        const updatedUserData = {
             name,
             email,
         }
@@ -286,13 +280,13 @@ const updateUserDetails = async (req, res) => {
                 width: 150,
                 crop: 'scale'
             });
-            updatedData.avatar = {
+            updatedUserData.avatar = {
                 public_id: myCloud.public_id,
                 url: myCloud.secure_url,
             }
         }
 
-        const user = await User.findByIdAndUpdate(req.user.id, updatedData, {
+        const user = await User.findByIdAndUpdate(req.user.id, updatedUserData, {
             new: true,
             runValidators: true,
         })

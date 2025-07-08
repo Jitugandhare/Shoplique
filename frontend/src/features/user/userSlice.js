@@ -11,7 +11,7 @@ export const register = createAsyncThunk('user/register', async (userData, { rej
             }
         }
         const { data } = await axios.post('/api/v1/user/register', userData, config)
-        
+
         return data;
     } catch (error) {
         return rejectWithValue(error.response?.data || 'Registration failed,Please try again later.')
@@ -190,8 +190,8 @@ const userSlice = createSlice({
             })
             .addCase(updateProfile.fulfilled, (state, action) => {
                 state.loading = false;
-                state.user = action.payload?.user || null;
                 state.error = null;
+                state.user = action.payload?.user || null;
                 state.success = action.payload?.success;
                 state.message = action.payload?.message;
 
@@ -199,8 +199,8 @@ const userSlice = createSlice({
             .addCase(updateProfile.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload?.message || 'Failed to update profile.';
-                state.user = null;
-               
+
+
             })
 
     }
