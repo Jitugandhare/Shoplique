@@ -19,7 +19,7 @@ userRoute.post('/reset/:token', resetPassword)
 
 userRoute.get('/profile', userAuth, getUserDetails);
 
-userRoute.post('/password/update', userAuth, updatePassword);
+userRoute.put('/password/update', userAuth, updatePassword);
 
 userRoute.put('/profile/update', userAuth, updateUserDetails);
 
@@ -34,7 +34,7 @@ userRoute.get('/admin/user/:id', userAuth, roleBasedAccess("admin"), getSingleUs
 // admin update user's role
 userRoute.put('/admin/user-profile-update/:id', userAuth, roleBasedAccess("admin"), updateUserRole)
 
-userRoute.delete('/admin/delete-user-profile/:id',userAuth,roleBasedAccess("admin"),deleteUsersProfile)
+userRoute.delete('/admin/delete-user-profile/:id', userAuth, roleBasedAccess("admin"), deleteUsersProfile)
 
 
 
