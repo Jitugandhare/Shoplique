@@ -45,34 +45,37 @@ const ForgotPassword = () => {
     }, [dispatch, success])
 
 
-    if (loading) {
-        return <Loader />
-    }
 
 
     return (
         <>
+            {loading ? (<Loader />) : (
 
-            <PageTitle title="Reset Password" />
-            <NavBar />
-            <div className="forgot-container">
-                <div className="form-content email-group">
-                    <form className="form" onSubmit={forgotPasswordSubmit}>
-                        <h2>Forgot Password</h2>
-                        <div className="input-group">
-                            <input type="email"
-                                placeholder='Enter Your Register Email'
-                                value={email}
-                                name='email'
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
+
+                <>
+
+                    <PageTitle title="Reset Password" />
+                    <NavBar />
+                    <div className="forgot-container">
+                        <div className="form-content email-group">
+                            <form className="form" onSubmit={forgotPasswordSubmit}>
+                                <h2>Forgot Password</h2>
+                                <div className="input-group">
+                                    <input type="email"
+                                        placeholder='Enter Your Register Email'
+                                        value={email}
+                                        name='email'
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
+                                <button className="authBtn">Send</button>
+                            </form>
                         </div>
-                        <button className="authBtn">Send</button>
-                    </form>
-                </div>
-            </div>
-            <Footer />
+                    </div>
+                    <Footer />
 
+                </>
+            )}
         </>
     )
 }
