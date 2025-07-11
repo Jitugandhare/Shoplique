@@ -10,6 +10,7 @@ import ProtectedRoutes from '../components/ProtectedRoutes';
 import UpdateProfile from '../User/UpdateProfile';
 import UpdatePassword from '../User/UpdatePassword';
 import ForgotPassword from '../User/ForgotPassword';
+import ResetPassword from '../User/ResetPassword';
 
 
 
@@ -30,6 +31,7 @@ const AllRoutes = () => {
                 <Route path='/login' element={<Login />} />
 
                 <Route path='/user/forgot/password' element={<ForgotPassword />} />
+                <Route path='/user/reset/:token' element={<ResetPassword />} />
 
                 <Route path='/user/profile' element={<ProtectedRoutes element={<Profile />} />} />
                 <Route path='/user/profile/update' element={<ProtectedRoutes element={<UpdateProfile />} />} />

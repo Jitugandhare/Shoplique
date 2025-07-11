@@ -113,7 +113,7 @@ const requestPasswordReset = async (req, res) => {
         resetToken = user.generatePasswordResetToken();
 
         await user.save({ validateBeforeSave: false });
-        const resetPasswordUrl = `http://localhost:8000/reset-password/${resetToken}`;
+        const resetPasswordUrl = `${req.protocol}://${req.get("host")}/user/reset/${resetToken}`;
 
         const message = `
         You requested a password reset.
