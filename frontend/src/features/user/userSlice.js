@@ -76,7 +76,7 @@ export const forgotPassword = createAsyncThunk('user/forgotPassword', async (ema
                 'Content-Type': 'multipart/form-data'
             }
         }
-        const { data } = await axios.put('/api/v1/user/forgot/password', email, config)
+        const { data } = await axios.post('/api/v1/user/forgot/password', email, config)
         return data;
     } catch (error) {
         return rejectWithValue(error.response?.data || 'Email sent is Failed.')
