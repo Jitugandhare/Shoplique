@@ -69,19 +69,6 @@ export const updateProfile = createAsyncThunk('user/updateProfile', async (userD
     }
 })
 
-export const forgotPassword = createAsyncThunk('user/forgotPassword', async (email, { rejectWithValue }) => {
-    try {
-        const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-        const { data } = await axios.post('/api/v1/user/forgot/password', email, config)
-        return data;
-    } catch (error) {
-        return rejectWithValue(error.response?.data || 'Email sent is Failed.')
-    }
-})
 
 
 export const updatePassword = createAsyncThunk('user/updatePassword', async (formData, { rejectWithValue }) => {
@@ -97,6 +84,23 @@ export const updatePassword = createAsyncThunk('user/updatePassword', async (for
         return rejectWithValue(error.response?.data || 'Failed to update password.')
     }
 })
+
+export const forgotPassword = createAsyncThunk('user/forgotPassword', async (email, { rejectWithValue }) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+        const { data } = await axios.post('/api/v1/user/forgot/password', email, config)
+        return data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data || 'Email sent is Failed.')
+    }
+});
+
+
+
 
 
 const userSlice = createSlice({
