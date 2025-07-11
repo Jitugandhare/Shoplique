@@ -12,7 +12,7 @@ import { forgotPassword, removeError, removeSuccess } from '../features/user/use
 const ForgotPassword = () => {
     const [email, setEmail] = useState("")
 
-    const { loading, error, success } = useSelector(state => state.user);
+    const { loading, error, success, message } = useSelector(state => state.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ const ForgotPassword = () => {
 
     useEffect(() => {
         if (success) {
-            toast.success("Password reset link sent to your email", { position: "top-center", autoClose: 3000 })
+            toast.success(message, { position: "top-center", autoClose: 3000 })
             setEmail("");
             dispatch(removeSuccess());
         }

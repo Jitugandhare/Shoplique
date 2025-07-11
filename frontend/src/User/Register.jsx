@@ -56,15 +56,15 @@ const Register = () => {
   useEffect(() => {
     if (error) {
       toast.error(error, { position: "top-center", autoClose: 3000 })
+      dispatch(removeError())
     }
-    dispatch(removeError())
   }, [dispatch, error]);
 
   useEffect(() => {
     if (success) {
       toast.success("Registration Successful", { position: "top-center", autoClose: 3000 })
+      dispatch(removeSuccess());
     }
-    dispatch(removeSuccess());
     // navigate('/')
   }, [dispatch, success])
 
