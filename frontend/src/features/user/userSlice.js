@@ -69,6 +69,20 @@ export const updateProfile = createAsyncThunk('user/updateProfile', async (userD
     }
 })
 
+export const forgotPassword = createAsyncThunk('user/forgotPassword', async (email, { rejectWithValue }) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+        const { data } = await axios.put('/api/v1/user/forgot/password', email, config)
+        return data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data || 'Email sent is Failed.')
+    }
+})
+
 
 export const updatePassword = createAsyncThunk('user/updatePassword', async (formData, { rejectWithValue }) => {
     try {
@@ -234,6 +248,28 @@ const userSlice = createSlice({
             .addCase(updatePassword.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload?.message || 'Failed to update password.';
+
+
+            })
+
+
+
+        // forgot password
+        builder
+            .addCase(forgotPassword.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(forgotPassword.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+                state.success = action.payload?.success;
+                state.message = action.payload?.message;
+
+            })
+            .addCase(forgotPassword.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload?.message || 'Email sent is Failed.';
 
 
             })
