@@ -15,7 +15,7 @@ userRoute.post('/register', register);
 userRoute.post('/login', login);
 userRoute.post('/logout', logout);
 userRoute.post('/forgot/password', requestPasswordReset);
-userRoute.post('/reset/:token', resetPassword)
+userRoute.put('/reset/:token', resetPassword)
 
 userRoute.get('/profile', userAuth, getUserDetails);
 

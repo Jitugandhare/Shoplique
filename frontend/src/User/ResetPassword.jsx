@@ -5,13 +5,13 @@ import Footer from "../components/Footer";
 import Loader from "../components/Loader";
 import '../UserStyles/Form.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
+    const {token}=useParams();
 
     const resetPasswordSubmit = (e) => {
         e.preventDefault();
