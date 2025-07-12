@@ -26,7 +26,7 @@ const ResetPassword = () => {
         myForm.set("password", newPassword);
         myForm.set("confirmPassword", confirmPassword);
         dispatch(resetPassword({ token: token, userData: myForm }))
-       
+
     }
 
 
@@ -48,6 +48,9 @@ const ResetPassword = () => {
         }
     }, [dispatch, success, navigate]);
 
+    if (loading) {
+        return <Loader />
+    }
 
     return (
         <>
