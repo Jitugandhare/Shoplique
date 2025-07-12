@@ -100,17 +100,17 @@ export const forgotPassword = createAsyncThunk('user/forgotPassword', async (ema
 });
 
 
-export const resetPassword = createAsyncThunk('user/resetPassword', async ({ userData, token }, { rejectWithValue }) => {
+export const resetPassword = createAsyncThunk('user/resetPassword', async ({ token, userData }, { rejectWithValue }) => {
     try {
         const config = {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data'
             }
         }
         const { data } = await axios.put(`/api/v1/user/reset/${token}`, userData, config)
         return data;
     } catch (error) {
-        return rejectWithValue(error.response?.data || 'Email sent is Failed.')
+        return rejectWithValue(error.response?.data || 'Password reset is Failed.')
     }
 });
 
@@ -310,7 +310,7 @@ const userSlice = createSlice({
             })
             .addCase(resetPassword.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload?.message || 'Email sent is Failed.';
+                state.error = action.payload?.message || 'Password reset is Failed.';
 
 
             })
