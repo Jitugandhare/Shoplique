@@ -115,7 +115,7 @@ const ProductDetails = () => {
                         {
                             product.stock > 0 && (
                                 <>
-                                    <div className="quantity-control">
+                                    <div className="quantity-control" key={product._id}>
                                         <span className="quantity-label">Quantity</span>
                                         <button className="quantity-button" onClick={decreaseQuantity}>-</button>
                                         <input type="text" className="quantity-value" value={quantity} readOnly />
@@ -148,7 +148,7 @@ const ProductDetails = () => {
                     {product.reviews && product.reviews.length > 0 ? (<div className="reviews-section">
                         {
                             product.reviews.map((review) => (
-                                <div className="review-item">
+                                <div className="review-item" key={review?._id}>
                                     <div className="review-header">
                                         <Rating
                                             value={review.rating}

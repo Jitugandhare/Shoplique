@@ -3,18 +3,16 @@ import axios from 'axios';
 
 
 
-export const cart = createAsyncThunk('user/cart', async (userData, { rejectWithValue }) => {
+export const addItemsToCart = createAsyncThunk('cart/addItemsToCart', async ({ id, quantity }, { rejectWithValue }) => {
     try {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-        const { data } = await axios.post('/api/v1/user/cart', userData, config)
+        const { data } = await axios.get(`/api/v1/products/product-details/${id}`)
 
-        return data;
+        console.log("Returned Data:-", data)
+        return data
+
+
     } catch (error) {
-        return rejectWithValue(error.response?.data || 'Please try again later.')
+        return rejectWithValue(error.response?.data || 'An error occurred.')
     }
 })
 
@@ -47,6 +45,21 @@ const cartSlice = createSlice({
     },
     extraReducers: (builder) => {
 
+        builder
+            .addCase(addItemsToCart.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+
+            })
+            .addCase(addItemsToCart.fulfilled, (state, action) => {
+                const item = action.payload;
+                console.log("CartItem:=>", item)
+
+            })
+            .addCase(addItemsToCart.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload?.message || "An error occurred";
+            })
     }
 })
 
