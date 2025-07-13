@@ -7,7 +7,7 @@ export const cart = createAsyncThunk('user/cart', async (userData, { rejectWithV
     try {
         const config = {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'application/json'
             }
         }
         const { data } = await axios.post('/api/v1/user/cart', userData, config)
