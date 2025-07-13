@@ -8,7 +8,14 @@ export const addItemsToCart = createAsyncThunk('cart/addItemsToCart', async ({ i
         const { data } = await axios.get(`/api/v1/products/product-details/${id}`)
 
         console.log("Returned Data:-", data)
-        return data
+        return {
+            product: data.product._id,
+            name: data.product?.name,
+            price: data.product.price,
+            image: data.product.image[0].url,
+            stock: data.product.stock,
+            quantity
+        }
 
 
     } catch (error) {
@@ -53,6 +60,10 @@ const cartSlice = createSlice({
             })
             .addCase(addItemsToCart.fulfilled, (state, action) => {
                 const item = action.payload;
+                state.cartItems.push(item);
+                state.loading = false;
+                state.message = `${item?.name} added to cart`;
+                state.success = true;
                 console.log("CartItem:=>", item)
 
             })

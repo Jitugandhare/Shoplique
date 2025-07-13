@@ -9,12 +9,17 @@ import { useParams } from 'react-router-dom'
 import { getProductDetails, removeError } from '../features/product/productSlice'
 import { toast } from 'react-toastify'
 import Loader from '../components/Loader'
+import { addItemsToCart, removeSuccess } from '../features/cart/cartSlice'
 
 
 const ProductDetails = () => {
     const [userRating, setUserRating] = useState(0);
     const [quantity, setQuantity] = useState(1);
-    const { loading, error, product } = useSelector((state) => state.product)
+    const { loading, error, product } = useSelector((state) => state.product);
+
+    const { loading: cartLoading, error: cartError, cartItems, success, message } = useSelector((state) => state.cart);
+
+    console.log(cartItems)
     const dispatch = useDispatch();
     const { id } = useParams();
 
@@ -41,6 +46,10 @@ const ProductDetails = () => {
     }
 
 
+    const addToCart = () => {
+        dispatch(addItemsToCart({ id, quantity }))
+    }
+
 
     useEffect(() => {
         if (id) {
@@ -52,11 +61,23 @@ const ProductDetails = () => {
     useEffect(() => {
         if (error) {
             toast.error(error.message, { position: "top-center", autoClose: 3000 })
+            dispatch(removeError())
         }
-        dispatch(removeError())
-    }, [dispatch, error])
+        if (cartError) {
+            toast.error(error.message, { position: "top-center", autoClose: 3000 })
+            dispatch(removeError())
+        }
+    }, [dispatch, error, cartError]);
 
+    
 
+    useEffect(() => {
+        if (success) {
+            toast.success(message, { position: "top-center", autoClose: 3000 })
+            dispatch(removeSuccess())
+        }
+
+    }, [dispatch, success, message])
 
     if (loading) {
         return (
@@ -122,7 +143,7 @@ const ProductDetails = () => {
                                         <button className="quantity-button" onClick={increaseQuantity}>+</button>
 
                                     </div>
-                                    <button className="add-to-cart-btn">Add To Cart</button>
+                                    <button className="add-to-cart-btn" onClick={addToCart} disabled={cartLoading}>{cartLoading ? `Adding` : `Add To Cart`}</button>
                                 </>
                             )
                         }
