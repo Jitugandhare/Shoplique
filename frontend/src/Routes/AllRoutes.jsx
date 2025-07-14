@@ -11,6 +11,7 @@ import UpdateProfile from '../User/UpdateProfile';
 import UpdatePassword from '../User/UpdatePassword';
 import ForgotPassword from '../User/ForgotPassword';
 import ResetPassword from '../User/ResetPassword';
+import Cart from '../Cart/Cart';
 
 
 
@@ -36,6 +37,7 @@ const AllRoutes = () => {
                 <Route path='/user/profile' element={<ProtectedRoutes element={<Profile />} />} />
                 <Route path='/user/profile/update' element={<ProtectedRoutes element={<UpdateProfile />} />} />
                 <Route path='/user/password/update' element={<ProtectedRoutes element={<UpdatePassword />} />} />
+                <Route path='/cart' element={<ProtectedRoutes element={<Cart />} />} />
 
 
 
