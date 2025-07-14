@@ -5,9 +5,11 @@ import Footer from "../components/Footer"
 import PageTitle from "../components/PageTitle"
 import '../cartStyles/Cart.css'
 import CartItem from './CartItem'
+import { useSelector } from 'react-redux'
 
 
 const Cart = () => {
+    const { cartItems } = useSelector((state) => state.cart)
     return (
         <>
             <PageTitle title="Your-Cart" />
@@ -24,7 +26,11 @@ const Cart = () => {
                             <div>Actions</div>
                         </div>
                         {/* Cart Items */}
-                        <CartItem />
+                        {cartItems &&
+                            cartItems.map((item) => (
+                                <CartItem item={item} key={item.name} />
+                            ))}
+
                     </div>
 
 

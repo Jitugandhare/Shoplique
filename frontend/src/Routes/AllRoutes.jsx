@@ -37,7 +37,7 @@ const AllRoutes = () => {
                 <Route path='/user/profile' element={<ProtectedRoutes element={<Profile />} />} />
                 <Route path='/user/profile/update' element={<ProtectedRoutes element={<UpdateProfile />} />} />
                 <Route path='/user/password/update' element={<ProtectedRoutes element={<UpdatePassword />} />} />
-                <Route path='/cart' element={<ProtectedRoutes element={<Cart />} />} />
+                <Route path='/cart' element={<Cart />} />
 
 
 
