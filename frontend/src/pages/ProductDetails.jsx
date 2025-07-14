@@ -69,7 +69,7 @@ const ProductDetails = () => {
         }
     }, [dispatch, error, cartError]);
 
-    
+
 
     useEffect(() => {
         if (success) {
@@ -168,8 +168,8 @@ const ProductDetails = () => {
                     <h3>Customer Reviews</h3>
                     {product.reviews && product.reviews.length > 0 ? (<div className="reviews-section">
                         {
-                            product.reviews.map((review) => (
-                                <div className="review-item" key={review?._id}>
+                            product.reviews.map((review, index) => (
+                                <div className="review-item" key={index}>
                                     <div className="review-header">
                                         <Rating
                                             value={review.rating}
