@@ -14,32 +14,7 @@ const Shipping = () => {
     const [state, setState] = useState("")
     const [city, setCity] = useState("")
 
-    const [countryList, setCountryList] = useState([])
-    const [stateList, setStateList] = useState([])
-    const [cityList, setCityList] = useState([])
 
-
-    useEffect(() => {
-        setCountryList(Country.getAllCountries())
-    }, [])
-
-    useEffect(() => {
-        if (country) {
-            const states = State.getStatesOfCountry(country)
-            setStateList(states)
-            setState("")
-            setCity("")
-            setCityList([])
-        }
-    }, [country])
-
-    useEffect(() => {
-        if (state) {
-            const cities = City.getCitiesOfState(country, state)
-            setCityList(cities)
-            setCity("")
-        }
-    }, [state])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -77,36 +52,44 @@ const Shipping = () => {
                     </div>
 
                     <div className="shipping-section">
-                        
+
                         <div className="shipping-form-group">
                             <label htmlFor="country">Country:</label>
                             <select id="country" onChange={(e) => setCountry(e.target.value)} required>
                                 <option value="">Select a country</option>
-                                {countryList.map((c) => (
+                                {Country.getAllCountries().map((c) => (
                                     <option key={c.isoCode} value={c.isoCode}>{c.name}</option>
                                 ))}
                             </select>
                         </div>
 
-                        <div className="shipping-form-group">
-                            <label htmlFor="state">State:</label>
-                            <select id="state" onChange={(e) => setState(e.target.value)} value={state} required>
-                                <option value="">Select a state</option>
-                                {stateList.map((s) => (
-                                    <option key={s.isoCode} value={s.isoCode}>{s.name}</option>
-                                ))}
-                            </select>
-                        </div>
+                        {
+                            country && (<div className="shipping-form-group">
+                                <label htmlFor="state">State:</label>
+                                <select id="state" onChange={(e) => setState(e.target.value)} value={state} required>
+                                    <option value="">Select a state</option>
+                                    {State.getStatesOfCountry(country).map((s) => (
+                                        <option key={s.isoCode} value={s.isoCode}>{s.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            )
+                        }
 
-                        <div className="shipping-form-group">
-                            <label htmlFor="city">City:</label>
-                            <select id="city" onChange={(e) => setCity(e.target.value)} value={city} required>
-                                <option value="">Select a city</option>
-                                {cityList.map((c) => (
-                                    <option key={c.name} value={c.name}>{c.name}</option>
-                                ))}
-                            </select>
-                        </div>
+                        {
+                            state && (
+                                <div className="shipping-form-group">
+                                    <label htmlFor="city">City:</label>
+                                    <select id="city" onChange={(e) => setCity(e.target.value)} value={city} required>
+                                        <option value="">Select a city</option>
+                                        {City.getCitiesOfState(country,state).map((c) => (
+                                            <option key={c.name} value={c.name}>{c.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )
+                        }
+
                     </div>
 
                     <button type="submit" className="shipping-submit-btn">Continue</button>
