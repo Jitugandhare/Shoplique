@@ -5,6 +5,10 @@ import Footer from '../components/Footer'
 import PageTitle from '../components/PageTitle'
 import CheckOutPath from './CheckOutPath'
 import { Country, State, City } from 'country-state-city'
+import { toast } from "react-toastify"
+import { useDispatch, useSelector } from 'react-redux'
+import { saveShippingInfo } from '../features/cart/cartSlice'
+import { useNavigate } from 'react-router-dom'
 
 const Shipping = () => {
     const [address, setAddress] = useState("")
@@ -14,10 +18,23 @@ const Shipping = () => {
     const [state, setState] = useState("")
     const [city, setCity] = useState("")
 
+    const { shippingInfo } = useSelector(state => state.cart);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+
 
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        if (phoneNumber.length !== 10) {
+            toast.error("Phone number must be exactly 10 digits. ", { position: "top-center", autoClose: 3000 })
+            return
+        }
+        dispatch(saveShippingInfo({ address, pinCode, phoneNumber, country, state, city }));
+
+        navigate("/order/confirm");
+
 
         console.log({ address, pinCode, phoneNumber, country, state, city })
     }
@@ -47,7 +64,10 @@ const Shipping = () => {
 
                         <div className="shipping-form-group">
                             <label htmlFor='phoneNumber'>Phone Number:</label>
-                            <input type="number" id='phoneNumber' placeholder='Enter your Phone Number' onChange={(e) => setPhoneNumber(e.target.value)} required />
+                            <input type="number" id='phoneNumber' placeholder='Enter your Phone Number'
+                                pattern="[0-9]{10}"
+                                maxLength="10"
+                                onChange={(e) => setPhoneNumber(e.target.value)} required />
                         </div>
                     </div>
 
@@ -59,8 +79,8 @@ const Shipping = () => {
                                 setCountry(e.target.value)
                                 setState("")
                                 setCity("")
-                                
-                                }} required>
+
+                            }} required>
                                 <option value="">Select a country</option>
                                 {Country.getAllCountries().map((c) => (
                                     <option key={c.isoCode} value={c.isoCode}>{c.name}</option>
@@ -74,7 +94,7 @@ const Shipping = () => {
                                 <select id="state" onChange={(e) => {
                                     setState(e.target.value)
                                     setCity("")
-                                    }} value={state} required>
+                                }} value={state} required>
                                     <option value="">Select a state</option>
                                     {State.getStatesOfCountry(country).map((s) => (
                                         <option key={s.isoCode} value={s.isoCode}>{s.name}</option>
@@ -90,7 +110,7 @@ const Shipping = () => {
                                     <label htmlFor="city">City:</label>
                                     <select id="city" onChange={(e) => setCity(e.target.value)} value={city} required>
                                         <option value="">Select a city</option>
-                                        {City.getCitiesOfState(country,state).map((c) => (
+                                        {City.getCitiesOfState(country, state).map((c) => (
                                             <option key={c.name} value={c.name}>{c.name}</option>
                                         ))}
                                     </select>

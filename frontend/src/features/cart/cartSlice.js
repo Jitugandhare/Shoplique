@@ -97,5 +97,5 @@ const cartSlice = createSlice({
 
 
 
-export const { removeError, removeMessage, removeSuccess, removeItemFromCart } = cartSlice.actions;
+export const { removeError, removeMessage, removeSuccess, removeItemFromCart ,saveShippingInfo} = cartSlice.actions;
 export default cartSlice.reducer;
