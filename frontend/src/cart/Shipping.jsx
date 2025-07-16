@@ -3,12 +3,17 @@ import "../cartStyles/Shipping.css"
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
 import PageTitle from '../components/PageTitle'
+import CheckOutPath from './CheckOutPath'
+
 
 const Shipping = () => {
+    
     return (
         <>
             <PageTitle title="Shipping Info" />
             <NavBar />
+            <CheckOutPath activePath={0}/>
+
             <div className="shipping-form-container">
                 <h1 className="shipping-form-header">Shipping Details</h1>
                 <form className="shipping-form">
