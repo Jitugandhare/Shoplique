@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 
 const UserDashboard = ({ user }) => {
     const [menuVisible, setMenuVisible] = useState(false);
+    const { cartItems } = useSelector((state) => state.cart)
 
     const toggleMenu = () => {
         setMenuVisible(!menuVisible)
@@ -20,8 +21,10 @@ const UserDashboard = ({ user }) => {
     const options = [
         { name: "Orders", funcName: orders },
         { name: "Account", funcName: account },
+        { name: `Cart (${cartItems.length})`, funcName: cartFun, isCart: true },
         { name: "Logout", funcName: logoutFun },
-    ]
+    ];
+
     if (user.role === 'admin') {
         options.unshift({
             name: "Admin Dashboard", funcName: dashboard
@@ -50,6 +53,10 @@ const UserDashboard = ({ user }) => {
             })
     }
 
+    function cartFun() {
+        navigate('/cart')
+    }
+
     function dashboard() {
         navigate('/admin/dashboard')
 
@@ -64,7 +71,16 @@ const UserDashboard = ({ user }) => {
                 </div>
                 {menuVisible && (<div className="menu-options">
                     {options.map((item) => (
-                        <button className="menu-option-btn" onClick={item.funcName} key={item.name}>{item.name}</button>
+                        <button
+                            className={`menu-option-btn ${item.isCart ? (cartItems.length > 0 ? "cart-not-empty" : "") : ""}`}
+                            onClick={item.funcName}
+                            key={item.name}
+
+                        >
+
+                            {item.name}
+
+                        </button>
                     ))}
 
                 </div>)}
