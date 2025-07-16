@@ -19,7 +19,8 @@ const NavBar = () => {
 
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen)
 
-  const { isAuthenticated } = useSelector(state => state.user)
+  const { isAuthenticated } = useSelector(state => state.user);
+  const { cartItems } = useSelector(state => state.cart);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -73,6 +74,7 @@ const NavBar = () => {
         <div className="cart-container">
           <Link to="/cart">
             < ShoppingCartIcon className='icon' />
+            <span className="cart-badge">{cartItems.length} </span>
           </Link>
 
         </div>

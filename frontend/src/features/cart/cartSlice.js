@@ -37,6 +37,8 @@ const cartSlice = createSlice({
         error: null,
         success: false,
         message: null,
+        removingId: null,
+
 
     },
     reducers: {
@@ -45,6 +47,12 @@ const cartSlice = createSlice({
         },
         removeSuccess: (state) => {
             state.success = false;
+        },
+        removeItemFromCart: (state, action) => {
+            state.removingId = action.payload;
+            state.cartItems = state.cartItems.filter((item) => item.product !== action.payload);
+            localStorage.setItem("cartItem", JSON.stringify(state.cartItems));
+            state.removingId = null;
         },
         removeMessage: (state) => {
             state.message = null;
@@ -83,5 +91,5 @@ const cartSlice = createSlice({
 
 
 
-export const { removeError, removeMessage, removeSuccess } = cartSlice.actions;
+export const { removeError, removeMessage, removeSuccess,removeItemFromCart } = cartSlice.actions;
 export default cartSlice.reducer;

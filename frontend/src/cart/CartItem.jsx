@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../cartStyles/Cart.css';
 import { toast } from "react-toastify"
-import { addItemsToCart, removeError, removeSuccess } from "../features/cart/cartSlice"
+import { addItemsToCart, removeError, removeItemFromCart, removeSuccess } from "../features/cart/cartSlice"
 import { useDispatch, useSelector } from 'react-redux';
 
 const CartItem = ({ item }) => {
@@ -38,10 +38,21 @@ const CartItem = ({ item }) => {
     }
   }
 
+  // remove item
+  const handleRemoveItem = () => {
+    if (loading) {
+      return
+    }
+
+    dispatch(removeItemFromCart(item.product));
+    toast.success("Item removed from cart successfully", { position: "top-center", autoClose: 3000, toastId: "Cart-update" });
+    dispatch(removeSuccess());
+  }
+
 
   useEffect(() => {
     if (success) {
-      toast.success("Quantity updated", { position: "top-center", autoClose: 3000,toastId:"Cart-update" });
+      toast.success("Quantity updated", { position: "top-center", autoClose: 3000, toastId: "Cart-update" });
       dispatch(removeSuccess());
     }
   }, [dispatch, success, message])
@@ -77,7 +88,7 @@ const CartItem = ({ item }) => {
 
       <div className="item-actions">
         <button className="update-item-btn" disabled={loading || quantity === item.quantity} onClick={handleUpdateQuantity}>{loading ? "Updating" : "Update"}</button>
-        <button className="remove-item-btn" >Remove</button>
+        <button className="remove-item-btn" disabled={loading} onClick={handleRemoveItem}>Remove</button>
       </div>
     </div>
   );
