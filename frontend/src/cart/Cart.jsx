@@ -26,10 +26,9 @@ const Cart = () => {
                             <div>Actions</div>
                         </div>
                         {/* Cart Items */}
-                        {cartItems &&
-                            cartItems.map((item) => (
-                                <CartItem item={item} key={item.name} />
-                            ))}
+                      
+                        {cartItems && cartItems.map((item) => (<CartItem item={item} key={item.name} />))}
+
 
                     </div>
 
