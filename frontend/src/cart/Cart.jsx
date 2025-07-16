@@ -11,7 +11,13 @@ import { Link } from 'react-router-dom'
 
 
 const Cart = () => {
-    const { cartItems } = useSelector((state) => state.cart)
+    const { cartItems } = useSelector((state) => state.cart);
+    const subTotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const tax = subTotal * 0.18;
+    // const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+    const shippingCharges = subTotal > 500 ? 0 : 50;
+    const total = subTotal + tax + shippingCharges;
+
     return (
         <>
             <PageTitle title="Your-Cart" />
@@ -47,19 +53,19 @@ const Cart = () => {
                     <h3 className="price-summary-heading">Price Summary</h3>
                     <div className="summary-item">
                         <p className="summary-label">Subtotal:</p>
-                        <p className="summary-value">200/-</p>
+                        <p className="summary-value">{subTotal}</p>
                     </div>
                     <div className="summary-item">
-                        <p className="summary-label">Tax(18%):</p>
-                        <p className="summary-value">10/-</p>
+                        <p className="summary-label">Gst(18%):</p>
+                        <p className="summary-value">{tax}/-</p>
                     </div>
                     <div className="summary-item">
                         <p className="summary-label">Shipping Charges:</p>
-                        <p className="summary-value">50/-</p>
+                        <p className="summary-value">{shippingCharges}/-</p>
                     </div>
                     <div className="summary-total">
                         <p className="total-label">Total:</p>
-                        <p className="total-value">260/-</p>
+                        <p className="total-value">{total}/-</p>
                     </div>
                     <button className='checkout-btn'>Proceed to checkout</button>
 

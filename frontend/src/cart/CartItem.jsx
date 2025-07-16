@@ -10,6 +10,7 @@ const CartItem = ({ item }) => {
   const [quantity, setQuantity] = useState(item.quantity)
   const { loading, error, success, message, cartItems } = useSelector((state) => state.cart)
   const dispatch = useDispatch();
+  const subTotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
 
   const increaseQuantity = () => {
     if (item.stock <= quantity) {
@@ -83,7 +84,7 @@ const CartItem = ({ item }) => {
       </div>
 
       <div className="item-total">
-        <span className="item-total-price">{item.price * quantity}/-</span>
+        <span className="item-total-price">{(item.price * quantity).toFixed(2)}/-</span>
       </div>
 
       <div className="item-actions">
