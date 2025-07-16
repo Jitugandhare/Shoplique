@@ -55,7 +55,12 @@ const Shipping = () => {
 
                         <div className="shipping-form-group">
                             <label htmlFor="country">Country:</label>
-                            <select id="country" onChange={(e) => setCountry(e.target.value)} required>
+                            <select id="country" onChange={(e) => {
+                                setCountry(e.target.value)
+                                setState("")
+                                setCity("")
+                                
+                                }} required>
                                 <option value="">Select a country</option>
                                 {Country.getAllCountries().map((c) => (
                                     <option key={c.isoCode} value={c.isoCode}>{c.name}</option>
@@ -66,7 +71,10 @@ const Shipping = () => {
                         {
                             country && (<div className="shipping-form-group">
                                 <label htmlFor="state">State:</label>
-                                <select id="state" onChange={(e) => setState(e.target.value)} value={state} required>
+                                <select id="state" onChange={(e) => {
+                                    setState(e.target.value)
+                                    setCity("")
+                                    }} value={state} required>
                                     <option value="">Select a state</option>
                                     {State.getStatesOfCountry(country).map((s) => (
                                         <option key={s.isoCode} value={s.isoCode}>{s.name}</option>
