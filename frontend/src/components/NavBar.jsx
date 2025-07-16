@@ -16,6 +16,8 @@ const NavBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate()
 
+ 
+
 
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen)
 

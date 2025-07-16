@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../UserStyles/Register.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, removeError, removeSuccess } from '../features/user/userSlice';
 import PageTitle from '../components/PageTitle';
@@ -15,7 +15,9 @@ const Login = () => {
   const { loading, error, success, isAuthenticated } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
+  const redirect = new URLSearchParams(location.search).get("redirect")|| "/";
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,7 +43,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/")
+      navigate(redirect)
     }
   })
 
