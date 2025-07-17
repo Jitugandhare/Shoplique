@@ -16,6 +16,7 @@ import Shipping from '../cart/Shipping';
 import OrderConfirm from '../cart/OrderConfirm';
 import Payment from '../cart/Payment';
 import Dashboard from '../Admin/Dashboard';
+import ProductList from '../Admin/ProductList';
 
 
 
@@ -48,6 +49,7 @@ const AllRoutes = () => {
                 <Route path='/process/payment' element={<ProtectedRoutes element={<Payment />} />} />
                 {/* Admin Routes */}
                 <Route path='/admin/dashboard' element={<ProtectedRoutes element={<Dashboard />} adminOnly={true}/>}  />
+                <Route path='/admin/products' element={<ProtectedRoutes element={<ProductList />} adminOnly={true}/>}  />
 
 
 
