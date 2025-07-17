@@ -15,6 +15,7 @@ import Cart from '../Cart/Cart';
 import Shipping from '../cart/Shipping';
 import OrderConfirm from '../cart/OrderConfirm';
 import Payment from '../cart/Payment';
+import Dashboard from '../Admin/Dashboard';
 
 
 
@@ -45,7 +46,8 @@ const AllRoutes = () => {
                 <Route path='/shipping' element={<ProtectedRoutes element={<Shipping />} />} />
                 <Route path='/order/confirm' element={<ProtectedRoutes element={<OrderConfirm />} />} />
                 <Route path='/process/payment' element={<ProtectedRoutes element={<Payment />} />} />
-
+                {/* Admin Routes */}
+                <Route path='/admin/dashboard' element={<ProtectedRoutes element={<Dashboard />} adminOnly={true}/>}  />
 
 
 
