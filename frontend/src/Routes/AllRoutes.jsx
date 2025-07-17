@@ -14,6 +14,7 @@ import ResetPassword from '../User/ResetPassword';
 import Cart from '../Cart/Cart';
 import Shipping from '../cart/Shipping';
 import OrderConfirm from '../cart/OrderConfirm';
+import Payment from '../cart/Payment';
 
 
 
@@ -43,6 +44,7 @@ const AllRoutes = () => {
 
                 <Route path='/shipping' element={<ProtectedRoutes element={<Shipping />} />} />
                 <Route path='/order/confirm' element={<ProtectedRoutes element={<OrderConfirm />} />} />
+                <Route path='/process/payment' element={<ProtectedRoutes element={<Payment />} />} />
 
 
 
