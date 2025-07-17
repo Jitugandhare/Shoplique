@@ -5,6 +5,7 @@ import NavBar from "../components/NavBar"
 import Footer from "../components/Footer"
 import CheckOutPath from './CheckOutPath'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const OrderConfirm = () => {
     const { user } = useSelector(state => state.user)
@@ -15,8 +16,15 @@ const OrderConfirm = () => {
     const shippingCharges = subTotal > 500 ? 0 : 50;
     const total = subTotal + tax + shippingCharges;
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
-
+    const handleProceedToPayment = () => {
+        const data={
+            subTotal,tax,shippingCharges,total
+        }
+        console.log(data)
+        // navigate("/process/payment")
+    }
 
     return (
         <>
@@ -65,9 +73,9 @@ const OrderConfirm = () => {
                                     <tr key={item.product}>
                                         <td><img src={item.image} alt={item.name} className='order-product-image' /> </td>
                                         <td>{item.name} </td>
-                                        <td>{item.price} </td>
+                                        <td>{item.price}/- </td>
                                         <td>{item.quantity} </td>
-                                        <td> {(item.price * item.quantity).toFixed(2)}</td>
+                                        <td> {(item.price * item.quantity).toFixed(2)}/-</td>
                                     </tr>
                                 ))
                             }
@@ -97,7 +105,7 @@ const OrderConfirm = () => {
 
 
                 </div>
-                <button className="proceed-button">
+                <button className="proceed-button" onClick={handleProceedToPayment}>
                     Proceed to Payment
 
                 </button>
