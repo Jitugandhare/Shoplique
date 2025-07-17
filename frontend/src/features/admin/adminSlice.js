@@ -3,18 +3,13 @@ import axios from 'axios';
 
 
 
-export const register = createAsyncThunk('user/register', async (userData, { rejectWithValue }) => {
+export const fetchAdminProducts = createAsyncThunk('admin/fetchAdminProducts', async (_, { rejectWithValue }) => {
     try {
-        const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-        const { data } = await axios.post('/api/v1/user/register', userData, config)
+        const { data } = await axios.get('/api/v1/products/admin/product')
 
         return data;
     } catch (error) {
-        return rejectWithValue(error.response?.data || 'Registration failed,Please try again later.')
+        return rejectWithValue(error.response?.data || 'Failed to fetch products.')
     }
 })
 
@@ -24,13 +19,9 @@ export const register = createAsyncThunk('user/register', async (userData, { rej
 const adminSlice = createSlice({
     name: "admin",
     initialState: {
+        products: [],
         loading: false,
         error: null,
-        success: false,
-        user: null,
-        isAuthenticated: false,
-        message: null,
-
     },
     reducers: {
         removeError: (state) => {
@@ -41,7 +32,23 @@ const adminSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        // register
+        // fetch products
+        builder.addCase(fetchAdminProducts.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+            .addCase(fetchAdminProducts.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+                state.products = action.payload.products;
+                console.log("Fullfilled case", action.payload)
+
+
+            }).
+            addCase(fetchAdminProducts.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || 'Something went wrong';
+            })
     }
 
 })
