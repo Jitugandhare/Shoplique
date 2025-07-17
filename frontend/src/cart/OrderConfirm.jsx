@@ -15,15 +15,15 @@ const OrderConfirm = () => {
     // const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
     const shippingCharges = subTotal > 500 ? 0 : 50;
     const total = subTotal + tax + shippingCharges;
-    const dispatch = useDispatch();
     const navigate = useNavigate()
 
     const handleProceedToPayment = () => {
         const data={
             subTotal,tax,shippingCharges,total
         }
-        console.log(data)
-        // navigate("/process/payment")
+        sessionStorage.setItem("orderItem",JSON.stringify(data))
+       
+        navigate("/process/payment")
     }
 
     return (
