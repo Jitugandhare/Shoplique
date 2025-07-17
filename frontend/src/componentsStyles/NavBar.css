@@ -1,4 +1,4 @@
-.navbar {
+/* .navbar {
     position: fixed;
     top: 0;
     width: 100%;
@@ -182,5 +182,223 @@
 a:focus,
 button:focus {
     outline: 2px solid var(--primary-main);
+    outline-offset: 2px;
+}
+
+ */
+
+
+
+
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #1a1a1a;
+    /* Darker background for better contrast */
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 15px;
+    /* Slightly stronger shadow */
+    z-index: 1000;
+}
+
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    /* Increased padding for better spacing */
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-logo a {
+    font-size: 1.8rem;
+    /* Slightly larger font size */
+    font-weight: 700;
+    color: #f0f0f0;
+    /* Lighter color for better visibility */
+    text-decoration: none;
+    transition: color 0.3s ease;
+    /* Smooth transition */
+}
+
+.navbar-logo a:hover {
+    color: #ffcc00;
+    /* Gold color on hover */
+}
+
+.navbar-links {
+    flex: 1;
+    margin-left: 2rem;
+}
+
+.navbar-links ul {
+    display: flex;
+    list-style: none;
+    gap: 3rem;
+    /* Increased gap for better spacing */
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links li a {
+    color: #d9d9d9;
+    /* Softer text color */
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    /* Smooth transition */
+}
+
+.navbar-links li a:hover {
+    color: #ffcc00;
+    /* Gold color on hover */
+}
+
+.search-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar-icons {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    /* Increased gap for better spacing */
+    width: 250px;
+}
+
+.icon {
+    color: #d9d9d9;
+    /* Softer icon color */
+    transition: color 0.3s ease;
+    /* Smooth transition */
+    cursor: pointer;
+}
+
+.icon:hover {
+    color: #ffcc00;
+    /* Gold color on hover */
+}
+
+.cart-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ffcc00;
+    /* Gold background for badge */
+    color: #1a1a1a;
+    /* Dark text for contrast */
+    font-size: 0.75rem;
+    font-weight: 600;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.25rem;
+}
+
+.register-link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.register-btn {
+    background-color: #ffcc00;
+    /* Gold background for button */
+    color: #1a1a1a;
+    /* Dark text for contrast */
+    padding: 0.5rem 1.2rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    /* Smooth transition */
+    cursor: pointer;
+    height: 36px;
+    display: flex;
+    align-items: center;
+}
+
+.register-btn:hover {
+    background-color: #e6b800;
+    /* Darker gold on hover */
+}
+
+.navbar-hamburger {
+    display: none;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .navbar-links {
+        display: none;
+        position: absolute;
+        top: 4rem;
+        left: 0;
+        right: 0;
+        background-color: #2a2a2a;
+        /* Darker background for mobile */
+        padding: 1rem;
+        border-top: 1px solid #ffcc00;
+        /* Gold border */
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 15px;
+        /* Stronger shadow */
+    }
+
+    .navbar-links.active {
+        display: block;
+    }
+
+    .navbar-links ul {
+        flex-direction: column;
+        gap: 1.5rem;
+        /* Increased gap for better spacing */
+    }
+
+    .navbar-icons {
+        gap: 1.5rem;
+        /* Consistent gap */
+    }
+
+    .navbar-hamburger {
+        display: block;
+        margin-left: 1rem;
+    }
+
+    .navbar-links.active li {
+        padding: 0.5rem 0;
+    }
+
+    .search-item {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .navbar-icons {
+        width: 300px;
+    }
+}
+
+.navbar-links {
+    transition: all 0.3s ease;
+}
+
+a:focus,
+button:focus {
+    outline: 2px solid #ffcc00;
+    /* Gold outline for focus */
     outline-offset: 2px;
 }
