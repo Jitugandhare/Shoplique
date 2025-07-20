@@ -163,10 +163,7 @@ const getProductById = async (req, res) => {
 const updateProduct = async (req, res) => {
     const { id } = req.params;
     try {
-        const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
-            new: true,
-            runValidators: true,
-        });
+        let updatedProduct = await Product.findById(id);
 
         if (!updatedProduct) {
             return res.status(404).json({
@@ -174,6 +171,46 @@ const updateProduct = async (req, res) => {
                 message: 'Product not found',
             });
         }
+        // handle image
+
+        let images = [];
+        if (typeof req.body.image === 'string') {
+            images.push(req.body.image)
+        } else if (Array.isArray(req.body.image)) {
+            images = req.body.image
+        }
+
+        if (images.length>0) {
+            for(let i=0;i<updatedProduct.image.length;i++){
+                await cloudinary.uploader.destroy(updatedProduct.image[i].public_id)
+            }
+
+            const imageLinks = [];
+            for (let i = 0; i < images.length; i++) {
+                const result = await cloudinary.uploader.upload(images[i], {
+                    folder: "products"
+                })
+                imageLinks.push({
+                    public_id: result.public_id,
+                    url: result.secure_url
+                })
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+        updateProduct = await Product.findByIdAndUpdate(id, req.body, {
+            new: true,
+            runValidators: true
+        })
 
         res.status(200).json({
             success: true,
