@@ -32,11 +32,11 @@ const Product = () => {
             myForm.append("image", img);
         });
 
-        for (let [key, value] of myForm.entries()) {
-            console.log(key, value);
-        }
+        // for (let [key, value] of myForm.entries()) {
+        //     console.log(key, value);
+        // }
 
-        // You can add your API call here using fetch or axios
+
     }
 
     const createImageProduct = (e) => {
@@ -45,19 +45,17 @@ const Product = () => {
         setImage([]);
         setImagePreview([]);
 
-        const imageFiles = [];
-        const imagePreviews = [];
+
 
         files.forEach((file) => {
             const reader = new FileReader();
 
             reader.onload = () => {
-                imagePreviews.push(reader.result);
-                imageFiles.push(file);
 
-                if (imagePreviews.length === files.length) {
-                    setImage(imageFiles);
-                    setImagePreview(imagePreviews);
+
+                if (reader.readyState === 2) {
+                    setImage((old) => [...old, reader.result]);
+                    setImagePreview((old) => [...old, reader.result]);
                 }
             };
 
