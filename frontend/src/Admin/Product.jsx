@@ -24,7 +24,7 @@ const Product = () => {
 
     const categories = [
         "Mobile", "Laptops", "Clothing", "Shirt",
-        "Books", "Toys", "T-shirt", "Pants", "Jackets", "Footwear", "Jewellery"
+        "Books", "Toys", "T-shirt", "Pants", "Jackets", "Footwear", "Jewellery","Bags"
     ]
 
     const handleCreateProduct = (e) => {
@@ -72,7 +72,7 @@ const Product = () => {
 
     useEffect(() => {
         if (success) {
-            toast.success(success, { position: "top-center", autoClose: 3000 });
+            toast.success("Product Creates Successfully.", { position: "top-center", autoClose: 3000 });
             dispatch(removeSuccess());
             setName("")
             setPrice("")

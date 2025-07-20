@@ -16,6 +16,7 @@ const ProductDetails = () => {
     const [userRating, setUserRating] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const { loading, error, product } = useSelector((state) => state.product);
+    const [selectedImage, setSelectedImage] = useState("");
 
     const { loading: cartLoading, error: cartError, cartItems, success, message } = useSelector((state) => state.cart);
 
@@ -57,6 +58,11 @@ const ProductDetails = () => {
         }
     }, [dispatch])
 
+    useEffect(() => {
+        if (product?.image?.length > 0) {
+            setSelectedImage(product.image[0].url);
+        }
+    }, [product]);
 
     useEffect(() => {
         if (error) {
@@ -107,8 +113,18 @@ const ProductDetails = () => {
             <div className="product-details-container">
                 <div className="product-detail-container">
                     <div className="product-image-container">
-                        <img src={product.image[0].url.replace('./', '/')} alt={product.name} className='product-detail-image' />
+                        <img src={selectedImage} alt={product.name} className='product-detail-image' />
                         {/* image rendered dynaically */}
+
+                        {
+                            product.image.length > 1 && (
+                                <div className="product-thumbnail">
+                                    {product.image.map((img, index) => (
+                                        <img src={img.url} key={index} alt="Thumbnail" className='thumbnail-image' onClick={() => setSelectedImage(img.url)} />
+                                    ))}
+                                </div>
+                            )
+                        }
 
                     </div>
                     <div className="product-info">
