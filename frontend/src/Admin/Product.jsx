@@ -1,10 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "../AdminStyles/CreateProduct.css"
 import PageTitle from "../components/PageTitle"
 import NavBar from "../components/NavBar"
 import Footer from "../components/Footer"
+import { useDispatch, useSelector } from 'react-redux'
+import { createProduct, removeError, removeSuccess } from "../features/admin/adminSlice"
+import { toast } from 'react-toastify'
+
+
+
 
 const Product = () => {
+    const { loading, success, error, admin } = useSelector(state => state.admin);
+    const dispatch = useDispatch()
+
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
     const [description, setDescription] = useState("")
@@ -15,7 +24,7 @@ const Product = () => {
 
     const categories = [
         "Mobile", "Laptops", "Clothing", "Shirt",
-        "Books", "Toys", "T-shirt", "Pants", "Jackets"
+        "Books", "Toys", "T-shirt", "Pants", "Jackets", "Footwear", "Jewellery"
     ]
 
     const handleCreateProduct = (e) => {
@@ -32,10 +41,7 @@ const Product = () => {
             myForm.append("image", img);
         });
 
-        // for (let [key, value] of myForm.entries()) {
-        //     console.log(key, value);
-        // }
-
+        dispatch(createProduct(myForm))
 
     }
 
@@ -62,6 +68,31 @@ const Product = () => {
             reader.readAsDataURL(file);
         });
     };
+
+
+    useEffect(() => {
+        if (success) {
+            toast.success(success, { position: "top-center", autoClose: 3000 });
+            dispatch(removeSuccess());
+            setName("")
+            setPrice("")
+            setCategory("")
+
+            setImage([])
+            setImagePreview([])
+            setStock("")
+
+        }
+    }, [dispatch, success])
+
+
+    useEffect(() => {
+        if (error) {
+            toast.error("Failed to create product", { position: "top-center", autoClose: 3000 });
+            dispatch(removeError());
+
+        }
+    }, [dispatch, error])
 
     return (
         <>
@@ -150,7 +181,7 @@ const Product = () => {
                     </div>
 
                     <button className="submit-btn" type="submit">
-                        Create
+                        {loading ? "Creating Product..." : "Create"}
                     </button>
                 </form>
             </div>
