@@ -31,7 +31,7 @@ export const createProduct = createAsyncThunk('admin/createProduct', async (prod
 })
 
 
-export const updateProduct = createAsyncThunk('admin/updateProduct', async ({ formData, id }, { rejectWithValue }) => {
+export const updateProduct = createAsyncThunk('admin/updateProduct', async ({ id, formData }, { rejectWithValue }) => {
     try {
         const config = {
             headers: {
@@ -76,7 +76,6 @@ const adminSlice = createSlice({
                 state.loading = false;
                 state.error = null;
                 state.products = action.payload.products;
-                console.log("Fullfilled case", action.payload)
 
 
             }).
@@ -97,7 +96,7 @@ const adminSlice = createSlice({
                 state.products.push(action.payload.product);
                 state.success = action.payload.success;
 
-                console.log("Fullfilled case", action.payload)
+
 
 
             }).
@@ -118,7 +117,6 @@ const adminSlice = createSlice({
                 state.success = action.payload.success;
                 state.product = action.payload.product;
 
-                console.log("Fullfilled case", action.payload.product)
 
 
             }).

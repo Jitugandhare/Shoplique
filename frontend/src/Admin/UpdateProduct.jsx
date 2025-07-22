@@ -8,13 +8,15 @@ import Loader from '../components/Loader';
 import { getProductDetails } from "../features/product/productSlice"
 import { useDispatch, useSelector } from 'react-redux';
 import { removeError, removeSuccess, updateProduct } from '../features/admin/adminSlice';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const UpdateProduct = () => {
-    const { products } = useSelector(state => state.product)
+    const { product } = useSelector(state => state.product)
+    const { success, error, loading } = useSelector(state => state.admin)
     const dispatch = useDispatch()
     const { id } = useParams();
-    console.log(id)
+    const navigate = useNavigate()
+
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
     const [description, setDescription] = useState("")
@@ -27,7 +29,7 @@ const UpdateProduct = () => {
         "Mobile", "Laptops", "Clothing", "Shirt",
         "Books", "Toys", "T-shirt", "Pants", "Jackets", "Footwear", "Jewellery", "Bags"
     ]
-console.log(products)
+    console.log(product)
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
@@ -56,36 +58,55 @@ console.log(products)
             return;
         }
 
-        const formData = new FormData();
-        formData.set("name", name);
-        formData.set("price", price);
-        formData.set("description", description);
-        formData.set("category", category);
-        formData.set("stock", stock);
+        const myForm = new FormData();
+        myForm.set("name", name);
+        myForm.set("price", price);
+        myForm.set("description", description);
+        myForm.set("category", category);
+        myForm.set("stock", stock);
 
         image.forEach((img) => {
-            formData.append("images", img);
+            myForm.append("images", img);
         });
 
-        dispatch(updateProduct({ id, formData }))
+        dispatch(updateProduct({ id, formData: myForm }))
 
 
     };
 
     useEffect(() => {
         if (id) {
-           dispatch(getProductDetails(id))
+            dispatch(getProductDetails(id))
         }
-    }, [dispatch,id])
+    }, [dispatch, id])
 
 
-    // useEffect(() => {
-    //     if (error) {
-    //         toast.error("Failed to update product", { position: "top-center", autoClose: 3000 });
-    //         dispatch(removeError());
+    useEffect(() => {
+        if (product && product._id === id) {
+            setName(product.name || "");
+            setPrice(product.price || "");
+            setDescription(product.description || "");
+            setCategory(product.category || "");
+            setStock(product.stock || "");
+            setOldImage(product.image);
+        }
+    }, [product])
 
-    //     }
-    // }, [dispatch, error])
+
+
+
+    useEffect(() => {
+        if (error) {
+            toast.error("Failed to update product", { position: "top-center", autoClose: 3000 });
+            dispatch(removeError());
+
+        }
+        if (success) {
+            toast.success("Product Updated Successfully", { position: "top-center", autoClose: 3000 })
+            dispatch(removeSuccess())
+            navigate("/admin/products")
+        }
+    }, [dispatch, success, error])
 
     return (
         <>
@@ -134,7 +155,6 @@ console.log(products)
                         className='update-product-select'
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-
                     >
                         <option value="" disabled>Select category</option>
                         {categories.map((item) => (
@@ -143,6 +163,7 @@ console.log(products)
                             </option>
                         ))}
                     </select>
+
 
                     <label htmlFor="stock" className="update-product-label">Product Stock</label>
                     <input
@@ -178,13 +199,13 @@ console.log(products)
 
                     <div className="update-product-old-images-wrapper">
                         {oldImage.map((img, index) => (
-                            <img key={index} src={img} alt={`Old Preview ${index}`} className="update-product-old-image" />
+                            <img key={index} src={img.url} alt={`Old Preview ${index}`} className="update-product-old-image" />
                         ))}
                     </div>
 
 
                     <button type="submit" className="update-product-submit-btn">
-                        {loading ? <Loader size="small" /> : "Update Product"}
+                        {loading ? "Updating Product..." : "Update"}
                     </button>
                 </form>
             </div>

@@ -73,7 +73,6 @@ const productSlice = createSlice({
                 state.limit = action.payload.limit;
 
 
-                console.log("Fullfilled case", action.payload)
 
 
             }).
