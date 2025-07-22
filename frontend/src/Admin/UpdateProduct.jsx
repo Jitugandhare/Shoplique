@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../AdminStyles/UpdateProduct.css";
 import PageTitle from '../components/PageTitle';
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
-import { useSelector } from 'react-redux';
+import { getProductDetails } from "../features/product/productSlice"
+import { useDispatch, useSelector } from 'react-redux';
+import { removeError, removeSuccess, updateProduct } from '../features/admin/adminSlice';
+import { useParams } from 'react-router-dom';
 
 const UpdateProduct = () => {
-    const { loading, error, success, admin } = useSelector(state => state.admin)
+    const { products } = useSelector(state => state.product)
+    const dispatch = useDispatch()
+    const { id } = useParams();
+    console.log(id)
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
     const [description, setDescription] = useState("")
@@ -21,7 +27,7 @@ const UpdateProduct = () => {
         "Mobile", "Laptops", "Clothing", "Shirt",
         "Books", "Toys", "T-shirt", "Pants", "Jackets", "Footwear", "Jewellery", "Bags"
     ]
-
+console.log(products)
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
@@ -61,8 +67,25 @@ const UpdateProduct = () => {
             formData.append("images", img);
         });
 
+        dispatch(updateProduct({ id, formData }))
+
 
     };
+
+    useEffect(() => {
+        if (id) {
+           dispatch(getProductDetails(id))
+        }
+    }, [dispatch,id])
+
+
+    // useEffect(() => {
+    //     if (error) {
+    //         toast.error("Failed to update product", { position: "top-center", autoClose: 3000 });
+    //         dispatch(removeError());
+
+    //     }
+    // }, [dispatch, error])
 
     return (
         <>
