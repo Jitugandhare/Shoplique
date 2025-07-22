@@ -18,6 +18,7 @@ import Payment from '../cart/Payment';
 import Dashboard from '../Admin/Dashboard';
 import ProductList from '../Admin/ProductList';
 import Product from '../Admin/Product';
+import UpdateProduct from '../Admin/UpdateProduct';
 
 
 
@@ -52,6 +53,7 @@ const AllRoutes = () => {
                 <Route path='/admin/dashboard' element={<ProtectedRoutes element={<Dashboard />} adminOnly={true}/>}  />
                 <Route path='/admin/products' element={<ProtectedRoutes element={<ProductList />} adminOnly={true}/>}  />
                 <Route path='/admin/create-product' element={<ProtectedRoutes element={<Product/>} adminOnly={true}/>}  />
+                <Route path='/admin/product/:id' element={<ProtectedRoutes element={<UpdateProduct/>} adminOnly={true}/>}  />
 
 
 
