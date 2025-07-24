@@ -219,13 +219,20 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
     const { id } = req.params;
     try {
-        const deletedProduct = await Product.findByIdAndDelete(id);
-        if (!deletedProduct) {
+        let product = await Product.findById(id);
+        if (!product) {
             return res.status(404).json({
                 success: false,
                 message: 'Product not found',
             });
         }
+        // delete image
+        for (let i = 0; i < product.image.length; i++) {
+            await cloudinary.uploader.destroy(product.image[0].public_id)
+        }
+
+        product = await Product.findByIdAndDelete(id);
+
 
         res.status(200).json({
             success: true,
