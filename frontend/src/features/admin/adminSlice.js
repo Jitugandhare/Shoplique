@@ -70,6 +70,7 @@ const adminSlice = createSlice({
         error: null,
         success: false,
         product: {},
+        deleting: {},
     },
     reducers: {
         removeError: (state) => {
@@ -140,19 +141,23 @@ const adminSlice = createSlice({
             })
 
         // delete product
-        builder.addCase(deleteProduct.pending, (state) => {
-            state.loading = true;
+        builder.addCase(deleteProduct.pending, (state, action) => {
+            const productId = action.meta.arg;
+
+            state.deleting[productId] = true;
             state.error = null;
         })
             .addCase(deleteProduct.fulfilled, (state, action) => {
-                state.loading = false;
-                state.products = state.products.filter((product) => product._id !== action.payload.id)
+                const productId = action.payload.id;
+                state.deleting[productId] = false;
+                state.products = state.products.filter((product) => product._id !== productId)
 
 
 
             }).
             addCase(deleteProduct.rejected, (state, action) => {
-                state.loading = false;
+                const productId = action.meta.arg;
+                state.deleting[productId] = false;
                 state.success = action.payload.success;
                 state.error = action.payload || 'Failed to Delete Product.';
             })

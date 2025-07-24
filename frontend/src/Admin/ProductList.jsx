@@ -7,13 +7,30 @@ import Loader from "../components/Loader"
 import { Link } from 'react-router-dom';
 import { Edit, Delete } from '@mui/icons-material';
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAdminProducts, removeError } from '../features/admin/adminSlice'
+import { deleteProduct, fetchAdminProducts, removeError } from '../features/admin/adminSlice'
 import { toast } from 'react-toastify'
 
 const ProductList = () => {
-  const { loading, products, error } = useSelector((state) => state.admin);
+  const { loading, products, error, deleting } = useSelector((state) => state.admin);
+
   const dispatch = useDispatch();
-  console.log(products)
+
+
+
+
+  const handleDeleteProduct = (id) => {
+    const isConfirm = window.confirm("Are you sure you want to delete this product?")
+    if (isConfirm) {
+      dispatch(deleteProduct(id)).then((action) => {
+        if (action.type === "admin/deleteProduct/fulfilled") {
+          toast.success("Product Deleted Successfully", {
+            position: "top-center", autoClose: 3000
+          })
+        }
+      })
+
+    }
+  }
 
 
   useEffect(() => {
@@ -78,8 +95,17 @@ const ProductList = () => {
                       <td>{item.stock}</td>
                       <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                       <td>
-                        <Link to={`/admin/product/${item._id}`} className="action-icon edit-icon"><Edit /></Link>
-                        <Link to={`/admin/product/${item._id}`} className="action-icon delete-icon"><Delete /></Link>
+
+                        <Link to={`/admin/product/${item._id}`} className="action-icon edit-icon"
+                          disabled={loading}
+                        ><Edit /></Link>
+
+
+                        <button className="action-icon delete-icon" onClick={() => handleDeleteProduct(item._id)}
+                          disabled={deleting[item._id]}
+                        >
+                          {deleting[item._id] ? <Loader /> : <Delete />}
+                        </button>
                       </td>
                     </tr>
                   ))}
