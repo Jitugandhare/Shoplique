@@ -47,6 +47,19 @@ export const updateProduct = createAsyncThunk('admin/updateProduct', async ({ id
 })
 
 
+export const deleteProduct = createAsyncThunk('admin/deleteProduct', async (id, { rejectWithValue }) => {
+    try {
+
+        const { data } = await axios.delete(`/api/v1/products/admin/product/${id}`)
+
+        return { id }
+    } catch (error) {
+        return rejectWithValue(error.response?.data || 'Failed to Delete Product.')
+    }
+})
+
+
+
 
 
 const adminSlice = createSlice({
@@ -124,6 +137,24 @@ const adminSlice = createSlice({
                 state.loading = false;
                 state.success = action.payload.success;
                 state.error = action.payload || 'Failed to Update Product.';
+            })
+
+        // delete product
+        builder.addCase(deleteProduct.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+            .addCase(deleteProduct.fulfilled, (state, action) => {
+                state.loading = false;
+                state.products = state.products.filter((product) => product._id !== action.payload.id)
+
+
+
+            }).
+            addCase(deleteProduct.rejected, (state, action) => {
+                state.loading = false;
+                state.success = action.payload.success;
+                state.error = action.payload || 'Failed to Delete Product.';
             })
     }
 
