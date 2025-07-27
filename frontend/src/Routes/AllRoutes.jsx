@@ -19,6 +19,7 @@ import Dashboard from '../Admin/Dashboard';
 import ProductList from '../Admin/ProductList';
 import Product from '../Admin/Product';
 import UpdateProduct from '../Admin/UpdateProduct';
+import UsersList from '../Admin/UsersList';
 
 
 
@@ -50,10 +51,11 @@ const AllRoutes = () => {
                 <Route path='/order/confirm' element={<ProtectedRoutes element={<OrderConfirm />} />} />
                 <Route path='/process/payment' element={<ProtectedRoutes element={<Payment />} />} />
                 {/* Admin Routes */}
-                <Route path='/admin/dashboard' element={<ProtectedRoutes element={<Dashboard />} adminOnly={true}/>}  />
-                <Route path='/admin/products' element={<ProtectedRoutes element={<ProductList />} adminOnly={true}/>}  />
-                <Route path='/admin/create-product' element={<ProtectedRoutes element={<Product/>} adminOnly={true}/>}  />
-                <Route path='/admin/product/:id' element={<ProtectedRoutes element={<UpdateProduct/>} adminOnly={true}/>}  />
+                <Route path='/admin/dashboard' element={<ProtectedRoutes element={<Dashboard />} adminOnly={true} />} />
+                <Route path='/admin/products' element={<ProtectedRoutes element={<ProductList />} adminOnly={true} />} />
+                <Route path='/admin/create-product' element={<ProtectedRoutes element={<Product />} adminOnly={true} />} />
+                <Route path='/admin/product/:id' element={<ProtectedRoutes element={<UpdateProduct />} adminOnly={true} />} />
+                <Route path='/admin/users' element={<ProtectedRoutes element={<UsersList />} adminOnly={true} />} />
 
 
 

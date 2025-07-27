@@ -63,7 +63,7 @@ export const fetchUsers = createAsyncThunk('admin/fetchUsers', async (_, { rejec
     try {
 
         const { data } = await axios.get(`/api/v1/user/admin/users`)
-
+        console.log('Fetched users:', data);
         return data;
     } catch (error) {
         return rejectWithValue(error.response?.data || 'Failed to Fetch Users.')
@@ -187,7 +187,8 @@ const adminSlice = createSlice({
             .addCase(fetchUsers.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = null;
-                state.users = action.payload.users;
+                state.users = action.payload.user;
+
             })
 
             .addCase(fetchUsers.rejected, (state, action) => {
