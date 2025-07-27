@@ -83,6 +83,18 @@ export const getSingleUser = createAsyncThunk('admin/getSingleUser', async (id, 
 })
 
 
+export const updateUserRole = createAsyncThunk('admin/updateUserRole', async ({ id, role }, { rejectWithValue }) => {
+    try {
+
+        const { data } = await axios.put(`/api/v1/user/admin/user-profile-update/${id}`, { role })
+        console.log('update user:', data);
+        return data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data || 'Failed to Update User.')
+    }
+})
+
+
 
 
 const adminSlice = createSlice({
@@ -96,6 +108,7 @@ const adminSlice = createSlice({
         deleting: {},
         users: [],
         user: {},
+        message: null,
 
     },
     reducers: {
@@ -104,6 +117,9 @@ const adminSlice = createSlice({
         },
         removeSuccess: (state) => {
             state.success = false;
+        },
+        clearMessage: (state) => {
+            state.message = null;
         }
     },
     extraReducers: (builder) => {
@@ -231,10 +247,31 @@ const adminSlice = createSlice({
                 state.error = action.payload || 'Failed to Fetch User.';
             })
 
+
+        // update user role
+        builder
+            .addCase(updateUserRole.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateUserRole.fulfilled, (state, action) => {
+                state.loading = false;
+                state.success = action.payload?.success;
+                state.message = action.payload?.message || "User Role Update Successfully.";
+                // state.user = action.payload.user;
+                 state.user = action.payload?.user || state.user;
+            })
+            .addCase(updateUserRole.rejected, (state, action) => {
+                state.loading = false;
+                state.success = false;
+                state.error = action.payload || 'Failed to Update User.';
+            })
+
+
     }
 
 })
 
 
-export const { removeError, removeSuccess } = adminSlice.actions;
+export const { removeError, removeSuccess, clearMessage } = adminSlice.actions;
 export default adminSlice.reducer;

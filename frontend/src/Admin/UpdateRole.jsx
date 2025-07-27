@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../AdminStyles/UpdateRole.css';
 import PageTitle from "../components/PageTitle";
 import NavBar from "../components/NavBar";
@@ -7,8 +7,8 @@ import Loader from "../components/Loader";
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getSingleUser } from '../features/admin/adminSlice';
-import { set } from 'mongoose';
+import { clearMessage, getSingleUser, removeError, removeSuccess, updateUserRole } from '../features/admin/adminSlice';
+
 
 
 const UpdateRole = () => {
@@ -16,8 +16,9 @@ const UpdateRole = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { loading, error, user, success } = useSelector((state) => state.admin);
+  const { loading, error, user, success, message } = useSelector((state) => state.admin);
   console.log(user)
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -30,6 +31,11 @@ const UpdateRole = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(updateUserRole({ id, role }))
+  }
 
 
   useEffect(() => {
@@ -48,6 +54,22 @@ const UpdateRole = () => {
     }
   }, [user])
 
+
+
+  useEffect(() => {
+    if (success) {
+      toast.success(message, { position: "top-center", autoClose: 3000 });
+      dispatch(removeSuccess())
+      dispatch(clearMessage())
+      navigate("/admin/users")
+    }
+    if (error) {
+      toast.error(error, { position: "top-center", autoClose: 3000 });
+      dispatch(removeError())
+    }
+
+  }, [dispatch, success, error, message])
+
   return (
     <>
       {loading ? <Loader /> : (
@@ -58,7 +80,7 @@ const UpdateRole = () => {
           <div className="page-wrapper">
             <div className="update-user-role-container">
               <h1 className='update-user-title' >Update User Role</h1>
-              <form className="update-user-role-form" >
+              <form className="update-user-role-form" onSubmit={handleSubmit} >
                 <div className="form-group">
                   <label htmlFor="name">Name</label>
                   <input type="text" id='name' name='name' value={name} readOnly />

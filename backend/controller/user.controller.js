@@ -366,7 +366,9 @@ const updateUserRole = async (req, res) => {
         // console.log(user)
 
         res.status(200).json({
-            message: 'User profile updates successfully'
+            success: true,
+            message: 'User profile updates successfully',
+            user
         })
 
     } catch (error) {
