@@ -6,15 +6,24 @@ import Footer from "../components/Footer"
 import Loader from "../components/Loader"
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Delete, Edit } from '@mui/icons-material'
-import { fetchUsers, removeError } from '../features/admin/adminSlice'
+import { clearMessage, deleteUserProfile, fetchUsers, removeError, removeSuccess } from '../features/admin/adminSlice'
 
 const UsersList = () => {
 
-    const { loading, error, users } = useSelector(state => state.admin);
+    const { loading, error, users, success, message } = useSelector(state => state.admin);
     const dispatch = useDispatch();
+
     console.log(users)
+
+    const handleDelete = (id) => {
+        const confirm = window.confirm("Are you sure you want to delete this user?");
+        if (confirm) {
+            dispatch(deleteUserProfile(id))
+        }
+
+    }
 
     useEffect(() => {
         dispatch(fetchUsers())
@@ -22,12 +31,24 @@ const UsersList = () => {
     }, [dispatch])
 
 
+
+
+
     useEffect(() => {
+
+        if (success) {
+            toast.success(message || "User Deleted Successfully", { position: "top-center", autoClose: 3000 })
+            dispatch(removeSuccess());
+            dispatch(clearMessage());
+            dispatch(fetchUsers())
+        }
+
+
         if (error) {
             toast.error(error, { position: "top-center", autoClose: 3000 })
             dispatch(removeError());
         }
-    }, [dispatch, error])
+    }, [dispatch, error, success, message])
 
 
 
@@ -67,7 +88,7 @@ const UsersList = () => {
                                                 <Link className="action-icon edit-icon" to={`/admin/user/${user._id}`}>
                                                     <Edit />
                                                 </Link>
-                                                <Link className="action-icon delete-icon">
+                                                <Link className="action-icon delete-icon" onClick={() => handleDelete(user._id)}>
                                                     <Delete />
                                                 </Link>
                                             </td>

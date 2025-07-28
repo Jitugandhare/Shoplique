@@ -101,7 +101,12 @@ export const deleteUserProfile = createAsyncThunk('admin/deleteUserProfile', asy
 
         const { data } = await axios.delete(`/api/v1/user/admin/delete-user-profile/${id}`)
         console.log('Deleted user:', data);
-        return data;
+
+        return {
+            success: true,
+            message: data?.message || 'User deleted successfully',
+            id
+        };
     } catch (error) {
         return rejectWithValue(error.response?.data || 'Failed to Delete User.')
     }
@@ -270,7 +275,7 @@ const adminSlice = createSlice({
                 state.success = action.payload?.success;
                 state.message = action.payload?.message || "User Role Update Successfully.";
                 // state.user = action.payload.user;
-                 state.user = action.payload?.user || state.user;
+                state.user = action.payload?.user || state.user;
             })
             .addCase(updateUserRole.rejected, (state, action) => {
                 state.loading = false;
@@ -278,8 +283,8 @@ const adminSlice = createSlice({
                 state.error = action.payload || 'Failed to Update User.';
             })
 
-            // delete user
-             builder
+        // delete user
+        builder
             .addCase(deleteUserProfile.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -288,8 +293,8 @@ const adminSlice = createSlice({
                 state.loading = false;
                 state.success = action.payload?.success;
                 state.message = action.payload?.message || "User Deleted Successfully.";
-                
-                
+
+
             })
             .addCase(deleteUserProfile.rejected, (state, action) => {
                 state.loading = false;
