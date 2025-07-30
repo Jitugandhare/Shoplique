@@ -194,6 +194,11 @@ const deleteOrder = async (req, res) => {
             return res.status(400).json({ message: "Order is not found" })
         }
 
+        if (order.status === "processing") {
+            return res.status(400).json({
+                message: "Cannot delete the order as it is currently being processed"
+            });
+        }
         await Order.deleteOne({ _id: req.params.id });
 
         res.status(200).json({
