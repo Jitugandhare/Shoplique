@@ -21,6 +21,7 @@ import Product from '../Admin/Product';
 import UpdateProduct from '../Admin/UpdateProduct';
 import UsersList from '../Admin/UsersList';
 import UpdateRole from '../Admin/UpdateRole';
+import OrderList from '../Admin/OrderList';
 
 
 
@@ -58,6 +59,7 @@ const AllRoutes = () => {
                 <Route path='/admin/product/:id' element={<ProtectedRoutes element={<UpdateProduct />} adminOnly={true} />} />
                 <Route path='/admin/users' element={<ProtectedRoutes element={<UsersList />} adminOnly={true} />} />
                 <Route path='/admin/user/:id' element={<ProtectedRoutes element={<UpdateRole />} adminOnly={true} />} />
+                <Route path='/admin/orders' element={<ProtectedRoutes element={<OrderList />} adminOnly={true} />} />
 
 
 

@@ -116,7 +116,7 @@ export const deleteUserProfile = createAsyncThunk('admin/deleteUserProfile', asy
 export const fetchAllOrders = createAsyncThunk('admin/fetchAllOrders', async (_, { rejectWithValue }) => {
     try {
 
-        const { data } = await axios.get(`/api/v1/user/admin/orders`)
+        const { data } = await axios.get(`/api/v1/order/admin/orders`)
         console.log('Fetched orders:', data);
 
         return data;
@@ -319,7 +319,6 @@ const adminSlice = createSlice({
 
 
         // fetch all orders
-
         builder
             .addCase(fetchAllOrders.pending, (state) => {
                 state.loading = true;
@@ -329,13 +328,13 @@ const adminSlice = createSlice({
                 state.loading = false;
                 state.totalAmount = action.payload?.totalAmount;
                 state.orders = action.payload?.orders;
-
             })
             .addCase(fetchAllOrders.rejected, (state, action) => {
                 state.loading = false;
                 state.success = false;
                 state.error = action.payload || 'Failed to Fetch Orders.';
             })
+
 
 
     }
