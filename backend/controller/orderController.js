@@ -134,29 +134,30 @@ const getAllOrders = async (req, res) => {
 const updatingOrderStatus = async (req, res) => {
 
     try {
-        const orders = await Order.findById(req.params.id)
+        const order = await Order.findById(req.params.id)
         // console.log(orders)
-        if (!orders) {
+        if (!order) {
             return res.status(400).json({ message: "Order not found" })
         }
-        if (orders.orderStatus === "Delivered") {
+        if (order.orderStatus === "Delivered") {
             return res.status(400).json({ message: "This Order Already been delivered." })
         }
 
-        await Promise.all(orders.orderItems.map(item => updateQuantity(item.product, item.quantity)))
-        orders.orderStatus = req.body.status;
-        if (orders.orderStatus === "Delivered") {
-            orders.deliveredAt = Date.now();
+        await Promise.all(order.orderItems.map(item => updateQuantity(item.product, item.quantity)))
+        
+        order.orderStatus = req.body.status;
+        if (order.orderStatus === "Delivered") {
+            order.deliveredAt = Date.now();
         }
 
 
-        await orders.save({ validateBeforeSave: false })
+        await order.save({ validateBeforeSave: false })
 
 
         res.status(200).json({
             success: true,
             message: "Order's status updated successfully",
-            orders,
+            order,
 
         })
 

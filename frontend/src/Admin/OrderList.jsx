@@ -88,7 +88,7 @@ const OrderList = () => {
                                                     <td>{order.totalPrice.toFixed(2)}/-</td>
                                                     <td>{order.orderItems.length}</td>
                                                     <td>
-                                                        <Link to={`/admin/order-status/${order._id}`} className='action-icon edit-icon'><Edit /> </Link>
+                                                        <Link to={`/admin/order/${order._id}`} className='action-icon edit-icon'><Edit /> </Link>
                                                         <button onClick={() => handleDelete(order._id)} className="action-icon delete-icon"><Delete /> </button>
                                                     </td>
                                                 </tr>
