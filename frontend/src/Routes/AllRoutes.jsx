@@ -24,6 +24,7 @@ import UpdateRole from '../Admin/UpdateRole';
 import OrderList from '../Admin/OrderList';
 import UpdateOrder from '../Admin/UpdateOrder';
 import PaymentSuccess from '../cart/PaymentSuccess';
+import MyOrders from '../Orders/MyOrders';
 
 
 
@@ -54,8 +55,10 @@ const AllRoutes = () => {
                 <Route path='/shipping' element={<ProtectedRoutes element={<Shipping />} />} />
                 <Route path='/order/confirm' element={<ProtectedRoutes element={<OrderConfirm />} />} />
                 <Route path='/process/payment' element={<ProtectedRoutes element={<Payment />} />} />
-                
                 <Route path='/paymentSuccess' element={<ProtectedRoutes element={<PaymentSuccess />} />} />
+
+                <Route path='/order/my-orders' element={<ProtectedRoutes element={<MyOrders />} />} />
+
                 {/* Admin Routes */}
                 <Route path='/admin/dashboard' element={<ProtectedRoutes element={<Dashboard />} adminOnly={true} />} />
                 <Route path='/admin/products' element={<ProtectedRoutes element={<ProductList />} adminOnly={true} />} />
