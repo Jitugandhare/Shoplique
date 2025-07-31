@@ -3,7 +3,7 @@ const instance = require('../utils/razorpayInstance.js');
 const paymentProcess = async (req, res) => {
     try {
         const options = {
-            amount: Number(req.body.amount) * 100, // amount in paise (i.e., ₹10)
+            amount: Number(req.body.amount * 100), // amount in paise (i.e., ₹10)
             currency: "INR"
         };
 
@@ -23,4 +23,23 @@ const paymentProcess = async (req, res) => {
     }
 };
 
-module.exports = paymentProcess;
+
+const sendApiKey = async (req, res) => {
+    try {
+        res.status(200).json({
+            key: process.env.RAZORPAY_KEY_ID
+        })
+    } catch (error) {
+        console.error("Payment processing api key error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to send api",
+            error: error.message || "Internal server error"
+        });
+    }
+}
+
+
+
+
+module.exports = { paymentProcess, sendApiKey };
