@@ -23,6 +23,7 @@ import UsersList from '../Admin/UsersList';
 import UpdateRole from '../Admin/UpdateRole';
 import OrderList from '../Admin/OrderList';
 import UpdateOrder from '../Admin/UpdateOrder';
+import PaymentSuccess from '../cart/PaymentSuccess';
 
 
 
@@ -53,6 +54,8 @@ const AllRoutes = () => {
                 <Route path='/shipping' element={<ProtectedRoutes element={<Shipping />} />} />
                 <Route path='/order/confirm' element={<ProtectedRoutes element={<OrderConfirm />} />} />
                 <Route path='/process/payment' element={<ProtectedRoutes element={<Payment />} />} />
+                
+                <Route path='/paymentSuccess' element={<ProtectedRoutes element={<PaymentSuccess />} />} />
                 {/* Admin Routes */}
                 <Route path='/admin/dashboard' element={<ProtectedRoutes element={<Dashboard />} adminOnly={true} />} />
                 <Route path='/admin/products' element={<ProtectedRoutes element={<ProductList />} adminOnly={true} />} />

@@ -77,6 +77,7 @@ const Payment = () => {
 
             const rzp = new Razorpay(options);
             rzp.open();
+            
         } catch (error) {
             console.log("Payment Failed:-", error)
 
