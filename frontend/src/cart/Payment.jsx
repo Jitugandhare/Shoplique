@@ -40,7 +40,7 @@ const Payment = () => {
 
         const { data: orderData } = await axios.post('/api/v1/payment/process', { amount })
         const { order } = orderData
-        console.log(order);
+        // console.log(order);
 
         const options = {
             key,

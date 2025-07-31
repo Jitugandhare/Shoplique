@@ -10,6 +10,6 @@ const instance = new Razorpay({
 
 });
 
-instance.orders.all().then(console.log).catch(console.error);
+// instance.orders.all().then(console.log).catch(console.error);
 
 module.exports=instance;
