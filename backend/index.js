@@ -11,7 +11,8 @@ const orderRoute = require('./routes/orderRoute.js');
 const cors = require("cors")
 const cloudinary = require('cloudinary').v2;
 const fileupload = require('express-fileupload')
-const Razorpay = require('razorpay')
+
+const paymentRoute = require('./routes/paymentRoute.js');
 
 
 process.on('uncaughtException', (err) => {
@@ -29,14 +30,6 @@ cloudinary.config({
 
 
 
-// Razor Pay Instance
-export const instance = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-
-});
-
-instance.orders.all().then(console.log).catch(console.error);
 
 
 app.use(cors());
@@ -48,6 +41,7 @@ app.use(fileupload());
 app.use('/api/v1/user', userRoute)
 app.use('/api/v1/products', productRoute)
 app.use('/api/v1/order', orderRoute)
+app.use('/api/v1/payment', paymentRoute)
 
 
 app.listen(port, async () => {
@@ -58,3 +52,4 @@ app.listen(port, async () => {
         console.log(error);
     }
 });
+
