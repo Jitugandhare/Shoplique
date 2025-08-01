@@ -28,7 +28,7 @@ const OrderDetails = () => {
     } = order || {};
 
  
-    const paymentStatus = paymentInfo.status === "succeed" ? "Paid" : "Not Paid";
+    const paymentStatus = paymentInfo.status === "Succeeded" ? "Paid" : "Not Paid";
     const finalOrderStatus = paymentStatus === "Not Paid" ? "Cancelled" : orderStatus;
 
 
