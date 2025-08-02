@@ -88,12 +88,17 @@ const ReviewList = () => {
                                             </td>
                                             <td>{item.numOfReviews}</td>
                                             <td>
-                                                <button
-                                                    className='action-btn view-btn'
-                                                    onClick={() => handleViewReviews(item._id)}
-                                                >
-                                                    View Reviews
-                                                </button>
+                                                {
+                                                    item.numOfReviews > 0
+                                                    &&
+                                                    (
+                                                        <button
+                                                            className='action-btn view-btn'
+                                                            onClick={() => handleViewReviews(item._id)}
+                                                        >
+                                                            View Reviews
+                                                        </button>
+                                                    )}
                                             </td>
                                         </tr>
                                     ))}
