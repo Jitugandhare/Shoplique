@@ -22,7 +22,7 @@ productRoute.put('/admin/product/:id', userAuth, roleBasedAccess("admin"), updat
 productRoute.delete('/admin/product/:id', userAuth, roleBasedAccess("admin"), deleteProduct);
 
 ``
-productRoute.get('/admin/review', userAuth, getProductReview);
+productRoute.get('/admin/reviews', userAuth,roleBasedAccess("admin"),  getProductReview);
 productRoute.put('/review', userAuth, createReviewForProduct)
 productRoute.delete('/review-delete', userAuth, deleteProductReview)
 

@@ -49,7 +49,7 @@ const Dashboard = () => {
 
                         <div className="nav-section">
                             <h3>Reviews</h3>
-                            <Link to="/review" >
+                            <Link to="/admin/reviews" >
                                 <Star className='nav-icon' />
                                 All Reviews
                             </Link>

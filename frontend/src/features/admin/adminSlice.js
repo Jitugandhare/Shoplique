@@ -160,9 +160,9 @@ export const updateOrderStatus = createAsyncThunk('admin/updateOrderStatus', asy
 
 export const fetchAllReviews = createAsyncThunk('admin/fetchAllReviews', async ({ productId }, { rejectWithValue }) => {
     try {
-        
-        const { data } = await axios.put(`/api/v1/user/admin/review?id=${productId}`)
-       
+
+        const { data } = await axios.get(`/api/v1/user/admin/reviews?id=${productId}`)
+
 
         return data;
     } catch (error) {
@@ -189,8 +189,8 @@ const adminSlice = createSlice({
         message: null,
         orders: [],
         totalAmount: 0,
-        order:{},
-        reviews:[],
+        order: {},
+        reviews: [],
 
     },
     reducers: {
@@ -425,10 +425,9 @@ const adminSlice = createSlice({
                 state.error = action.payload || 'Failed to Update Order Status.';
             })
 
+        // fetch all reviews
 
-
-            // fetch all reviews
-             builder
+        builder
             .addCase(fetchAllReviews.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -437,13 +436,12 @@ const adminSlice = createSlice({
                 state.loading = false;
                 state.success = action.payload?.success;
                 state.reviews = action.payload?.reviews;
-               
             })
             .addCase(fetchAllReviews.rejected, (state, action) => {
                 state.loading = false;
                 state.success = false;
                 state.error = action.payload || 'Failed to Fetch Reviews.';
-            })
+            });
 
 
 
