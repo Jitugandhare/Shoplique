@@ -340,8 +340,6 @@ const getProductReview = async (req, res) => {
 const deleteProductReview = async (req, res) => {
     try {
 
-
-
         const product = await Product.findById(req.query.productId);
         // console.log(product)
         if (!product) {
@@ -421,5 +419,5 @@ module.exports = {
     updateProduct,
     deleteProduct,
     getAdminAllProducts,
-    createReviewForProduct, deleteProductReview,getProductReview
+    createReviewForProduct, deleteProductReview, getProductReview
 };

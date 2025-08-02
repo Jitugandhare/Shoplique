@@ -24,7 +24,8 @@ productRoute.delete('/admin/product/:id', userAuth, roleBasedAccess("admin"), de
 ``
 productRoute.get('/admin/reviews', userAuth,roleBasedAccess("admin"),  getProductReview);
 productRoute.put('/review', userAuth, createReviewForProduct)
-productRoute.delete('/review-delete', userAuth, deleteProductReview)
+productRoute.delete('/admin/review-delete', userAuth, roleBasedAccess("admin"), deleteProductReview);
+
 
 
 

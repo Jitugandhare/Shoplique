@@ -171,6 +171,20 @@ export const fetchAllReviews = createAsyncThunk('admin/fetchAllReviews', async (
 })
 
 
+// delete review
+export const deleteReview = createAsyncThunk('admin/deleteReview', async ({ productId, reviewId }, { rejectWithValue }) => {
+    try {
+
+        const { data } = await axios.delete(
+            `/api/v1/products/admin/review-delete?productId=${productId}&id=${reviewId}`
+        );
+
+        return data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data || 'Failed to Delete Product Review.')
+    }
+})
+
 
 
 
@@ -441,6 +455,24 @@ const adminSlice = createSlice({
                 state.loading = false;
                 state.success = false;
                 state.error = action.payload || 'Failed to Fetch Reviews.';
+            });
+
+
+        // delete product review
+        builder
+            .addCase(deleteReview.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteReview.fulfilled, (state, action) => {
+                state.loading = false;
+                state.success = action.payload?.success;
+                state.message = action.payload?.message;
+            })
+            .addCase(deleteReview.rejected, (state, action) => {
+                state.loading = false;
+                state.success = false;
+                state.error = action.payload || 'Failed to Product Review.';
             });
 
 

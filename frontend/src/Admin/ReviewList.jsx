@@ -4,19 +4,19 @@ import PageTitle from "../components/PageTitle"
 import NavBar from "../components/NavBar"
 import Footer from "../components/Footer"
 import Loader from "../components/Loader"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Delete } from '@mui/icons-material';
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAdminProducts, fetchAllReviews, removeError } from '../features/admin/adminSlice'
+import { clearMessage, deleteReview, fetchAdminProducts, fetchAllReviews, removeError, removeSuccess } from '../features/admin/adminSlice'
 import { toast } from 'react-toastify'
 
 
 
 const ReviewList = () => {
 
-    const { products, loading, error, reviews } = useSelector(state => state.admin)
+    const { products, loading, error, reviews, success, message } = useSelector(state => state.admin)
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
     const [selectedProduct, setSelectedProduct] = useState(null);
 
 
@@ -25,18 +25,37 @@ const ReviewList = () => {
         dispatch(fetchAllReviews({ productId }))
     }
 
+    const handleReviewDelete = (productId, reviewId) => {
+        const confirm = window.confirm("Are you sure to delete this review?")
+        if (confirm) {
+            dispatch(deleteReview({ productId, reviewId }))
+        }
+    }
 
 
     useEffect(() => {
         dispatch(fetchAdminProducts())
-    }, [dispatch])
+    }, [dispatch]);
+
+
 
     useEffect(() => {
         if (error) {
             toast.error(error, { position: 'top-center', autoClose: 3000 });
             dispatch(removeError())
         }
-    }, [dispatch, error])
+        if (success) {
+            toast.success(message, { position: 'top-center', autoClose: 3000 })
+            dispatch(removeSuccess());
+            dispatch(clearMessage());
+                        
+        }
+
+    }, [dispatch, error, success, message])
+
+
+    
+
 
 
     if (!products || products.length === 0) {
@@ -134,7 +153,9 @@ const ReviewList = () => {
                                                             <td>{review.comment}</td>
                                                             <td>
 
-                                                                <button className='action-btn delete-btn'>
+                                                                <button className='action-btn delete-btn'
+                                                                    onClick={() => handleReviewDelete(selectedProduct, review._id)}
+                                                                >
                                                                     <Delete />
                                                                 </button>
                                                             </td>
