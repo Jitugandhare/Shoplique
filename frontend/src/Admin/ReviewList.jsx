@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../AdminStyles/ReviewList.css'
 import PageTitle from "../components/PageTitle"
 import NavBar from "../components/NavBar"
@@ -14,10 +14,18 @@ import { toast } from 'react-toastify'
 
 const ReviewList = () => {
 
-    const { products, loading, error } = useSelector(state => state.admin)
+    const { products, loading, error, reviews } = useSelector(state => state.admin)
     const dispatch = useDispatch();
 
-    console.log(products)
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
+
+    const handleViewReviews = (productId) => {
+        setSelectedProduct(productId);
+        dispatch(fetchAllReviews({ productId }))
+    }
+
+
 
     useEffect(() => {
         dispatch(fetchAdminProducts())
@@ -82,7 +90,7 @@ const ReviewList = () => {
                                             <td>
                                                 <button
                                                     className='action-btn view-btn'
-
+                                                    onClick={() => handleViewReviews(item._id)}
                                                 >
                                                     View Reviews
                                                 </button>
@@ -95,35 +103,43 @@ const ReviewList = () => {
 
 
                             {/* reviews of product */}
-                            <div className="reviews-details">
-                                <h2>Reviews For Product</h2>
-                                <table className="reviews-table">
-                                    <thead>
-                                        <tr>
-                                            <th>S.No</th>
-                                            <th>Reviewer Name</th>
-                                            <th>Rating</th>
-                                            <th>Comment</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
+                            {selectedProduct && reviews && reviews.length > 0 &&
+                                (
+                                    <div className="reviews-details">
+                                        <h2>Reviews For Product</h2>
+                                        <table className="reviews-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th>Reviewer Name</th>
+                                                    <th>Rating</th>
+                                                    <th>Comment</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
 
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>jitu</td>
-                                            <td>5</td>
-                                            <td>comment hai</td>
-                                            <td>
+                                            <tbody>
+                                                {
+                                                    reviews.map((review, index) => (
 
-                                                <button className='action-btn delete-btn'>
-                                                    <Delete />
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                                        <tr key={review._id}>
+                                                            <td>{index + 1}</td>
+                                                            <td>{review.name}</td>
+                                                            <td>{review.rating}</td>
+                                                            <td>{review.comment}</td>
+                                                            <td>
+
+                                                                <button className='action-btn delete-btn'>
+                                                                    <Delete />
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
 
                         </div>
                         <Footer />

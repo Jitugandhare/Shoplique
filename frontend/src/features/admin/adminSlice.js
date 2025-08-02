@@ -161,7 +161,7 @@ export const updateOrderStatus = createAsyncThunk('admin/updateOrderStatus', asy
 export const fetchAllReviews = createAsyncThunk('admin/fetchAllReviews', async ({ productId }, { rejectWithValue }) => {
     try {
 
-        const { data } = await axios.get(`/api/v1/user/admin/reviews?id=${productId}`)
+        const { data } = await axios.get(`/api/v1/products/admin/reviews?id=${productId}`)
 
 
         return data;
