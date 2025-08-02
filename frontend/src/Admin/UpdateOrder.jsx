@@ -6,6 +6,7 @@ import Footer from "../components/Footer"
 import Loader from "../components/Loader"
 import { Link, useParams } from 'react-router-dom';
 import { getOrderDetails } from '../features/order/orderSlice';
+import { removeError, removeSuccess, updateOrderStatus } from '../features/admin/adminSlice'
 import { useSelector, useDispatch } from "react-redux";
 
 import { toast } from 'react-toastify'
@@ -14,7 +15,7 @@ import { toast } from 'react-toastify'
 
 
 const UpdateOrder = () => {
-    
+
     const { loading: orderLoading, order } = useSelector((state) => state.order);
     const { loading: adminLoading, error, success } = useSelector((state) => state.admin);
     const loading = orderLoading || adminLoading;
@@ -34,10 +35,35 @@ const UpdateOrder = () => {
         orderStatus,
     } = order;
 
+    const paymentStatus = paymentInfo?.status === "Succeeded" ? "Paid" : "Not Paid";
+    const finalOrderStatus = paymentStatus === "Not Paid" ? "Cancelled" : orderStatus;
+
+
+    const handleStatusUpdate = () => {
+        if (!status) {
+            toast.error("Please Select Status", { position: "top-center", autoClose: 3000 });
+            return;
+        }
+        dispatch(updateOrderStatus({ id, status }))
+    }
+
+
     useEffect(() => {
         dispatch(getOrderDetails(id))
     }, [dispatch, id])
 
+    useEffect(() => {
+        if (error) {
+            toast.error("Failed to update order status", { position: "top-center", autoClose: 3000 });
+            dispatch(removeError());
+
+        }
+        if (success) {
+            toast.success("Order Status Updated Successfully", { position: "top-center", autoClose: 3000 })
+            dispatch(removeSuccess())
+            dispatch(getOrderDetails(id))
+        }
+    }, [dispatch, success, error])
 
     return (
         <>
@@ -56,8 +82,8 @@ const UpdateOrder = () => {
                                 {shippingInfo.country},
                                 {shippingInfo.pinCode}</p>
                             <p><strong>Phone :</strong>{shippingInfo.phoneNo}</p>
-                            <p><strong>Order Status : </strong>{orderStatus}</p>
-                            <p><strong>Payment Status :</strong>{paymentInfo.status}</p>
+                            <p><strong>Order Status : </strong>{finalOrderStatus}</p>
+                            <p><strong>Payment Status :</strong>{paymentStatus}</p>
                             <p><strong>Total Price :</strong>{totalPrice}/-</p>
 
 
@@ -100,14 +126,17 @@ const UpdateOrder = () => {
 
                         <div className="order-status">
                             <h2>Update Order Status</h2>
-                            <select className='status-select' value={status} onChange={(e) => setStatus(e.target.value)}>
+                            <select className='status-select' value={status}
+                                disabled={loading || orderStatus === "Delivered"}
+                                onChange={(e) => setStatus(e.target.value)}>
                                 <option value="">Select Status</option>
-                                <option value="shipped" > Shipped</option>
-                                <option value="on the way">On The Way</option>
-                                <option value="delivered">Delivered</option>
+                                <option value="Shipped" > Shipped</option>
+                                <option value="On The Way">On The Way</option>
+                                <option value="Delivered">Delivered</option>
 
                             </select>
-                            <button className="update-button">Update Status</button>
+                            <button className="update-button" disabled={loading || orderStatus === "Delivered" || !status}
+                                onClick={handleStatusUpdate}>{loading ? "Updating..." : "Update Status"}</button>
 
 
 
