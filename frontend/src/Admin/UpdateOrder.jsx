@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "../AdminStyles/UpdateOrder.css"
 import PageTitle from "../components/PageTitle"
 import NavBar from "../components/NavBar"
 import Footer from "../components/Footer"
 import Loader from "../components/Loader"
 import { Link, useParams } from 'react-router-dom';
-
+import { getOrderDetails } from '../features/order/orderSlice';
 import { useSelector, useDispatch } from "react-redux";
 
 import { toast } from 'react-toastify'
@@ -14,11 +14,29 @@ import { toast } from 'react-toastify'
 
 
 const UpdateOrder = () => {
-    const { loading, error, success, message, orders } = useSelector((state) => state.order);
+    
+    const { loading: orderLoading, order } = useSelector((state) => state.order);
+    const { loading: adminLoading, error, success } = useSelector((state) => state.admin);
+    const loading = orderLoading || adminLoading;
 
     const dispatch = useDispatch();
     const [status, setStatus] = useState("");
-    const {id}=useParams()
+    const { id } = useParams();
+
+
+    console.log(order)
+
+    const {
+        shippingInfo = {},
+        orderItems = [],
+        paymentInfo = {},
+        totalPrice,
+        orderStatus,
+    } = order;
+
+    useEffect(() => {
+        dispatch(getOrderDetails(id))
+    }, [dispatch, id])
 
 
     return (
@@ -29,15 +47,18 @@ const UpdateOrder = () => {
                     <PageTitle title="Update Order Status" />
                     <NavBar />
                     <div className="order-container">
-                        <h1 className="order-title">Update Order                </h1>
+                        <h1 className="order-title">Update Order</h1>
                         <div className="order-details">
                             <h2>Order Information</h2>
-                            <p><strong>Order Id :</strong>1234</p>
-                            <p><strong>Shipping Address :</strong>Indore</p>
-                            <p><strong>Phone :</strong>255455</p>
-                            <p><strong>Order Status : </strong>Processing</p>
-                            <p><strong>Payment Status :</strong>Paid</p>
-                            <p><strong>Total Price :</strong>950/-</p>
+                            <p><strong>Order Id :</strong>{id}</p>
+                            <p><strong>Shipping Address :</strong>{shippingInfo.address}, {shippingInfo.city},
+                                {shippingInfo.state},
+                                {shippingInfo.country},
+                                {shippingInfo.pinCode}</p>
+                            <p><strong>Phone :</strong>{shippingInfo.phoneNo}</p>
+                            <p><strong>Order Status : </strong>{orderStatus}</p>
+                            <p><strong>Payment Status :</strong>{paymentInfo.status}</p>
+                            <p><strong>Total Price :</strong>{totalPrice}/-</p>
 
 
                         </div>
@@ -53,15 +74,25 @@ const UpdateOrder = () => {
                                         <th>Quantity</th>
                                         <th>Price</th>
                                     </tr>
-                                    <tbody>
-                                        <tr>
-                                            <td className='order-item-image' ><img src="" alt="Product-Image" /></td>
-                                            <td>Product Name</td>
-                                            <td>4</td>
-                                            <td>950/-</td>
-                                        </tr>
-                                    </tbody>
+
                                 </thead>
+
+
+                                <tbody>
+                                    {
+                                        orderItems.map((item) => (
+
+                                            <tr key={item._id}>
+                                                <td>
+                                                    <img src={item.image} alt={item.name} className='order-item-image' /></td>
+                                                <td>{item.name}</td>
+                                                <td>{item.quantity}</td>
+                                                <td>{item.price}/-</td>
+                                            </tr>
+                                        ))
+
+                                    }
+                                </tbody>
                             </table>
 
 

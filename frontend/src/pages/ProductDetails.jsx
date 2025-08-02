@@ -148,7 +148,7 @@ const ProductDetails = () => {
                 <div className="product-detail-container">
                     <div className="product-image-container">
                         <img src={selectedImage} alt={product.name} className='product-detail-image' />
-                        {/* image rendered dynaically */}
+                        {/* image rendered dynamically */}
 
                         {
                             product.image.length > 1 && (
