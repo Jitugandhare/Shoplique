@@ -4,7 +4,7 @@ const { userAuth, roleBasedAccess } = require('../middleware/userAuth.js');
 
 const {
     createProduct, getAllProducts, getProductById, updateProduct, deleteProduct, getAdminAllProducts
-    , createReviewForProduct,deleteProductReview
+    , createReviewForProduct, deleteProductReview, getProductReview
 
 } = require('../controller/productController.js');
 
@@ -22,6 +22,10 @@ productRoute.put('/admin/product/:id', userAuth, roleBasedAccess("admin"), updat
 productRoute.delete('/admin/product/:id', userAuth, roleBasedAccess("admin"), deleteProduct);
 
 ``
+productRoute.get('/admin/review', userAuth, getProductReview);
 productRoute.put('/review', userAuth, createReviewForProduct)
-productRoute.delete('/review-delete',userAuth,deleteProductReview)
+productRoute.delete('/review-delete', userAuth, deleteProductReview)
+
+
+
 module.exports = productRoute;

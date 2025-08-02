@@ -308,6 +308,32 @@ const createReviewForProduct = async (req, res) => {
     }
 }
 
+// get product review
+const getProductReview = async (req, res) => {
+    try {
+        const product = await Product.findById(req.query.id);
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            reviews: product.reviews
+        });
+
+    } catch (error) {
+        console.error("Error fetching product reviews:", error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        });
+    }
+};
 
 // delete product review
 
@@ -395,5 +421,5 @@ module.exports = {
     updateProduct,
     deleteProduct,
     getAdminAllProducts,
-    createReviewForProduct, deleteProductReview,
+    createReviewForProduct, deleteProductReview,getProductReview
 };
