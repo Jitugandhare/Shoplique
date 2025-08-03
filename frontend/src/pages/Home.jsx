@@ -34,7 +34,8 @@ const Home = () => {
             ) : (
                 <>
                     <NavBar />
-                    <PageTitle title="my-website" />
+                    <PageTitle title="Home" />
+                    
                     <ImageSlider />
                     <div className="home-container">
                         <h2 className="home-heading">Trending Now</h2>
