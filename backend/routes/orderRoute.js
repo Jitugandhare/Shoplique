@@ -11,6 +11,7 @@ const { createOrder, getSingleOrder ,getAllMyOrders,getAllOrders,
 orderRoute.get("/my-orders",userAuth,getAllMyOrders)
 
 orderRoute.get('/admin/order/:id', userAuth, roleBasedAccess("admin"), getSingleOrder);
+
 // create new order either admin or user
 orderRoute.post('/new/order', userAuth, createOrder)
 
