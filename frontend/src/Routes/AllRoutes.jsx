@@ -11,7 +11,7 @@ import UpdateProfile from '../User/UpdateProfile';
 import UpdatePassword from '../User/UpdatePassword';
 import ForgotPassword from '../User/ForgotPassword';
 import ResetPassword from '../User/ResetPassword';
-import Cart from '../Cart/Cart';
+import Cart from '../cart/Cart';
 import Shipping from '../cart/Shipping';
 import OrderConfirm from '../cart/OrderConfirm';
 import Payment from '../cart/Payment';
