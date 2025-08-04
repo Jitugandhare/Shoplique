@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 
-const connection = mongoose.connect('mongodb://localhost:27017/shoplique').
+
+const connection = mongoose.connect(process.env.MONGO_URI).
     then(() => console.log(`DB connected`))
     .catch((error) => console.log(`DB error`, error));
 

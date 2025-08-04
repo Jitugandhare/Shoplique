@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react'
 import "../componentsStyles/ImageSlider.css"
 
 const images = [
+    './Images/Image1.png',
     './Images/Image-1.avif',
-    './Images/Image-2.avif',
-    './Images/Image-3.avif',
+    './Images/image4.png',      
     './Images/Image-4.avif',
     './Images/Image-5.avif',
-    './Images/Image1.png',
 
 
 ];

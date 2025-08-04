@@ -12,7 +12,7 @@ import { toast } from "react-toastify"
 
 
 const Home = () => {
-    const { products, loading, error, productCount } = useSelector((state) => state.product) || {};
+    const { products, loading, error } = useSelector((state) => state.product) || {};
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -35,7 +35,7 @@ const Home = () => {
                 <>
                     <NavBar />
                     <PageTitle title="Home" />
-                    
+
                     <ImageSlider />
                     <div className="home-container">
                         <h2 className="home-heading">Trending Now</h2>

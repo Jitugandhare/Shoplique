@@ -23,7 +23,7 @@ const Product = () => {
     const [category, setCategory] = useState("")
 
     const categories = [
-        "Mobile", "Laptops", "Clothing", "Shirt",
+        "Mobile", "Laptops", "Clothing", "Shirt","Skin Care","Glasses",
         "Books", "Toys", "T-shirt", "Pants", "Jackets", "Footwear", "Jewellery","Bags"
     ]
 

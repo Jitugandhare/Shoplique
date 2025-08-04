@@ -86,7 +86,11 @@ const ProductList = () => {
                     <tr key={item._id}>
                       <td>{index + 1}</td>
                       <td>
-                        <img src={item.image[0].url} alt={item.name} className="admin-product-image" />
+                        <img
+                          src={item.image?.[0]?.url || '/Profile/profile.png'}
+                          alt={item.name || "Product Image"}
+                          className="admin-product-image"
+                        />
                       </td>
                       <td>{item.name}</td>
                       <td>₹{item.price}</td>

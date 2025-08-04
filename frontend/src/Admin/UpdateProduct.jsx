@@ -29,7 +29,7 @@ const UpdateProduct = () => {
         "Mobile", "Laptops", "Clothing", "Shirt",
         "Books", "Toys", "T-shirt", "Pants", "Jackets", "Footwear", "Jewellery", "Bags"
     ]
-    console.log(product)
+    // console.log(product)
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
@@ -60,10 +60,10 @@ const UpdateProduct = () => {
 
         const myForm = new FormData();
         myForm.set("name", name);
-        myForm.set("price", price);
+        myForm.set("price", Number(price));
         myForm.set("description", description);
         myForm.set("category", category);
-        myForm.set("stock", stock);
+        myForm.set("stock", Number(stock));
 
         image.forEach((img) => {
             myForm.append("images", img);
@@ -107,6 +107,12 @@ const UpdateProduct = () => {
             navigate("/admin/products")
         }
     }, [dispatch, success, error])
+
+
+
+    if (loading && !product) {
+        return <Loader />;
+    }
 
     return (
         <>
@@ -179,6 +185,7 @@ const UpdateProduct = () => {
                     <label htmlFor="image" className="update-product-label">Product Images</label>
                     <div className="update-product-file-wrapper">
                         <input
+                            key={image.length}
                             type="file"
                             className="update-product-file-input"
                             accept='image/*'

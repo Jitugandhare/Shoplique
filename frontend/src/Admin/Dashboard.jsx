@@ -19,11 +19,12 @@ const Dashboard = () => {
         dispatch(fetchAllOrders())
     }, [dispatch])
 
-    const totalProducts = products.length;
-    const totalOrders = orders.length;
-    const outOfStock = products.filter(product => product.stock === 0).length;
-    const inStock = products.filter(product => product.stock > 0).length;
-    const totalReviews = products.reduce((acc, prod) => acc + (prod.reviews?.length || 0), 0)
+    const totalProducts = products?.length || 0;
+    const totalOrders = orders?.length || 0;
+    const outOfStock = (products || []).filter(product => product?.stock === 0).length;
+    const inStock = (products || []).filter(product => product?.stock > 0).length;
+    const totalReviews = (products || []).reduce((acc, prod) => acc + (prod.reviews?.length || 0), 0);
+
 
 
 
