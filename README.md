@@ -9,19 +9,19 @@ Shoplique is a full-featured e-commerce web application built with the **MERN st
 ## 📸 Screenshots
 
 ### 🏠 Home Page
-![Home Page](./screenshots/homepage.png)
+![Home Page](./screenshots/HomePage.png)
 
 ### 🛒 Product Page
-![Product Page](./screenshots/productpage.png)
+![Product Page](./screenshots/ProductPage.png)
 
 ### 👤 Login Page
-![Login Page](./screenshots/loginpage.png)
+![Login Page](./screenshots/Login.png)
 
 ### 🛍️ Cart Page
 ![Cart Page](./screenshots/cartpage.png)
 
 ### 📦 Admin Dashboard
-![Admin Dashboard](./screenshots/admindashboard.png)
+![Admin Dashboard](./screenshots/Admin.png)
 
 
 
