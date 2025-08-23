@@ -37,7 +37,7 @@ app.use(compression());
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 } else {
-  app.use(morgan('combined')); // Log more details in production
+  app.use(morgan('combined')); 
 }
 
 // Custom CSP Header
@@ -58,7 +58,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(fileupload({
   useTempFiles: true,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB max file size
+  limits: { fileSize: 10 * 1024 * 1024 } 
 }));
 
 // API Routes

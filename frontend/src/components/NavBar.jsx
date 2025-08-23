@@ -80,12 +80,16 @@ const NavBar = () => {
           </Link>
 
         </div>
+
         {!isAuthenticated && (
+          <div style={{marginLeft:"10px",marginBottom:"7px",paddingLeft:"10px"}}>
           <Link to="/register" className="register-link">
             <PersonAddIcon className="icon" />
           </Link>
+            </div>
         )}
 
+      
         <div className="navbar-hamburger" onClick={toggleMenu}>
           {isMenuOpen ? <CloseIcon className='icon' />
             : <MenuOpenIcon className='icon' />}
