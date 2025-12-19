@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../UserStyles/Register.css";
+import "../UserStyles/Registers.css";
 import { Link, useNavigate } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
 import { toast } from "react-toastify";
@@ -22,18 +22,18 @@ const Register = () => {
     password: "",
   });
 
-  const { name, email, password } = user;
-
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(
     "/Profile/Profile.png"
   );
 
-  const handleRegisterChange = (e) => {
-    if (e.target.name === "avatar") {
-      const file = e.target.files[0];
-      if (!file) return;
+  const { name, email, password } = user;
 
+  const handleRegisterChange = (e) => {
+    const { name, value, files } = e.target;
+
+    if (name === "avatar" && files?.length) {
+      const file = files[0];
       setAvatar(file);
 
       const reader = new FileReader();
@@ -41,23 +41,23 @@ const Register = () => {
         setAvatarPreview(reader.result);
       };
       reader.readAsDataURL(file);
-
-    } else {
-      setUser({ ...user, [e.target.name]: e.target.value });
+      return;
     }
+
+    setUser((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!name || !email || !password) {
-      toast.error("Please fill all required fields");
+      toast.error("Please fill all required fields",{ position: "top-center", autoClose: 3000 });
       return;
     }
 
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
+    formData.append("name", name.trim());
+    formData.append("email", email.trim());
     formData.append("password", password);
 
     if (avatar) {
@@ -69,18 +69,18 @@ const Register = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error,{ position: "top-center", autoClose: 3000 });
       dispatch(removeError());
     }
-  }, [dispatch, error]);
+  }, [error, dispatch]);
 
   useEffect(() => {
     if (success) {
-      toast.success("Registration Successful");
+      toast.success("Registration Successful",{ position: "top-center", autoClose: 3000 });
       dispatch(removeSuccess());
       navigate("/login");
     }
-  }, [dispatch, success, navigate]);
+  }, [success, dispatch, navigate]);
 
   return (
     <div className="form-container">
