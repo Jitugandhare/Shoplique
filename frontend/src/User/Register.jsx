@@ -1,108 +1,148 @@
-import React, { useEffect, useState } from 'react';
-import '../UserStyles/Register.css';
-import { Link, redirect, useNavigate } from 'react-router-dom';
-import PageTitle from '../components/PageTitle';
+import React, { useEffect, useState } from "react";
+import "../UserStyles/Register.css";
+import { Link, useNavigate } from "react-router-dom";
+import PageTitle from "../components/PageTitle";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from 'react-redux';
-import { register, removeError, removeSuccess } from '../features/user/userSlice';
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  register,
+  removeError,
+  removeSuccess,
+} from "../features/user/userSlice";
 
 const Register = () => {
-  const { loading, error, success, isAuthenticated } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { loading, error, success } = useSelector((state) => state.user);
+
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
-  })
+  });
 
   const { name, email, password } = user;
-  const [avatar, setAvatar] = useState("");
-  const [avatarPreview, setAvatarPreview] = useState("./Profile/Profile.png")
+
+  const [avatar, setAvatar] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(
+    "/Profile/Profile.png"
+  );
 
   const handleRegisterChange = (e) => {
-    if (e.target.name === 'avatar') {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setAvatarPreview(reader.result);
-          setAvatar(reader.result);
-        }
-      }
+    if (e.target.name === "avatar") {
+      const file = e.target.files[0];
+      if (!file) return;
 
-      reader.readAsDataURL(e.target.files[0])
+      setAvatar(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
 
     } else {
-      setUser({ ...user, [e.target.name]: e.target.value })
+      setUser({ ...user, [e.target.name]: e.target.value });
     }
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!name || !email || !password) {
-      toast.error("Please fill all the required fields", { position: "top-center", autoClose: 2000 })
-    };
+      toast.error("Please fill all required fields");
+      return;
+    }
 
-    const myForm = new FormData();
-    myForm.set('name', name)
-    myForm.set('email', email)
-    myForm.set('password', password)
-    myForm.set('avatar', avatar);
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
 
-    dispatch(register(myForm))
+    if (avatar) {
+      formData.append("avatar", avatar);
+    }
 
-  }
+    dispatch(register(formData));
+  };
+
   useEffect(() => {
     if (error) {
-      toast.error(error, { position: "top-center", autoClose: 3000 })
-      dispatch(removeError())
+      toast.error(error);
+      dispatch(removeError());
     }
   }, [dispatch, error]);
 
   useEffect(() => {
     if (success) {
-      toast.success("Registration Successful", { position: "top-center", autoClose: 3000 })
+      toast.success("Registration Successful");
       dispatch(removeSuccess());
+      navigate("/login");
     }
-    // navigate('/')
-  }, [dispatch, success])
+  }, [dispatch, success, navigate]);
 
   return (
-    <div className="form-container ">
-
+    <div className="form-container">
       <PageTitle title="User Registration" />
 
       <div className="form-content">
-        <form className="form" encType='multipart/form-data' onSubmit={handleSubmit}>
+        <form
+          className="form"
+          onSubmit={handleSubmit}
+          encType="multipart/form-data"
+        >
           <h2>Sign Up</h2>
-          <div className="input-group">
-            <input type="text" placeholder="Username" name="name" value={name} onChange={handleRegisterChange} />
-          </div>
-          <div className="input-group">
-            <input type="email" placeholder="Email" name="email" value={email} onChange={handleRegisterChange} />
-          </div>
-          <div className="input-group">
-            <input type="password" placeholder="Password" name="password" value={password} onChange={handleRegisterChange} />
+
+          <input
+            type="text"
+            placeholder="Username"
+            name="name"
+            value={name}
+            onChange={handleRegisterChange}
+            required
+          />
+
+          <input
+            type="email"
+            placeholder="Email"
+            name="email"
+            value={email}
+            onChange={handleRegisterChange}
+            required
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            name="password"
+            value={password}
+            onChange={handleRegisterChange}
+            required
+          />
+
+          <div className="avatar-group">
+            <input
+              type="file"
+              name="avatar"
+              accept="image/*"
+              onChange={handleRegisterChange}
+            />
+            <img src={avatarPreview} alt="Avatar Preview" />
           </div>
 
-          <div className="input-group avatar-group">
-            <input type="file" className="file-input" accept='image/' name='avatar' onChange={handleRegisterChange} />
-            <img src={avatarPreview} alt="Preview iImage" className='avatar' />
+          <button type="submit" disabled={loading}>
+            {loading ? "Signing Up..." : "Sign Up"}
+          </button>
 
-          </div>
-
-          <button className="authBtn" type='submit'>{loading ? "Signing Up" : "Sign Up"}</button>
-          <p className="form-link">
-            Already have an account?<Link to='/login'> Sign in here</Link>
+          <p>
+            Already have an account?
+            <Link to="/login"> Login</Link>
           </p>
-
-
-
         </form>
       </div>
     </div>
   );
+};
 
-}
 export default Register;

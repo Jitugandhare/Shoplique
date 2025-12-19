@@ -7,46 +7,108 @@ const sendEmail = require('../utils/sentEmail.js');
 const crypto = require("crypto");
 const cloudinary = require('cloudinary').v2;
 
+// const register = async (req, res) => {
+//     const { name, email, password, avatar } = req.body;
+
+//     try {
+
+//         if (!name || !email || !password) {
+//             return res.status(400).json({ message: "Please provide name, email, and password" });
+//         }
+
+//         const existingUser = await User.findOne({ email });
+
+//         if (existingUser) {
+//             return res.status(400).json({ message: "User is already exists" })
+//         }
+
+
+//         const myCloud = await cloudinary.uploader.upload(avatar, {
+//             folder: 'avatars',
+//             width: 150,
+//             crop: 'scale'
+//         });
+
+//         const user = await User.create({
+//             name,
+//             email,
+//             password,
+//             avatar: {
+//                 public_id: myCloud.public_id,
+//                 url: myCloud.secure_url,
+//             }
+//         })
+
+//         sendToken(user, 200, res)
+
+
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'Server error' });
+//     }
+// }
+
+
 const register = async (req, res) => {
-    const { name, email, password, avatar } = req.body;
+  try {
+    const { name, email, password } = req.body;
 
-    try {
-
-        if (!name || !email || !password) {
-            return res.status(400).json({ message: "Please provide name, email, and password" });
-        }
-
-        const existingUser = await User.findOne({ email });
-
-        if (existingUser) {
-            return res.status(400).json({ message: "User is already exists" })
-        }
-
-
-        const myCloud = await cloudinary.uploader.upload(avatar, {
-            folder: 'avatars',
-            width: 150,
-            crop: 'scale'
-        });
-
-        const user = await User.create({
-            name,
-            email,
-            password,
-            avatar: {
-                public_id: myCloud.public_id,
-                url: myCloud.secure_url,
-            }
-        })
-
-        sendToken(user, 200, res)
-
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
+    // Validate fields
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        message: "Please provide name, email, and password",
+      });
     }
-}
+
+    // Check user exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        message: "User already exists",
+      });
+    }
+
+    let avatarData = {
+      public_id: "default_avatar",
+      url: "https://res.cloudinary.com/djzheogwa/image/upload/v1/default-avatar.png",
+    };
+
+    // Upload avatar if provided
+    if (req.files && req.files.avatar) {
+      const avatarFile = req.files.avatar;
+
+      const myCloud = await cloudinary.uploader.upload(
+        avatarFile.tempFilePath,
+        {
+          folder: "avatars",
+          width: 150,
+          crop: "scale",
+        }
+      );
+
+      avatarData = {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      };
+    }
+
+    // Create user
+    const user = await User.create({
+      name,
+      email,
+      password,
+      avatar: avatarData,
+    });
+
+    sendToken(user, 200, res);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
 
 
 const login = async (req, res) => {
